@@ -6,7 +6,7 @@ module.exports = {
   plugins: [{
     resolve: 'gatsby-source-wordpress',
     options: {
-      "url": "wp.jeroenkortekaas.com/graphql"
+      "url": "https://wp.jeroenkortekaas.com/graphql/"
     }
   }]
 };
