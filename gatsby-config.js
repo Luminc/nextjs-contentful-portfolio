@@ -1,9 +1,18 @@
 module.exports = {
   siteMetadata: {
-    title: `gatsby tutorial site`,
-    siteUrl: `https://www.yourdomain.tld`
+    title: `Jeroen Kortekaas`,
+    description: `The artist portfolio website of Jeroen Kortekaas`,
+    siteUrl: `https://www.jeroenkortekaas.com`
   },
   plugins: [
 "gatsby-plugin-image",
-"gatsby-plugin-sharp"]
+"gatsby-plugin-sharp",
+{
+  resolve: "gatsby-source-filesystem",
+  options: {
+    name: `blog`,
+    path: `${__dirname}/blog`,
+  }
+},
+],
 };
