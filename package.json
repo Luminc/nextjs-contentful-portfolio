@@ -1,0 +1,26 @@
+{
+  "name": "gatsby-tutorial-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "gatsby-tutorial-site",
+  "author": "Luminc",
+  "keywords": [
+    "gatsby"
+  ],
+  "scripts": {
+    "develop": "gatsby develop",
+    "start": "gatsby develop",
+    "build": "gatsby build",
+    "serve": "gatsby serve",
+    "clean": "gatsby clean"
+  },
+  "dependencies": {
+    "gatsby": "^4.22.0",
+    "gatsby-plugin-image": "^2.22.0",
+    "gatsby-plugin-sharp": "^4.22.0",
+    "gatsby-source-wordpress": "^6.22.0",
+    "gatsby-transformer-sharp": "^4.22.0",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0"
+  }
+}
