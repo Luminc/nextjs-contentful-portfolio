@@ -9,7 +9,7 @@ const ProjectPage = ({data}) => {
         {
             data.allContentfulProject.nodes.map(node => (
             <article key={node.id}>
-                <h2><Link to={`/project/${node.url}`}>{node.title}</Link></h2>
+                <h2><Link to={`/projects/${node.url}`}>{node.title}</Link></h2>
                 <p>{node.year}</p>
                 <p>{node.medium}</p>
             </article>)
