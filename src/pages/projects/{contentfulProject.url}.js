@@ -21,8 +21,8 @@ const Project = ({ data }) => {
 };
 
 export const data = graphql`
-query {
-    contentfulProject {
+query ($id: String) {
+    contentfulProject (id: {eq: $id}) {
       title
       medium
       url

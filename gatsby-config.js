@@ -14,13 +14,6 @@ module.exports = {
 "gatsby-plugin-mdx",
 "gatsby-transformer-sharp",
 {
-  resolve: "gatsby-source-filesystem",
-  options: {
-    name: `blog`,
-    path: `${__dirname}/blog`,
-  }
-},
-{
   resolve: `gatsby-source-contentful`,
   options: {
     spaceId: process.env.CONTENTFUL_SPACE_ID,
