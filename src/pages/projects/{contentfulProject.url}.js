@@ -6,7 +6,6 @@ import {GatsbyImage, getImage} from 'gatsby-plugin-image'
 
 const Project = ({ data }) => {
   const image = getImage(data.contentfulProject.featuredImage.gatsbyImageData)
-  const images = getImage(data.contentfulProject.documentation.gatsbyImageData)
   return (
     <Layout pageTitle={data.title}>
       <h1>{data.contentfulProject.title}</h1>
@@ -15,7 +14,6 @@ const Project = ({ data }) => {
       {data.contentfulProject.documentation.map(image => (
               <GatsbyImage alt={image.id} image={image.gatsbyImageData}/>
             ))}
-      <GatsbyImage image={images} alt="placeholder"/>
       <GatsbyImage
       image={image}
       alt="Placeholder"

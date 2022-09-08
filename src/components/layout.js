@@ -1,11 +1,13 @@
 import * as React from 'react'
 import { Link, useStaticQuery, graphql } from 'gatsby'
-import {container,
+import {
 heading,
 navLinks,
 navLinkItem,
 navLinkText,
 siteTitle} from './layout.module.css'
+import Carousel from 'react-bootstrap/Carousel';
+import Container from 'react-bootstrap/Container'
 
 const Layout = ({ pageTitle, children }) => {
 
@@ -29,7 +31,7 @@ const Layout = ({ pageTitle, children }) => {
       }
       `)
   return (
-    <div className={container}>
+    <div>
         <header className={siteTitle}>{data.site.siteMetadata.title}</header>
       <nav>
         <ul className={navLinks}>

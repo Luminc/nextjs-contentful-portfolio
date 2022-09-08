@@ -1,7 +1,9 @@
 import * as React from 'react'
 import { graphql, Link} from 'gatsby'
 import Layout from '../../components/layout'
+
 import Seo from '../../components/seo'
+
 const ProjectPage = ({data}) => {
   return (
     <Layout pageTitle="Projects">
