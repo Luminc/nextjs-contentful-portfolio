@@ -34,11 +34,10 @@ const Layout = ({ pageTitle, children }) => {
       <nav>
         <ul className={navLinks}>
           <li className={navLinkItem}><Link to="/" className={navLinkText}>Home</Link></li>
-          <li className={navLinkItem}><Link to="/blog"  className={navLinkText}>Blog</Link></li>
           <li className={navLinkItem}><Link to="/projects"  className={navLinkText}>Projects</Link></li>
           {data.allContentfulPage.edges.map(item => (
-              <li key={item.node.slug} style={{ margin: `0 10px` }}>
-                <Link to={`/${item.node.slug}`}>{item.node.title}</Link>
+              <li key={item.node.slug} className={navLinkItem}>
+                <Link to={`/${item.node.slug}`} className={navLinkText}>{item.node.title}</Link>
               </li>
             ))}
         </ul>
