@@ -6,11 +6,16 @@ import {GatsbyImage, getImage} from 'gatsby-plugin-image'
 
 const Project = ({ data }) => {
   const image = getImage(data.contentfulProject.featuredImage.gatsbyImageData)
+  const images = getImage(data.contentfulProject.documentation.gatsbyImageData)
   return (
     <Layout pageTitle={data.title}>
       <h1>{data.contentfulProject.title}</h1>
       <p>{data.contentfulProject.medium}</p>
       <p>{data.contentfulProject.year}</p>
+      {data.contentfulProject.documentation.map(image => (
+              <GatsbyImage alt={image.id} image={image.gatsbyImageData}/>
+            ))}
+      <GatsbyImage image={images} alt="placeholder"/>
       <GatsbyImage
       image={image}
       alt="Placeholder"
@@ -27,6 +32,10 @@ query ($id: String) {
       medium
       url
       year
+      documentation {
+        id
+        gatsbyImageData
+      }
       featuredImage{
         gatsbyImageData(layout:FULL_WIDTH)
       }
