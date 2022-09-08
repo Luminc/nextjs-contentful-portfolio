@@ -16,8 +16,6 @@ export const data = graphql`
 query {
     contentfulPage {
       title
-      description
-
     }
   }`
 ;
