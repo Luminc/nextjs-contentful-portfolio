@@ -2,7 +2,9 @@ import React from 'react';
 import { graphql } from 'gatsby';
 import ContentfulRichTech from '../../components/contentful-rich-text'
 import Layout from '../../components/layout'
+import Video from '../../components/video'
 import {GatsbyImage, getImage} from 'gatsby-plugin-image'
+
 
 const Project = ({ data }) => {
   const image = getImage(data.contentfulProject.featuredImage.gatsbyImageData)
@@ -11,6 +13,7 @@ const Project = ({ data }) => {
       <h1>{data.contentfulProject.title}</h1>
       <p>{data.contentfulProject.medium}</p>
       <p>{data.contentfulProject.year}</p>
+      { data.contentfulProject.video && <Video Src={data.contentfulProject.video.url} Title={data.contentfulProject.video.title}/>}
       {data.contentfulProject.documentation.map(image => (
               <GatsbyImage alt={image.id} image={image.gatsbyImageData}/>
             ))}
@@ -26,6 +29,10 @@ const Project = ({ data }) => {
 export const data = graphql`
 query ($id: String) {
     contentfulProject (id: {eq: $id}) {
+      video {
+        url
+        title
+      }
       title
       medium
       url

@@ -1,5 +1,7 @@
-const React = require("react")
+const HtmlAttributes = {
+  lang: "en"
+}
 
 exports.onRenderBody = ({ setHtmlAttributes }) => {
-    setHtmlAttributes({ lang: "en" })
+    setHtmlAttributes(HtmlAttributes)
   }
