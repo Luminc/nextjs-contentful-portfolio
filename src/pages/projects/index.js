@@ -12,7 +12,9 @@ const ProjectPage = ({data}) => {
         {
             data.allContentfulProject.nodes.map(node => (
             <article key={node.id}>
+              <Link to={`/projects/${node.url}`}>
               <GatsbyImage image={node.featuredImage.gatsbyImageData} alt=""/>
+              </Link>
                 <h2><Link to={`/projects/${node.url}`}>{node.title}</Link></h2>
                 <p>{node.year}</p>
                 <p>{node.medium}</p>

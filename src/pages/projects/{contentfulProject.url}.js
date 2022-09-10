@@ -12,9 +12,9 @@ const Project = ({ data }) => {
   const image = getImage(data.contentfulProject.featuredImage.gatsbyImageData)
   return (
     <Layout pageTitle={data.title}>
-      <Container fluid>
+      <Container fluid="xxl">
       <Row>
-        <Col>
+        <Col md>
             <GatsbyImage
       image={image}
       alt="Placeholder"

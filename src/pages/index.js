@@ -7,14 +7,12 @@ import Carousel from 'react-bootstrap/Carousel';
 import Container from 'react-bootstrap/Container'
 import { graphql, Link} from 'gatsby'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Hero from '../components/hero';
 
 const IndexPage = ({data}) => {
   return (
     <Layout pageTitle="Jeroen Kortekaas">
-      <Hero/>
     <Container fluid>
-    <Carousel pause={false} indicators={false} className="mb-5">
+    {/* <Carousel pause={false} indicators={false} className="mb-5">
     {data.allContentfulHeroImages.edges.map(image => (
         <Carousel.Item>
           <Link 
@@ -28,7 +26,7 @@ const IndexPage = ({data}) => {
             </Link>
         </Carousel.Item>
       ))}
-    </Carousel>
+    </Carousel> */}
     <Container>
       <p>I'm building a gatsby website</p>
       <p>Some text</p>
