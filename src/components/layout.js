@@ -6,8 +6,6 @@ navLinks,
 navLinkItem,
 navLinkText,
 siteTitle} from './layout.module.css'
-import Carousel from 'react-bootstrap/Carousel';
-import Container from 'react-bootstrap/Container'
 
 const Layout = ({ pageTitle, children }) => {
 
@@ -45,8 +43,10 @@ const Layout = ({ pageTitle, children }) => {
         </ul>
       </nav>
       <main>
+        
         <h1 className={heading}>{pageTitle}</h1>
         {children}
+        
       </main>
     </div>
   )

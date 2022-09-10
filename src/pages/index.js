@@ -6,13 +6,14 @@ import { GatsbyImage } from 'gatsby-plugin-image'
 import Carousel from 'react-bootstrap/Carousel';
 import Container from 'react-bootstrap/Container'
 import { graphql, Link} from 'gatsby'
-
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Hero from '../components/hero';
 
 const IndexPage = ({data}) => {
   return (
     <Layout pageTitle="Jeroen Kortekaas">
-          <Container fluid>
+      <Hero/>
+    <Container fluid>
     <Carousel pause={false} indicators={false} className="mb-5">
     {data.allContentfulHeroImages.edges.map(image => (
         <Carousel.Item>
@@ -28,30 +29,14 @@ const IndexPage = ({data}) => {
         </Carousel.Item>
       ))}
     </Carousel>
-    <Container>    <p>I'm building a gatsby website</p>
+    <Container>
+      <p>I'm building a gatsby website</p>
       <p>Some text</p>
       </Container>
+    
 
     </Container>
-          {/* <Carousel>
-     
-       <Carousel.Item>
-       <GatsbyImage
-         image={data.contentfulHeroImages.image.gatsbyImageData}
-       />
-     </Carousel.Item>
-     <Carousel.Item>
-       <GatsbyImage
-         image={data.contentfulHeroImages.image.gatsbyImageData}
-       />
-     </Carousel.Item>
-       
-     </Carousel> */}
 
-      {/* {data.contentfulHeroImages.map(image => (
-              <GatsbyImage alt="Some alt" image={image.gatsbyImageData}/>
-            ))}
-             */}
     </Layout>
   )
 }

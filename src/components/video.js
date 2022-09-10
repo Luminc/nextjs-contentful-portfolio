@@ -1,15 +1,18 @@
 import React from "react"
+import styled from 'styled-components'
 const Video = ({ Src, Title, ...props }) => (
   <div className="video">
-    <iframe
-      src={Src}
-      title={Title}
-      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-      frameBorder="0"
-      webkitallowfullscreen="true"
-      mozallowfullscreen="true"
-      allowFullScreen
+    <VideoBg
+      src={Src} type="video/mp4" autoPlay loop muted playsInline
+
     />
   </div>
 )
 export default Video
+
+const VideoBg = styled.video`
+width: 100%;
+height: 100%;
+-o-object-fit: cover;
+object-fit: cover;
+z-index: 1;`

@@ -9,20 +9,24 @@
     margin: auto;
     max-width: 500px;
     font-family: sans-serif;
+    z-index: 3;
 }
 
 .heading {
-    color: rebeccapurple
+    color: rebeccapurple;
+    z-index: 3;
 }
 
 .nav-links {
     display: flex;
     list-style: none;
     padding-left: 0;
+    z-index: 3;
 }
 
 .nav-link-item {
     padding-right: 2rem;
+    z-index: 5;
 
 }
 
