@@ -3,6 +3,7 @@ import { graphql } from 'gatsby';
 import ContentfulRichTech from '../../components/contentful-rich-text'
 import Layout from '../../components/layout'
 import Video from '../../components/video'
+import Seo from '../../components/seo'
 import {GatsbyImage, getImage} from 'gatsby-plugin-image'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
@@ -64,5 +65,7 @@ query ($id: String) {
   }
   
 `;
+
+export const Head = ({data}) => <Seo title={data.contentfulProject.title}/>
 
 export default Project;

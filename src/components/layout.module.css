@@ -1,4 +1,4 @@
-.site-title {
+.logo {
     font-size: 1rem;
     color: black;
     font-weight: 700;
@@ -8,13 +8,14 @@
 .container {
     margin: auto;
     max-width: 500px;
-    font-family: sans-serif;
+    font-family: "commissioner", sans-serif;
     z-index: 3;
 }
 
 .heading {
-    color: rebeccapurple;
+    color: black;
     z-index: 3;
+    font-family: "commissioner", sans-serif;
 }
 
 .nav-links {
@@ -32,4 +33,10 @@
 
 .nav-link-text {
     color: black
+}
+
+.cover {
+    object-fit: cover;
+    min-height: 50vh;
+    max-height: 50vw;
 }

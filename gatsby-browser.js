@@ -1,1 +1,1 @@
-import "@fontsource/open-sans" // Defaults to weight 400 with all styles included.
+import "@fontsource/commissioner/300.css" // Defaults to weight 400 with all styles included.

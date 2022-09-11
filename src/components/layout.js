@@ -5,7 +5,8 @@ heading,
 navLinks,
 navLinkItem,
 navLinkText,
-siteTitle} from './layout.module.css'
+logo} from './layout.module.css'
+import Seo from '../components/seo'
 
 const Layout = ({ pageTitle, children }) => {
 
@@ -30,7 +31,8 @@ const Layout = ({ pageTitle, children }) => {
       `)
   return (
     <div>
-        <header className={siteTitle}>{data.site.siteMetadata.title}</header>
+      <Seo/>
+        <header className={logo}>{data.site.siteMetadata.title}</header>
       <nav>
         <ul className={navLinks}>
           <li className={navLinkItem}><Link to="/" className={navLinkText}>Home</Link></li>

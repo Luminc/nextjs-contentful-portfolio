@@ -7,26 +7,27 @@ import Carousel from 'react-bootstrap/Carousel';
 import Container from 'react-bootstrap/Container'
 import { graphql, Link} from 'gatsby'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {carouselStyle, cover} from '../components/layout.module.css'
 
 const IndexPage = ({data}) => {
   return (
     <Layout pageTitle="Jeroen Kortekaas">
     <Container fluid>
-    {/* <Carousel pause={false} indicators={false} className="mb-5">
+    <Carousel pause={false} indicators={false} className={carouselStyle}>
     {data.allContentfulHeroImages.edges.map(image => (
         <Carousel.Item>
           <Link 
-          to={`/projects/departure-arrival-return`}
+          to={`/projects/${image.node.slug}`}
           >
             <GatsbyImage
-              className="d-block w-100"
+              className={cover}
               image={image.node.image.gatsbyImageData}
-              alt=""
+              alt={image.node.description}
             />
             </Link>
         </Carousel.Item>
       ))}
-    </Carousel> */}
+    </Carousel>
     <Container>
       <p>I'm building a gatsby website</p>
       <p>Some text</p>
