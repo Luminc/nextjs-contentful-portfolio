@@ -5,7 +5,7 @@ heading,
 navLinks,
 navLinkItem,
 navLinkText,
-logo} from './layout.module.css'
+linkStyling} from './layout.module.css'
 import Seo from '../components/seo'
 import Container from 'react-bootstrap/Container'
 import './app.css'
@@ -36,18 +36,19 @@ const Layout = ({ pageTitle, children }) => {
       <Seo/>
       <Container fluid>
       <nav>
-        <ul className="d-flex">
-          <h1 className="display-4"><Link to ="/">{data.site.siteMetadata.title}</Link></h1> 
-        </ul>
-        <ul className={navLinks}>
-          <li className={navLinkItem}><Link to="/" className={navLinkText}>Home</Link></li>
-          <li className={navLinkItem}><Link to="/projects"  className={navLinkText}>Projects</Link></li>
+        <div className="d-flex justify-content-between align-items-end nav-links">
+          <h1 className="logo"><Link to ="/" className={linkStyling}>{data.site.siteMetadata.title}</Link></h1> 
+      <div className={navLinks}>
+          <div className={navLinkItem}><Link to="/" className={navLinkText}>Home</Link></div>
+          <div className={navLinkItem}><Link to="/projects"  className={navLinkText}>Projects</Link></div>
           {data.allContentfulPage.edges.map(item => (
-              <li key={item.node.slug} className={navLinkItem}>
+              <div key={item.node.slug} className={navLinkItem}>
                 <Link to={`/${item.node.slug}`} className={navLinkText}>{item.node.title}</Link>
-              </li>
+              </div>
+              
             ))}
-        </ul>
+          </div>
+        </div>
       </nav>
       <main>
         

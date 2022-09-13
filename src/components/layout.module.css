@@ -1,14 +1,20 @@
+:root {
+    --bs-font-sans-serif: "commissioner", sans-serif !important;
+    --bs-body-font-family: "commissioner", sans-serif !important;
+}
+
 .logo {
     font-size: 1rem;
     color: black;
     font-weight: 700;
     margin: 3rem 0;
+
 }
 
 .container {
     margin: auto;
     max-width: 500px;
-    font-family: "commissioner", sans-serif;
+    font-family: var(--bs-font-sans-serif);
     z-index: 3;
 }
 
@@ -19,22 +25,37 @@
 }
 
 .nav-links {
+    font-family: "commissioner", sans-serif;
     display: flex;
     list-style: none;
     padding-left: 0;
     z-index: 3;
+    text-decoration: none;
 }
 
 .nav-link-item {
     padding-right: 2rem;
     z-index: 5;
+    text-decoration: none;
 
 }
 
 .nav-link-text {
+    font-family: "commissioner", sans-serif;
+    font-size: 1.5em;
+    color: black;
+    text-decoration: none;
+    
+}
+
+.link-styling {
+    text-decoration: none;
     color: black
 }
 
+.link-styling:hover {
+    color: red;
+}
 .cover {
     object-fit: cover;
     min-height: 50vh;
