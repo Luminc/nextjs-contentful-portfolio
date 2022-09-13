@@ -12,14 +12,22 @@
     --primary-hover: rgb(231, 213, 44);
     --primary-light: rgba(0, 0, 0, 0.7);
 }
+html, body {
+    overflow-x: hidden;
+}
 
 html {
     font-size: 18px;
     line-height: 1.5;
 }
 
+body {
+    position: relative
+}
+
 h1 {
     font-weight: 300! important;
+    padding: 0!important;
 }
 
 a:hover { 

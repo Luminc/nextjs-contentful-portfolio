@@ -25,10 +25,15 @@ const Project = ({ data }) => {
       />
       </Col>
       
-      <Col>     
-      {data.contentfulProject.content && <section><ContentfulRichTech richText={data.contentfulProject.content} /></section>}
+        
+      {data.contentfulProject.content &&
+      <Col>
+      <section>
+        <ContentfulRichTech richText={data.contentfulProject.content} />
+      </section>
+      </Col>}
       
-      </Col>
+      
       </Row>
       </Container>
       <Container>
