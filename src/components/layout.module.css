@@ -1,13 +1,7 @@
-:root {
-    --bs-font-sans-serif: "commissioner", sans-serif !important;
-    --bs-body-font-family: "commissioner", sans-serif !important;
-}
-
 .logo {
-    font-size: 1rem;
+    font-size: 2rem;
     color: black;
-    font-weight: 700;
-    margin: 3rem 0;
+    font-weight: 300;
 
 }
 

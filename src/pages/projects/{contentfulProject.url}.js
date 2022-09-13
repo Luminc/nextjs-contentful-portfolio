@@ -14,6 +14,9 @@ const Project = ({ data }) => {
   return (
     <Layout pageTitle={data.title}>
       <Container fluid="xxl">
+      <h1 className="text-align-center">{data.contentfulProject.title}</h1>
+      <p>{data.contentfulProject.medium}</p>
+      <p>{data.contentfulProject.year}</p>
       <Row>
         <Col md>
             <GatsbyImage
@@ -22,10 +25,9 @@ const Project = ({ data }) => {
       />
       </Col>
       
-      <Col>      <h1>{data.contentfulProject.title}</h1>
-      <p>{data.contentfulProject.medium}</p>
-      <p>{data.contentfulProject.year}</p>
-      <section><ContentfulRichTech richText={data.contentfulProject.content} /></section>
+      <Col>     
+      {data.contentfulProject.content && <section><ContentfulRichTech richText={data.contentfulProject.content} /></section>}
+      
       </Col>
       </Row>
       </Container>

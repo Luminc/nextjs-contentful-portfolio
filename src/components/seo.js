@@ -1,5 +1,6 @@
 import  * as React from 'react'
 import { graphql, useStaticQuery} from 'gatsby'
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const Seo = ({title}) => {
 const data = useStaticQuery(graphql`query{

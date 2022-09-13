@@ -6,12 +6,11 @@ import { GatsbyImage } from 'gatsby-plugin-image'
 import Carousel from 'react-bootstrap/Carousel';
 import Container from 'react-bootstrap/Container'
 import { graphql, Link} from 'gatsby'
-import 'bootstrap/dist/css/bootstrap.min.css';
 import {carouselStyle, cover} from '../components/layout.module.css'
 
 const IndexPage = ({data}) => {
   return (
-    <Layout pageTitle="Jeroen Kortekaas">
+    <Layout>
     
     <Carousel pause={false} indicators={false} className={carouselStyle}>
     {data.allContentfulHeroImages.edges.map(image => (

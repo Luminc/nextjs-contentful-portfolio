@@ -1,3 +1,211 @@
-html {
-    font-family: "commissioner", sans-serif !important; 
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    --bg: transparent;
+    --color: rgb(255, 255, 255);
+    --font: "Commissioner", sans-serif;
+    --bs-font-sans-serif: "commissioner", sans-serif !important;
+    --bs-body-font-family: "commissioner", sans-serif !important;
+    --primary-dark: #000000;
+    --primary-bg: #ffffff;
+    --primary-hover: rgb(231, 213, 44);
+    --primary-light: rgba(0, 0, 0, 0.7);
 }
+
+html {
+    font-size: 18px;
+    line-height: 1.5;
+}
+
+h1 {
+    font-weight: 300! important;
+}
+
+a:hover { 
+    color: var(--primary-hover);
+}
+
+a:active {
+    color: red!important;
+}
+
+.hero-flight {
+    position: relative;
+    margin-top: 0vh;
+    width: 100%;
+    height: 300px;
+    background-image: url("../assets/background.png");
+    animation: barberpole 15s linear infinite;
+    background-repeat: repeat;
+    background-size: 900px;
+    background-color: rgb(231, 213, 44);
+    margin-bottom: 0;
+  }
+
+/* SM */
+@media screen and (max-width: 576px) {
+    .card-columns {
+      -webkit-column-count: 1;
+      -moz-column-count: 1;
+      column-count: 1;
+    }
+  
+    .card-columns .card {
+      margin-bottom: 1rem;
+    }
+  
+    .display-3 {
+      font-size: 2.5rem;
+    }
+  
+    h1 {
+      font-size: 2.5rem;
+    }
+  }
+
+  
+  .card {
+    border: none;
+    background-color: transparent;
+  }
+  
+  .card:hover .card-img {
+    opacity: 0.9;
+    transition: opacity 0.2s ease;
+  }
+  .card-img-overlay {
+    opacity: 0;
+    transition: all 0.3s ease;
+  }
+  .card-img-overlay:hover {
+    opacity: 1;
+    color: white;
+    background: rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
+  }
+  
+  .card-body a {
+    color: var(--primary-dark) !important;
+  }
+  
+  .card-body:hover a {
+    text-decoration: none;
+    color: var(--primary-hover);
+  }
+  .card-body p.overline {
+    font: 400 12px "Roboto", sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 0.2rem;
+  }
+  
+  a:hover .overline {
+    text-decoration: none;
+  }
+  
+  .overline:hover {
+    text-decoration: none;
+  }
+  
+  h5.card-title {
+    font: 400 24px var(--font);
+  }
+  
+  .card:hover .card-body p.overline + h5 {
+    color: var(--primary-hover);
+  }
+  
+  .card:hover .card-body .card-title {
+    text-decoration: underline;
+  }
+  
+  a:hover .overline {
+    text-decoration: none;
+  }
+  
+  /* MD */
+  @media screen and (min-width: 576px) {
+    .card-columns {
+      -webkit-column-count: 2;
+      -moz-column-count: 2;
+      column-count: 2;
+      column-gap: 3rem;
+    }
+  
+    .card-columns .card {
+      margin-bottom: 5rem;
+    }
+  }
+  /* LG */
+  @media screen and (min-width: 992px) {
+    .card-columns {
+      column-gap: 10rem;
+    }
+    .wp-block-video video{
+      width:70%;
+    }
+  }
+  
+  /* XL */
+  @media screen and (max-width: 1200px) {
+    .wp-block-video video{
+      width:50%;
+    }
+  }
+  
+  .nav-active {
+    transform: translateX(0%);
+  }
+  
+  @keyframes navLinkFade {
+    from {
+      opacity: 0;
+      transform: translateX(50px);
+      color: white;
+    }
+  
+    to {
+      opacity: 1;
+      transform: translateX(0px);
+      color: var(--primary-dark);
+    }
+  }
+  
+  .floating:hover {
+    animation-name: floating;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+  }
+  
+  @keyframes floating {
+    from {
+      transform: translate(0, 0px);
+    }
+    65% {
+      transform: translate(0, 15px);
+    }
+    to {
+      transform: translate(0, -0px);
+    }
+  }
+  @keyframes barberpole {
+    0% {
+      background-position: 0 0;
+    }
+    /* translate to height of background image */
+    100% {
+      background-position: 900px 900px;
+    }
+  }
+  
+  @-webkit-keyframes barberpole {
+    0% {
+      background-position: 0 0;
+    }
+    /* translate to height of background image */
+    100% {
+      background-position: 900px 900px;
+    }
+  }

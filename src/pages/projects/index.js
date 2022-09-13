@@ -21,6 +21,39 @@ const ProjectPage = ({data}) => {
             </article>)
             )}
       </Container>
+      <Container>
+    <h1>Projects</h1>
+    <div className="card-columns">
+      {data.allContentfulProject.nodes.map(project => (
+        <div className="card">
+          <Link
+            to={`/projects/${project.url}`}
+            key={project.id}
+          >
+            <GatsbyImage
+              className="card-img"
+              image={
+                project.featuredImage.gatsbyImageData
+              }
+              alt={project.title}
+            />
+          </Link>
+
+          <div className="card-body">
+            <Link
+              to={`/project/${project.url}`}
+              key={project.id}
+            >
+              <p className="overline">
+                {project.medium} — {project.year}
+              </p>
+              <h5 className="card-title">{project.title}</h5>
+            </Link>
+          </div>
+        </div>
+      ))}
+    </div>
+    </Container>
     </Layout>
   )
 }
