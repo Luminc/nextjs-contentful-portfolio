@@ -7,6 +7,8 @@ navLinkItem,
 navLinkText,
 logo} from './layout.module.css'
 import Seo from '../components/seo'
+import Container from 'react-bootstrap/Container'
+import './app.css'
 
 const Layout = ({ pageTitle, children }) => {
 
@@ -32,8 +34,11 @@ const Layout = ({ pageTitle, children }) => {
   return (
     <div>
       <Seo/>
-        <header className={logo}>{data.site.siteMetadata.title}</header>
+      <Container fluid>
       <nav>
+        <ul className="d-flex">
+          <h1 className="display-4"><Link to ="/">{data.site.siteMetadata.title}</Link></h1> 
+        </ul>
         <ul className={navLinks}>
           <li className={navLinkItem}><Link to="/" className={navLinkText}>Home</Link></li>
           <li className={navLinkItem}><Link to="/projects"  className={navLinkText}>Projects</Link></li>
@@ -50,6 +55,7 @@ const Layout = ({ pageTitle, children }) => {
         {children}
         
       </main>
+      </Container>  
     </div>
   )
 }

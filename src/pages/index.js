@@ -12,7 +12,7 @@ import {carouselStyle, cover} from '../components/layout.module.css'
 const IndexPage = ({data}) => {
   return (
     <Layout pageTitle="Jeroen Kortekaas">
-    <Container fluid>
+    
     <Carousel pause={false} indicators={false} className={carouselStyle}>
     {data.allContentfulHeroImages.edges.map(image => (
         <Carousel.Item>
@@ -28,13 +28,7 @@ const IndexPage = ({data}) => {
         </Carousel.Item>
       ))}
     </Carousel>
-    <Container>
-      <p>I'm building a gatsby website</p>
-      <p>Some text</p>
-      </Container>
-    
 
-    </Container>
 
     </Layout>
   )
@@ -43,9 +37,11 @@ export const data = graphql`query{
   allContentfulHeroImages {
     edges {
       node {
+        slug
         image {
           gatsbyImageData
           description
+          
         }
       }
     }
