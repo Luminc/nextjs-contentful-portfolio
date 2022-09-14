@@ -5,17 +5,27 @@ require("dotenv").config({
 module.exports = {
   siteMetadata: {
     title: `Jeroen Kortekaas`,
+    author: `Jeroen Kortekaas`,
     description: `The artist portfolio website of Jeroen Kortekaas`,
-    siteUrl: `https://www.jeroenkortekaas.com`
+    siteUrl: `https://www.jeroenkortekaas.com`,
+    eMail: `studio@jeroenkortekaas.com`,
+    insta: `https://www.instagram.com/bluecarabiner`,
   },
   plugins: [
 "gatsby-plugin-image",
 { resolve: "gatsby-plugin-sharp",
 options: {
   defaults: {
-    placeholder: 'blurred'
+    placeholder: 'blurred',
+    
   }
 }
+},
+{
+  resolve: `gatsby-plugin-manifest`,
+  options: {
+    icon: `src/assets/ico.svg`,
+  },
 },
 "gatsby-plugin-mdx",
 "gatsby-transformer-sharp",

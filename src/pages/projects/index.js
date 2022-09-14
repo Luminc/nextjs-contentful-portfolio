@@ -8,7 +8,7 @@ import Container from 'react-bootstrap/Container'
 const ProjectPage = ({data}) => {
   return (
     <Layout pageTitle="Projects">
-      <Container>
+      {/* <Container>
         {
             data.allContentfulProject.nodes.map(node => (
             <article key={node.id}>
@@ -20,9 +20,8 @@ const ProjectPage = ({data}) => {
                 <p>{node.medium}</p>
             </article>)
             )}
-      </Container>
+      </Container> */}
       <Container>
-    <h1>Projects</h1>
     <div className="card-columns">
       {data.allContentfulProject.nodes.map(project => (
         <div className="card">
@@ -41,7 +40,7 @@ const ProjectPage = ({data}) => {
 
           <div className="card-body">
             <Link
-              to={`/project/${project.url}`}
+              to={`/projects/${project.url}`}
               key={project.id}
             >
               <p className="overline">

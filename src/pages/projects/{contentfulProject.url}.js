@@ -36,11 +36,14 @@ const Project = ({ data }) => {
       
       </Row>
       </Container>
-      <Container>
-      { data.contentfulProject.video && 
+      
+      { data.contentfulProject.video && /*Checks is data exists and renders:*/
       <Video Src={data.contentfulProject.video.url} Title={data.contentfulProject.video.title}/>}
+      <Container>
       {data.contentfulProject.documentation.map(image => (
+        <div className="image-wrapper">
               <GatsbyImage alt={image.id} image={image.gatsbyImageData} key={image.id}/>
+              </div>
             ))}
       </Container>
     </Layout>

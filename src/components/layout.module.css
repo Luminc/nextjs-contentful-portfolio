@@ -5,21 +5,12 @@
     padding: 0;
 }
 
-.container {
-    margin: auto;
-    max-width: 500px;
-    font-family: var(--bs-font-sans-serif);
-    z-index: 3;
-}
-
 .heading {
     color: black;
     z-index: 3;
-    font-family: "commissioner", sans-serif;
 }
 
 .nav-links {
-    font-family: "commissioner", sans-serif;
     display: flex;
     list-style: none;
     padding-left: 0;
@@ -35,7 +26,6 @@
 }
 
 .nav-link-text {
-    font-family: "commissioner", sans-serif;
     font-size: 1em;
     color: black;
     text-decoration: none;
