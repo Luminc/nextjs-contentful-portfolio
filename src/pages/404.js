@@ -1,8 +1,8 @@
 import * as React from 'react'
 import Layout from '../components/layout'
-import Container from 'react-bootstrap/container'
-import Row from 'react-bootstrap/Row'
+import Container from 'react-bootstrap/Container'
 import Col from 'react-bootstrap/Col'
+import Row from 'react-bootstrap/Row'
 
 const NotFoundPage = () => {
   return (
