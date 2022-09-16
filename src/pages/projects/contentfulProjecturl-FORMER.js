@@ -1,5 +1,5 @@
 import React from 'react';
-import { graphql, navigate } from 'gatsby';
+import { graphql, navigate, Link } from 'gatsby';
 import ContentfulRichTech from '../../components/contentful-rich-text'
 import Layout from '../../components/layout'
 import Video from '../../components/video'
@@ -8,13 +8,15 @@ import {GatsbyImage, getImage} from 'gatsby-plugin-image'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-const Project = ({ data }) => {
+const Project = ({ data, pageContext }) => {
   const image = getImage(data.contentfulProject.featuredImage.gatsbyImageData)
+  const { next } = pageContext
+  const { prev } = pageContext
   return (
     <Layout pageTitle={data.title}>
 
       <Container fluid="xxl">
-      <button onClick={() => navigate(-1)} classname="shape-pill">
+      <button onClick={() => navigate(-1)} className="shape-pill h4">
       Go Back
     </button>
     <p className="text-center project-subtitle pt-5">{data.contentfulProject.year}</p>
@@ -53,6 +55,25 @@ const Project = ({ data }) => {
               <GatsbyImage alt={image.id} image={image.gatsbyImageData} key={image.id}/>
               </div>
             ))}
+
+<div className="contextual-buttons d-flex justify-content-between" style={{ marginTop: "8rem"}}>
+        {prev ? (
+          <Link to={`/project/${prev.slug}`}>
+            <span className="mr-3 text-decoration-none">&lt;</span>
+            {prev.title}
+          </Link>
+        ) : (
+          <p className="text-mute">&lt;</p>
+        )}
+        {next ? (
+          <Link to={`/project/${next.slug}`} className="text-right">
+            {next.title}
+            <span className="ml-3 text-decoration-none">&gt;</span>
+          </Link>
+        ) : (
+          <span className="text-muted text-right">&gt;</span>
+        )}
+      </div>
       </Container>
     </Layout>
   );

@@ -4,6 +4,7 @@ import Seo from "../components/seo";
 import "./app.css";
 import { Footer } from "../components/footer";
 import { Header } from "../components/header";
+import Container from "react-bootstrap/Container";
 
 const Layout = ({ pageTitle, children }) => {
   return (
@@ -12,9 +13,12 @@ const Layout = ({ pageTitle, children }) => {
       <Header />
       <div className="flex-wrapper">
         <main>
-          <h1>{pageTitle}</h1>
+          <Container>
+            {pageTitle && <h1 className="display-1 py-5">{pageTitle}</h1>}
+          </Container>
           {children}
         </main>
+
         <Footer />
       </div>
     </div>

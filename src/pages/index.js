@@ -12,7 +12,7 @@ const IndexPage = ({data}) => {
   return (
     <Layout>
     
-    {/* <Carousel pause={false} indicators={false} className={carouselStyle}>
+    <Carousel pause={false} indicators={false} className={carouselStyle}>
     {data.allContentfulHeroImages.edges.map(image => (
         <Carousel.Item>
           <Link 
@@ -26,10 +26,10 @@ const IndexPage = ({data}) => {
             </Link>
         </Carousel.Item>
       ))}
-    </Carousel> */}
-    <div className='spin-hero-container'>
+    </Carousel>
+    {/* <div className='spin-hero-container'>
       <GatsbyImage image={data.contentfulAssets.asset.gatsbyImageData} className="spin-hero"/>
-    </div>
+    </div> */}
 
     </Layout>
   )
@@ -54,12 +54,12 @@ export const data = graphql`query{
       gatsbyImageData
     }
   }
-  contentfulAssets(asset: {contentful_id: {eq: "5BZN5iWD6tSuLxswwYLsvb"}}) {
-    id
-    asset {
-      gatsbyImageData
-    }
+contentfulAssets(asset: {contentful_id: {eq: "5BZN5iWD6tSuLxswwYLsvb"}}) {
+  id
+  asset {
+    gatsbyImageData
   }
+}
 }`
 
 export const Head = () => <Seo title="Home page"/>
