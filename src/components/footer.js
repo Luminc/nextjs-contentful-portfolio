@@ -18,7 +18,7 @@ export const Footer = () => {
     <Col className="d-none d-md-block" s={5} md={6} xl={9}> 
     <div className="hero-flight"></div>
     </Col>
-    <Col className="footer" style={{mingHeight: "300px"}}>
+    <Col className="footer" style={{minHeight: "300px"}}>
   <a
     href={`mailto:${data.site.siteMetadata.eMail}`}
     target="_top"

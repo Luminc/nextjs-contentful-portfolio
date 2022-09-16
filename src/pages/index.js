@@ -2,7 +2,7 @@
 import * as React from 'react'
 import Layout from '../components/layout'
 import Seo from '../components/seo'
-import { GatsbyImage } from 'gatsby-plugin-image'
+import { GatsbyImage, StaticImage } from 'gatsby-plugin-image'
 import Carousel from 'react-bootstrap/Carousel';
 import Container from 'react-bootstrap/Container'
 import { graphql, Link} from 'gatsby'
@@ -12,7 +12,7 @@ const IndexPage = ({data}) => {
   return (
     <Layout>
     
-    <Carousel pause={false} indicators={false} className={carouselStyle}>
+    {/* <Carousel pause={false} indicators={false} className={carouselStyle}>
     {data.allContentfulHeroImages.edges.map(image => (
         <Carousel.Item>
           <Link 
@@ -26,13 +26,17 @@ const IndexPage = ({data}) => {
             </Link>
         </Carousel.Item>
       ))}
-    </Carousel>
-
+    </Carousel> */}
+    <div className='spin-hero-container'>
+      <GatsbyImage image={data.contentfulAssets.asset.gatsbyImageData} className="spin-hero"/>
+    </div>
 
     </Layout>
   )
 }
 export const data = graphql`query{
+  
+
   allContentfulHeroImages {
     edges {
       node {
@@ -47,6 +51,12 @@ export const data = graphql`query{
   }
   contentfulHeroImages {
     image {
+      gatsbyImageData
+    }
+  }
+  contentfulAssets(asset: {contentful_id: {eq: "5BZN5iWD6tSuLxswwYLsvb"}}) {
+    id
+    asset {
       gatsbyImageData
     }
   }

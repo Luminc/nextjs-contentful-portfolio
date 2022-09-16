@@ -1,5 +1,5 @@
 import React from 'react';
-import { graphql } from 'gatsby';
+import { graphql, navigate } from 'gatsby';
 import ContentfulRichTech from '../../components/contentful-rich-text'
 import Layout from '../../components/layout'
 import Video from '../../components/video'
@@ -8,20 +8,24 @@ import {GatsbyImage, getImage} from 'gatsby-plugin-image'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-
 const Project = ({ data }) => {
   const image = getImage(data.contentfulProject.featuredImage.gatsbyImageData)
   return (
     <Layout pageTitle={data.title}>
+
       <Container fluid="xxl">
-      <h1 className="text-align-center">{data.contentfulProject.title}</h1>
-      <p>{data.contentfulProject.medium}</p>
-      <p>{data.contentfulProject.year}</p>
+      <button onClick={() => navigate(-1)} classname="shape-pill">
+      Go Back
+    </button>
+    <p className="text-center project-subtitle pt-5">{data.contentfulProject.year}</p>
+      <h1 className="text-center display-1 py-2">{data.contentfulProject.title}</h1>
+      <p className="text-center project-subtitle pb-5">{data.contentfulProject.medium}</p>
+      
       <Row>
-        <Col md>
+        <Col md className="pb-5">
             <GatsbyImage
       image={image}
-      alt="Placeholder"
+      alt={data.contentfulProject.featuredImage.description}
       />
       </Col>
       
@@ -30,7 +34,11 @@ const Project = ({ data }) => {
       <Col>
       <section>
         <ContentfulRichTech richText={data.contentfulProject.content} />
+        {data.contentfulProject.materials && 
+        <><p className='materials-caption'>Materials:</p>
+        <p className='materials-caption'>{data.contentfulProject.materials}</p></>}
       </section>
+      
       </Col>}
       
       
@@ -61,12 +69,14 @@ query ($id: String) {
       medium
       url
       year
+      materials
       documentation {
         id
         gatsbyImageData(width:1000)
       }
       featuredImage{
         gatsbyImageData(layout:FULL_WIDTH)
+        description
       }
       content {
         raw
