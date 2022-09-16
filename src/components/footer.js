@@ -1,6 +1,8 @@
 import React from 'react'
 import { graphql, useStaticQuery} from 'gatsby'
-import {Container, Col, Row} from 'react-bootstrap'
+import Container from 'react-bootstrap/Container'
+import Col from 'react-bootstrap/Col'
+import Row from 'react-bootstrap/Row'
 
 export const Footer = () => {
     const data = useStaticQuery(graphql`
