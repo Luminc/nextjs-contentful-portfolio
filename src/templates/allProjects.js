@@ -135,7 +135,7 @@ export const data = graphql`
       materials
       documentation {
         id
-        gatsbyImageData(width: 1000)
+        gatsbyImageData(width: 1500)
       }
       featuredImage {
         gatsbyImageData(layout: FULL_WIDTH)

@@ -11,6 +11,7 @@
     --primary-bg: #ffffff;
     --primary-hover: rgb(231, 213, 44);
     --primary-light: rgba(0, 0, 0, 0.7);
+    --bs-border-color: rgba(0, 0, 0, 0.9);
 }
 html, body {
     overflow-x: hidden;
@@ -58,7 +59,7 @@ body .copyright {
 }
 
 h1 {
-    font-weight: 300! important;
+    font-weight: 200! important;
     padding: 0!important;
 }
 
@@ -211,7 +212,10 @@ button.shape-pill {
     text-transform: uppercase;
   }
 
-  
+  .border-top {
+    border-top: black;
+    border-width: 2px!important;
+  }
   .flex-wrapper {
     display: flex;
     min-height: 100vh;
@@ -262,6 +266,11 @@ button.shape-pill {
     .wp-block-video video{
       width:70%;
     }
+
+.row-cols-sm-4>* {
+  flex: 0 0 auto;
+  width: 12.5%;
+}
   }
   
   /* XL */

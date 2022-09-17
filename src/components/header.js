@@ -1,12 +1,6 @@
 import React from "react";
 import { Link, useStaticQuery, graphql } from "gatsby";
-import {
-  heading,
-  navLinks,
-  navLinkItem,
-  navLinkText,
-  linkStyling,
-} from "./layout.module.css";
+import { navLinks, navLinkItem } from "./layout.module.css";
 
 export const Header = () => {
   const data = useStaticQuery(graphql`
@@ -27,7 +21,7 @@ export const Header = () => {
         }
       }
     }
-  `)
+  `);
   return (
     <nav>
       <div className="d-flex justify-content-between align-items-end nav-links py-2 px-4">
@@ -50,5 +44,5 @@ export const Header = () => {
         </div>
       </div>
     </nav>
-  )
-}
+  );
+};

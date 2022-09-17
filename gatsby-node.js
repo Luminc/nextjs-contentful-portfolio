@@ -13,7 +13,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 
   const result = await graphql(`
     {
-      allContentfulProject {
+      allContentfulProject(sort: { fields: year, order: DESC }) {
         edges {
           node {
             url
