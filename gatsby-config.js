@@ -37,6 +37,13 @@ module.exports = {
         accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
       },
     },
+    {
+      resolve: `gatsby-source-instagram-all`,
+      options: {
+        access_token: process.env.INSTAGRAM_ACCESS_TOKEN,
+      },
+    },
+
     // {
     //   resolve: `gatsby-source-filesystem`,
     //   options: {
