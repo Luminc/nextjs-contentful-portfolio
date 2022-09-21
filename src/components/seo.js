@@ -1,24 +1,19 @@
-import  * as React from 'react'
-import { graphql, useStaticQuery} from 'gatsby'
+import * as React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useSiteMetadata } from "../hooks/use-site-metadata";
 
-const Seo = ({title}) => {
-const data = useStaticQuery(graphql`query{
-site {
-  siteMetadata {
-    title 
-  }
-  }
-}`)
+const Seo = ({ title }) => {
+  const { siteMetadata } = useSiteMetadata();
 
+  return (
+    <>
+      <title>
+        {title} — {siteMetadata.title}
+      </title>
+      <meta name="description" content={siteMetadata.title} />
+      <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    </>
+  );
+};
 
-return (
-  <>
-    <title>{title} — {data.site.siteMetadata.title}</title>
-    <meta name="description" content={data.site.siteMetadata.title} />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  </>
-)
-}
-
-export default Seo
+export default Seo;

@@ -1,25 +1,49 @@
 * {
-    margin: 0px;
-    padding: 0px;
-    box-sizing: border-box;
-    --bg: transparent;
-    --color: rgb(255, 255, 255);
-    --font: "Commissioner", sans-serif;
-    --bs-font-sans-serif: "commissioner", sans-serif !important;
-    --bs-body-font-family: "commissioner", sans-serif !important;
-    --primary-dark: #000000;
-    --primary-bg: #ffffff;
-    --primary-hover: rgb(231, 213, 44);
-    --primary-light: rgba(0, 0, 0, 0.7);
-    --bs-border-color: rgba(0, 0, 0, 0.9);
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  --bg: transparent;
+  --color: rgb(255, 255, 255);
+  --font: "Commissioner", sans-serif;
+  --bs-font-sans-serif: "commissioner", sans-serif !important;
+  --bs-body-font-family: "commissioner", sans-serif !important;
+  --primary-dark: #000000;
+  --primary-bg: #ffffff;
+  --primary-hover: rgb(231, 213, 44);
+  --primary-light: rgba(0, 0, 0, 0.7);
+  --bs-border-color: rgba(0, 0, 0, 0.9);
 }
-html, body {
-    overflow-x: hidden;
+html,
+body {
+  overflow-x: hidden;
+}
+
+.bg-radial-gradient {
+  background-color: hsla(147, 0%, 100%, 1);
+  background-image: radial-gradient(
+      at 40% 20%,
+      hsla(129, 0%, 100%, 0.31) 0px,
+      transparent 50%
+    ),
+    radial-gradient(at 80% 0%, hsla(69, 76%, 81%, 1) 0px, transparent 50%),
+    radial-gradient(at 0% 50%, hsla(83, 89%, 62%, 1) 0px, transparent 50%),
+    radial-gradient(at 88% 84%, hsla(126, 73%, 52%, 0.77) 0px, transparent 50%);
+}
+
+.bg-radial-gradient-purple {
+  background-color: hsla(219, 0%, 100%, 1);
+  background-image: radial-gradient(
+      at 92% 2%,
+      hsla(30, 91%, 56%, 1) 0px,
+      transparent 50%
+    ),
+    radial-gradient(at 5% 2%, hsla(350, 69%, 52%, 1) 0px, transparent 50%),
+    radial-gradient(at 51% 3%, hsla(277, 89%, 62%, 1) 0px, transparent 50%);
 }
 
 html {
-    font-size: 12px;
-    line-height: 1.5;
+  font-size: 12px;
+  line-height: 1.5;
 }
 
 h1 .display-1:hover {
@@ -28,7 +52,7 @@ h1 .display-1:hover {
 }
 
 p.project-subtitle {
-    font-size: 1.5rem;
+  font-size: 1.5rem;
 }
 
 p.leading-loose {
@@ -36,21 +60,20 @@ p.leading-loose {
   padding: 10px;
 }
 
-p.materials-caption-title{
+p.materials-caption-title {
   padding-bottom: 0;
 }
 p.materials-caption {
-  font-size :1rem;
+  font-size: 1rem;
   padding-left: 10px;
 }
-
 
 nav {
   font-size: 2rem;
 }
 
 body {
-    position: relative
+  position: relative;
 }
 
 body .copyright {
@@ -59,46 +82,46 @@ body .copyright {
 }
 
 h1 {
-    font-weight: 200! important;
-    padding: 0!important;
+  font-weight: 200 !important;
+  padding: 0 !important;
 }
 
 a {
-  text-decoration:none;
+  text-decoration: none;
   color: black;
 }
 
-a:hover { 
-    color: var(--primary-hover);
+a:hover {
+  color: var(--primary-hover);
 }
 
 a:active {
-    color: red!important;
+  color: red !important;
 }
 
-button { 
+button {
   padding: 0.5em 0.835em;
-
 }
 
 button.shape-pill {
-  border-radius: 300px!important;
+  border-radius: 300px !important;
 }
 
-.hero-flight {
-    position: relative;
-    margin-top: 0vh;
-    width: 100%;
-    height: 300px;
-    background-image: url("../assets/background.png");
-    animation: barberpole 15s linear infinite;
-    background-repeat: repeat;
-    background-size: 900px;
-    background-color: rgb(231, 213, 44);
-    margin-bottom: 0;
-  }
+.carousel-caption {
+  position: relative;
+  color: black;
+  text-align: right;
+  padding-top: 1.5rem;
+  padding-right: 1.5rem;
+  right: 0;
+  left: 0;
+}
 
-
+div.video {
+  width: auto;
+  max-width: 1500px;
+  margin: auto;
+}
 .image-wrapper {
   padding-top: 1rem;
 }
@@ -106,124 +129,134 @@ button.shape-pill {
 .gatsby-image-wrapper {
   width: 100%;
 }
-  
-  .card {
-    border: none;
-    background-color: transparent;
-  }
-  
-  .card:hover .card-img {
-    opacity: 0.9;
-    transition: opacity 0.2s ease;
-  }
-  .card-img-overlay {
-    opacity: 0;
-    transition: all 0.3s ease;
-  }
-  .card-img-overlay:hover {
-    opacity: 1;
-    color: white;
-    background: rgba(0, 0, 0, 0.4);
-    transition: all 0.3s ease;
-  }
-  
-  .card-body a {
-    color: var(--primary-dark) !important;
-  }
-  
-  .card-body:hover a {
-    text-decoration: none;
-    color: var(--primary-hover);
-  }
-  .card-body p.overline {
-    font: 400 12px "Roboto", sans-serif;
-    text-decoration: none;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    margin-bottom: 0.2rem;
-  }
-  
-  a:hover .overline {
-    text-decoration: none;
-  }
-  
-  .overline:hover {
-    text-decoration: none;
-  }
-  
- .card-body .card-title {
-    font-size: 2rem;
-  }
-  
-  .card:hover .card-body p.overline + h5 {
-    color: var(--primary-hover);
-  }
-  
-  .card:hover .card-body .card-title {
-    text-decoration: underline;
-  }
-  
-  a:hover .overline {
-    text-decoration: none;
-  }
 
-  a .underline {
-    text-decoration: underline!important;
-  }
-  
-  .text-align-center {
-    text-align: center;
-  }
+.card {
+  border: none;
+  background-color: transparent;
+}
 
-  .text-right {
-    text-align: end!important;
-  }
+.card:hover .card-img {
+  opacity: 0.9;
+  transition: opacity 0.2s ease;
+}
+.card-img-overlay {
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+.card-img-overlay:hover {
+  opacity: 1;
+  color: white;
+  background: rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+}
 
-  .pagination-card {
-    max-width: 300px;
-  }
+.leading-loose a {
+  text-decoration: underline;
+}
 
-  .grayed {
-    color:rgba(0, 0, 0, 0.4);
-  }
+.card-body a {
+  color: var(--primary-dark) !important;
+}
 
-  .footer {
-    width: 100%;
-    padding: 30px;
-    min-width: 300px;
-    min-height: 200px;
-    /* height: 300px; */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    margin: auto 0;
-  }
-  
-  .footer-links {
-    min-width: 400px;
-    height: 100px;
-    display: flex;
-    flex-grow: 1;
-    align-items: center;
-    justify-content: space-between;
-    text-decoration: none;
-    list-style: none;
-    text-transform: uppercase;
-  }
+.card-body:hover a {
+  text-decoration: none;
+  color: var(--primary-hover);
+}
+.card-body p.overline {
+  font: 400 12px "Roboto", sans-serif;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 0.2rem;
+}
 
-  .border-top {
-    border-top: black;
-    border-width: 2px!important;
-  }
-  .flex-wrapper {
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;
-    justify-content: space-between;
-  }
+a:hover .overline {
+  text-decoration: none;
+}
 
-  /* SM */
+.no-wrap {
+  white-space: nowrap;
+}
+.contain {
+  object-fit: contain !important;
+}
+.overline:hover {
+  text-decoration: none;
+}
+
+.card-body .card-title {
+  font-size: 2rem;
+}
+
+.card:hover .card-body p.overline + h5 {
+  color: var(--primary-hover);
+}
+
+.card:hover .card-body .card-title {
+  text-decoration: underline;
+}
+
+a:hover .overline {
+  text-decoration: none;
+}
+
+a .underline {
+  text-decoration: underline !important;
+}
+
+.text-align-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: end !important;
+}
+
+.pagination-card {
+  max-width: 300px;
+}
+
+.grayed {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.footer {
+  width: 100%;
+  padding: 30px;
+  min-width: 300px;
+  min-height: 200px;
+  /* height: 300px; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  margin: auto 0;
+}
+
+.footer-links {
+  min-width: 400px;
+  height: 100px;
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: space-between;
+  text-decoration: none;
+  list-style: none;
+  text-transform: uppercase;
+}
+
+.border-top {
+  border-top: black;
+  border-width: 2px !important;
+}
+.flex-wrapper {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* SM */
 @media screen and (max-width: 576px) {
   .card-columns {
     -webkit-column-count: 1;
@@ -245,117 +278,139 @@ button.shape-pill {
   }
 }
 
-  /* MD */
-  @media screen and (min-width: 576px) {
-    .card-columns {
-      -webkit-column-count: 2;
-      -moz-column-count: 2;
-      column-count: 2;
-      column-gap: 3rem;
-    }
-  
-    .card-columns .card {
-      margin-bottom: 5rem;
-    }
+/* MD */
+@media screen and (min-width: 576px) {
+  .card-columns {
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+    column-count: 2;
+    column-gap: 3rem;
   }
-  /* LG */
-  @media screen and (min-width: 992px) {
-    .card-columns {
-      column-gap: 10rem;
-    }
-    .wp-block-video video{
-      width:70%;
-    }
 
-.row-cols-sm-4>* {
-  flex: 0 0 auto;
-  width: 12.5%;
+  .card-columns .card {
+    margin-bottom: 5rem;
+  }
 }
+/* LG */
+@media screen and (min-width: 992px) {
+  .card-columns {
+    column-gap: 10rem;
   }
-  
-  /* XL */
-  @media screen and (max-width: 1200px) {
-    .wp-block-video video{
-      width:50%;
-    }
-  }
-  
-  .nav-active {
-    transform: translateX(0%);
-  }
-  
-  @keyframes navLinkFade {
-    from {
-      opacity: 0;
-      transform: translateX(50px);
-      color: white;
-    }
-  
-    to {
-      opacity: 1;
-      transform: translateX(0px);
-      color: var(--primary-dark);
-    }
-  }
-  
-  .floating:hover {
-    animation-name: floating;
-    animation-duration: 2s;
-    animation-iteration-count: infinite;
-    animation-timing-function: ease-in-out;
-  }
-  
-  @keyframes floating {
-    from {
-      transform: translate(0, 0px);
-    }
-    65% {
-      transform: translate(0, 15px);
-    }
-    to {
-      transform: translate(0, -0px);
-    }
-  }
-  @keyframes barberpole {
-    0% {
-      background-position: 0 0;
-    }
-    /* translate to height of background image */
-    100% {
-      background-position: 900px 900px;
-    }
-  }
-  
-  @-webkit-keyframes barberpole {
-    0% {
-      background-position: 0 0;
-    }
-    /* translate to height of background image */
-    100% {
-      background-position: 900px 900px;
-    }
+  .wp-block-video video {
+    width: 70%;
   }
 
-  .spin-hero-container {
-    position: absolute;
-    object-fit: cover;
-    overflow:hidden;
-    height: 60vh;
-    width: 100%;
-    background: rgb(213, 255, 130)
+  .row-cols-sm-4 > * {
+    flex: 0 0 auto;
+    width: 12.5%;
   }
-  .spin-hero {
-    position: relative;
-    left: 25%;
-    bottom: 25%;
-    width: 120vh;
-    -webkit-animation:spin 15s linear infinite;
-    -moz-animation:spin 15s linear infinite;
-    animation:spin 15s linear infinite;
-    z-index: 1;
-    overflow:hidden;
 }
 
-@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
-@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
-@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+/* XL */
+@media screen and (max-width: 1200px) {
+  .wp-block-video video {
+    width: 50%;
+  }
+}
+
+.nav-active {
+  transform: translateX(0%);
+}
+
+@keyframes navLinkFade {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+    color: white;
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0px);
+    color: var(--primary-dark);
+  }
+}
+
+.floating:hover {
+  animation-name: floating;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes floating {
+  from {
+    transform: translate(0, 0px);
+  }
+  65% {
+    transform: translate(0, 15px);
+  }
+  to {
+    transform: translate(0, -0px);
+  }
+}
+@keyframes barberpole {
+  0% {
+    background-position: 0 0;
+  }
+  /* translate to height of background image */
+  100% {
+    background-position: 900px 900px;
+  }
+}
+
+@-webkit-keyframes barberpole {
+  0% {
+    background-position: 0 0;
+  }
+  /* translate to height of background image */
+  100% {
+    background-position: 900px 900px;
+  }
+}
+
+.spin-hero-container {
+  object-fit: cover;
+  overflow: hidden;
+  width: 100%;
+}
+.spin-hero {
+  display: block;
+  margin: auto;
+  max-width: 60vh;
+  position: relative;
+  /* left: 50%;
+  bottom: 25%;
+  width: 100%; */
+  -webkit-animation: spin 15s linear infinite;
+  -moz-animation: spin 15s linear infinite;
+  animation: spin 15s linear infinite;
+  z-index: 1;
+}
+
+.hero-flight {
+  position: relative;
+  background-image: url("../assets/background.png");
+  animation: barberpole 15s linear infinite;
+  background-repeat: repeat;
+  background-size: 900px;
+  background-color: rgb(231, 213, 44);
+  margin-bottom: 0;
+}
+
+@-moz-keyframes spin {
+  100% {
+    -moz-transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}

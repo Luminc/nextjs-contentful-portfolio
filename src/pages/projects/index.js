@@ -4,24 +4,10 @@ import Layout from "../../components/layout";
 import { GatsbyImage } from "gatsby-plugin-image";
 import Seo from "../../components/seo";
 import Container from "react-bootstrap/Container";
-import Instagram from "../../components/instagram";
 
 const ProjectPage = ({ data }) => {
   return (
     <Layout pageTitle="Projects">
-      {/* <Container>
-        {
-            data.allContentfulProject.nodes.map(node => (
-            <article key={node.id}>
-              <Link to={`/projects/${node.url}`}>
-              <GatsbyImage image={node.featuredImage.gatsbyImageData} alt=""/>
-              </Link>
-                <h2><Link to={`/projects/${node.url}`}>{node.title}</Link></h2>
-                <p>{node.year}</p>
-                <p>{node.medium}</p>
-            </article>)
-            )}
-      </Container> */}
       <Container>
         <div className="card-columns">
           {data.allContentfulProject.nodes.map(project => (
@@ -45,7 +31,6 @@ const ProjectPage = ({ data }) => {
             </div>
           ))}
         </div>
-        <Instagram />
       </Container>
     </Layout>
   );

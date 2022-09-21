@@ -1,5 +1,5 @@
 import React from "react";
-import { graphql, navigate, Link } from "gatsby";
+import { graphql, Link } from "gatsby";
 import ContentfulRichTech from "../components/contentful-rich-text";
 import Layout from "../components/layout";
 import Video from "../components/video";
@@ -16,9 +16,9 @@ const Project = ({ data, pageContext }) => {
   return (
     <Layout pageTitle={data.title}>
       <Container fluid="xxl">
-        <button onClick={() => navigate(-1)} className="shape-pill h4">
+        {/* <button onClick={() => navigate(-1)} className="shape-pill h4">
           Go Back
-        </button>
+        </button> */}
         <p className="text-center project-subtitle pt-5">
           {data.contentfulProject.year}
         </p>
@@ -28,32 +28,32 @@ const Project = ({ data, pageContext }) => {
         <p className="text-center project-subtitle pb-5">
           {data.contentfulProject.medium}
         </p>
-
-        <Row>
-          <Col md className="pb-5">
-            <GatsbyImage
-              image={image}
-              alt={data.contentfulProject.featuredImage.description}
-            />
-          </Col>
-
-          {data.contentfulProject.content && (
-            <Col>
-              <section>
-                <ContentfulRichTech richText={data.contentfulProject.content} />
-                {data.contentfulProject.materials && (
-                  <>
-                    <p className="materials-caption">Materials:</p>
-                    <p className="materials-caption">
-                      {data.contentfulProject.materials}
-                    </p>
-                  </>
-                )}
-              </section>
-            </Col>
-          )}
-        </Row>
       </Container>
+      <Row>
+        <Col md className="pb-5 featured-project-image">
+          <GatsbyImage
+            image={image}
+            alt={data.contentfulProject.featuredImage.description}
+            className="featured-project-image contain"
+          />
+        </Col>
+
+        {data.contentfulProject.content && (
+          <Col>
+            <Container>
+              <ContentfulRichTech richText={data.contentfulProject.content} />
+              {data.contentfulProject.materials && (
+                <>
+                  <p className="materials-caption">Materials:</p>
+                  <p className="materials-caption">
+                    {data.contentfulProject.materials}
+                  </p>
+                </>
+              )}
+            </Container>
+          </Col>
+        )}
+      </Row>
 
       {data.contentfulProject.video /*Checks is data exists and renders:*/ && (
         <Video
@@ -61,6 +61,7 @@ const Project = ({ data, pageContext }) => {
           Title={data.contentfulProject.video.title}
         />
       )}
+
       <Container>
         {data.contentfulProject.documentation.map(image => (
           <div className="image-wrapper">
@@ -91,7 +92,7 @@ const Project = ({ data, pageContext }) => {
             </div>
           ) : (
             <div>
-              <p className="card-title grayed">&lt;</p>
+              <p className="card-title h2 grayed p2">&lt;</p>
             </div>
           )}
           {next ? (
@@ -101,6 +102,8 @@ const Project = ({ data, pageContext }) => {
                   className="card-img"
                   image={next.featuredImage.gatsbyImageData}
                   alt={next.title}
+                  width={600}
+                  height={600}
                 />
               </Link>
 
@@ -117,6 +120,23 @@ const Project = ({ data, pageContext }) => {
           )}
         </div>
       </Container>
+      {console.log(data.contentfulProject.sections)}
+      {data.contentfulProject.sections.map(
+        section =>
+          section.id && (
+            <section key={section.id}>
+              {section.id}
+              {section.__typename == "ContentfulSectionImageWide" && (
+                <GatsbyImage
+                  image={section.image.gatsbyImageData}
+                  alt={section.alt}
+                />
+              )}
+              {section.__typename == "ContentfulDocumentation" &&
+                section.images.map(image => <p>{image.filename}</p>)}
+            </section>
+          )
+      )}
     </Layout>
   );
 };
@@ -132,6 +152,23 @@ export const data = graphql`
       medium
       url
       year
+      sections {
+        __typename
+        ... on ContentfulSectionImageWide {
+          id
+          image {
+            gatsbyImageData
+          }
+          title
+          alt
+        }
+        ... on ContentfulDocumentation {
+          id
+          images {
+            filename
+          }
+        }
+      }
       materials
       documentation {
         id
