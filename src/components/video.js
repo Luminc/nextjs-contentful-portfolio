@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-const Video = ({ Src, Title, ...props }) => (
+const Video = ({ Src, Title, muted, ...props }) => (
   <div className="video">
     <VideoBg
       src={Src}
@@ -9,7 +9,7 @@ const Video = ({ Src, Title, ...props }) => (
       loop
       playsInline
       className="video-internal"
-      controls
+      muted={muted}
     />
   </div>
 );

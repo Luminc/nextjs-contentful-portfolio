@@ -130,6 +130,10 @@ div.video {
   width: 100%;
 }
 
+.container-sm {
+  max-width: 900px;
+}
+
 .card {
   border: none;
   background-color: transparent;

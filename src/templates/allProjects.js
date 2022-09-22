@@ -8,7 +8,7 @@ import { GatsbyImage, getImage } from "gatsby-plugin-image";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-
+import Carousel from "react-bootstrap/Carousel";
 const Project = ({ data, pageContext }) => {
   const image = getImage(data.contentfulProject.featuredImage.gatsbyImageData);
   const { next } = pageContext;
@@ -54,7 +54,58 @@ const Project = ({ data, pageContext }) => {
           </Col>
         )}
       </Row>
-
+      {console.log(data.contentfulProject.sections)}
+      {data.contentfulProject.sections &&
+        data.contentfulProject.sections.map(
+          section =>
+            section.id && (
+              <section key={section.id}>
+                {section.__typename === "ContentfulSectionImageWide" && (
+                  <GatsbyImage
+                    image={section.image.gatsbyImageData}
+                    alt={section.alt}
+                  />
+                )}
+                {section.__typename === "ContentfulDocumentation" &&
+                  section.images.map(image => (
+                    <Container xxl>
+                      <div className="image-wrapper">
+                        <GatsbyImage
+                          image={image.gatsbyImageData}
+                          alt={image.filename}
+                          key={image.id}
+                        />
+                      </div>
+                    </Container>
+                  ))}
+                {section.__typename === "ContentfulContainerVideo" && (
+                  <Container fluid="sm">
+                    <Video Src={section.video.url} muted={true} />
+                  </Container>
+                )}
+                {section.__typename === "ContentfulCarousel" && (
+                  <Container fluid="sm">
+                    <Carousel
+                      fade
+                      interval={section.interval}
+                      pause={section.pause}
+                      controls={section.controls}
+                      indicators={section.indicators}
+                    >
+                      {section.images.map(image => (
+                        <Carousel.Item key={image.filename}>
+                          <GatsbyImage
+                            image={image.gatsbyImageData}
+                            alt={section.title}
+                          />
+                        </Carousel.Item>
+                      ))}
+                    </Carousel>
+                  </Container>
+                )}
+              </section>
+            )
+        )}
       {data.contentfulProject.video /*Checks is data exists and renders:*/ && (
         <Video
           Src={data.contentfulProject.video.url}
@@ -120,23 +171,6 @@ const Project = ({ data, pageContext }) => {
           )}
         </div>
       </Container>
-      {console.log(data.contentfulProject.sections)}
-      {data.contentfulProject.sections.map(
-        section =>
-          section.id && (
-            <section key={section.id}>
-              {section.id}
-              {section.__typename == "ContentfulSectionImageWide" && (
-                <GatsbyImage
-                  image={section.image.gatsbyImageData}
-                  alt={section.alt}
-                />
-              )}
-              {section.__typename == "ContentfulDocumentation" &&
-                section.images.map(image => <p>{image.filename}</p>)}
-            </section>
-          )
-      )}
     </Layout>
   );
 };
@@ -158,6 +192,7 @@ export const data = graphql`
           id
           image {
             gatsbyImageData
+            id
           }
           title
           alt
@@ -166,6 +201,27 @@ export const data = graphql`
           id
           images {
             filename
+            gatsbyImageData
+            id
+          }
+        }
+        ... on ContentfulCarousel {
+          id
+          images {
+            filename
+            gatsbyImageData
+          }
+          controls
+          indicators
+          interval
+          pause
+          title
+        }
+        ... on ContentfulContainerVideo {
+          id
+          video {
+            url
+            title
           }
         }
       }
