@@ -26,21 +26,29 @@ export const EmailForm = () => {
         ...state,
       }),
     })
-      .then(() => alert("Success! Thank you."))
+      .then(() => navigate(form.getAttribute("action")))
       .catch(error => alert(error));
   };
   return (
     <Container size="xl" className="hero-flight mt-5">
       <Container className="text-center container-email-form pt-5">
+        <h2 className="h2 pb-3">Subscribe below to receive updates</h2>
         <form
           name="contact"
-          method="POST"
+          method="post"
+          action="/thanks/"
           data-netlify="true"
           data-netlify-honeypot="bot-field"
           className="my-auto py-5"
           onSubmit={handleSubmit}
         >
-          <h2 className="h2 pb-3">Subscribe below to receive updates</h2>
+          <input type="hidden" name="form-name" value="contact" />
+          <p hidden>
+            <label>
+              Don’t fill this out:{" "}
+              <input name="bot-field" onChange={handleChange} />
+            </label>
+          </p>
           <p className="pb-3">
             <input
               type="email"
