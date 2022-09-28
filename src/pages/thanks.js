@@ -20,6 +20,7 @@ const NotFoundPage = () => {
               onClick={() => {
                 navigate("/");
               }}
+              className="shape-pill large-button"
             >
               Back to index
             </button>

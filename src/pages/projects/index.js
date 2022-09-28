@@ -38,9 +38,10 @@ const ProjectPage = ({ data }) => {
 
 export const query = graphql`
   query MyQuery {
-    allContentfulProject(sort: { fields: year, order: DESC }) {
+    allContentfulProject(sort: { fields: date, order: DESC }) {
       nodes {
         title
+        date
         url
         year
         medium

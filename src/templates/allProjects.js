@@ -20,15 +20,21 @@ const Project = ({ data, pageContext }) => {
   const image = getImage(data.contentfulProject.featuredImage.gatsbyImageData);
   const { next } = pageContext;
   const { prev } = pageContext;
+
+  /*Configuration for the date of the project*/
+  const options = { year: "numeric", month: "long", day: "numeric" };
+  const d2 = new Date(data.contentfulProject.date).toLocaleDateString(
+    "en-GB",
+    options
+  );
+  const d3 = new Date(data.contentfulProject.date).getFullYear();
   return (
     <Layout pageTitle={data.title}>
       <Container fluid="xxl">
         {/* <button onClick={() => navigate(-1)} className="shape-pill h4">
           Go Back
         </button> */}
-        <p className="text-center project-subtitle pt-5">
-          {data.contentfulProject.year}
-        </p>
+        <p className="text-center project-subtitle pt-5">{d3}</p>
         <h1 className="text-center display-1 py-2">
           {data.contentfulProject.title}
         </h1>
@@ -36,7 +42,7 @@ const Project = ({ data, pageContext }) => {
           {data.contentfulProject.medium}
         </p>
       </Container>
-      <Row>
+      <Row className="mb-5">
         <Col md className="pb-5 featured-project-image">
           <GatsbyImage
             image={image}
@@ -57,6 +63,8 @@ const Project = ({ data, pageContext }) => {
                   </p>
                 </>
               )}
+              <p className="materials-caption">Date:</p>
+              <p className="materials-caption">{d2}</p>
             </Container>
           </Col>
         )}
@@ -192,7 +200,7 @@ export const data = graphql`
       title
       medium
       url
-      year
+      date
       sections {
         __typename
         ... on ContentfulDocumentation {

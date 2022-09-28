@@ -8,8 +8,8 @@ const Video = ({ Src, Title, muted, ...props }) => (
       autoPlay
       loop
       playsInline
+      controls
       className="video-internal"
-      muted={muted}
     />
   </div>
 );

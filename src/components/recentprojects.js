@@ -7,10 +7,11 @@ import Button from "react-bootstrap/Button";
 export const RecentProjects = () => {
   const data = useStaticQuery(graphql`
     query {
-      allContentfulProject(sort: { fields: year, order: DESC }, limit: 3) {
+      allContentfulProject(sort: { fields: date, order: DESC }, limit: 3) {
         nodes {
           title
           url
+          date
           year
           medium
           id
