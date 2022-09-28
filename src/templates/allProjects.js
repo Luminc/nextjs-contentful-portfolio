@@ -9,6 +9,13 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Carousel from "react-bootstrap/Carousel";
+import styled from "styled-components";
+
+const LinkImageHover = styled.div`
+  color:blue &:hover {
+    color: red;
+  }
+`;
 const Project = ({ data, pageContext }) => {
   const image = getImage(data.contentfulProject.featuredImage.gatsbyImageData);
   const { next } = pageContext;
@@ -114,15 +121,16 @@ const Project = ({ data, pageContext }) => {
       )}
 
       <Container>
-        {data.contentfulProject.documentation.map(image => (
-          <div className="image-wrapper">
-            <GatsbyImage
-              alt={image.id}
-              image={image.gatsbyImageData}
-              key={image.id}
-            />
-          </div>
-        ))}
+        {data.contentfulProject.documentation &&
+          data.contentfulProject.documentation.map(image => (
+            <div className="image-wrapper">
+              <GatsbyImage
+                alt={image.id}
+                image={image.gatsbyImageData}
+                key={image.id}
+              />
+            </div>
+          ))}
         <div className="card-group align-items-end justify-content-between py-5 mt-4">
           {prev ? (
             <div className="card pagination-card">
@@ -158,11 +166,11 @@ const Project = ({ data, pageContext }) => {
                 />
               </Link>
 
-              <div className="card-body">
+              <LinkImageHover className="card-body">
                 <Link to={`/projects/${next.url}`} key={next.id}>
                   <h5 className="card-title text-right">{next.title} &gt;</h5>
                 </Link>
-              </div>
+              </LinkImageHover>
             </div>
           ) : (
             <div>
@@ -188,6 +196,14 @@ export const data = graphql`
       year
       sections {
         __typename
+        ... on ContentfulDocumentation {
+          id
+          images {
+            filename
+            gatsbyImageData
+            id
+          }
+        }
         ... on ContentfulSectionImageWide {
           id
           image {
@@ -196,14 +212,6 @@ export const data = graphql`
           }
           title
           alt
-        }
-        ... on ContentfulDocumentation {
-          id
-          images {
-            filename
-            gatsbyImageData
-            id
-          }
         }
         ... on ContentfulCarousel {
           id

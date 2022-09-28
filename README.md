@@ -4,8 +4,14 @@
   </a>
 </p>
 <h1 align="center">
-  Gatsby minimal starter
+  Gatsby Contentful Portfolio
 </h1>
+
+## About
+
+This is an artist portfolio website using Gatsby. Data is sourced from contentful and the website uses conditional rendering in order for project pages to have components that can be added and ordered directly from the CMS. This means the owner has more control over how project pages are rendered, allowing more creative freedom. I create content model using Contentful's reference features to make pages composeable directly from the CMS. In the front-end, we check which content types are present and render them to the page.
+
+In the finished state, each component on the website will be able to be controlled and changed based on the users desires. New pages can also be added without any changes to the front-end.
 
 ## 🚀 Quick start
 
