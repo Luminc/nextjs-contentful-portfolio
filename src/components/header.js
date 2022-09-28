@@ -23,7 +23,7 @@ export const Header = () => {
     }
   `);
   return (
-    <nav className="mb-5">
+    <nav className="mb-1">
       <div className="d-flex justify-content-between align-items-end nav-links py-2 px-4">
         <Link to="/" className="h2 p-0">
           {data.site.siteMetadata.title}

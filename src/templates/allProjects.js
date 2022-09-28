@@ -61,7 +61,6 @@ const Project = ({ data, pageContext }) => {
           </Col>
         )}
       </Row>
-      {console.log(data.contentfulProject.sections)}
       {data.contentfulProject.sections &&
         data.contentfulProject.sections.map(
           section =>

@@ -7,12 +7,13 @@ import { GatsbyImage, getImage } from "gatsby-plugin-image";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
+import { EmailForm } from "../components/emailform";
 
 const Page = ({ data }) => {
   const image = getImage(data.contentfulPage.image.gatsbyImageData);
   return (
     <Layout pageTitle={data.contentfulPage.title}>
-      <Container fluid>
+      <Container size="xl">
         <Row>
           <Col md>
             {" "}
@@ -27,6 +28,7 @@ const Page = ({ data }) => {
             </p>
           </Col>
         </Row>
+        <EmailForm />
       </Container>
     </Layout>
   );

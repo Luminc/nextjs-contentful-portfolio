@@ -20,7 +20,7 @@ const Layout = ({ pageTitle, children, className }) => {
           {children}
         </main>
 
-        <Footer />
+        <Footer className="mt-auto" />
       </div>
     </div>
   );

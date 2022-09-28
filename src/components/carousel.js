@@ -27,8 +27,9 @@ const CarouselLanding = () => {
       pause={false}
       indicators={false}
       controls={false}
-      className="mb-5"
+      className="mb-5 m-auto"
       fade
+      style={{ width: "97vw", maxWidth: "1500px" }}
     >
       {data.allContentfulHeroImages.edges.map(image => (
         <Carousel.Item key={image.node.id}>

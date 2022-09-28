@@ -10,6 +10,7 @@
   --primary-dark: #000000;
   --primary-bg: #ffffff;
   --primary-hover: rgb(231, 213, 44);
+  --secondary-hover: rgb(255, 0, 0);
   --primary-light: rgba(0, 0, 0, 0.7);
   --bs-border-color: rgba(0, 0, 0, 0.9);
 }
@@ -81,6 +82,23 @@ body .copyright {
   color: var(--primary-light);
 }
 
+.nav-bottom {
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--primary-light);
+  font-size: 1.25rem;
+}
+
+.input {
+  text-align: center;
+  font-size: 1.3rem;
+  width: 400px;
+  height: 50px;
+}
+
+.container-email-form {
+  min-height: 300px;
+}
+
 h1 {
   font-weight: 200 !important;
   padding: 0 !important;
@@ -101,10 +119,24 @@ a:active {
 
 button {
   padding: 0.5em 0.835em;
+  border-width: 1px;
 }
 
 button.shape-pill {
   border-radius: 300px !important;
+}
+
+button.large-button {
+  font-size: 16px;
+}
+
+button.large-button:hover {
+  background-color: var(--primary-hover);
+  border-color: rgba(0, 0, 0, 0);
+}
+
+button.large-button:active {
+  background-color: var(--secondary-hover);
 }
 
 .carousel-caption {
@@ -137,6 +169,9 @@ div.video {
 .card {
   border: none;
   background-color: transparent;
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
 }
 
 .card:hover .card-img {
@@ -291,6 +326,13 @@ a .underline {
     column-gap: 3rem;
   }
 
+  .card-columns-3 {
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3;
+    column-gap: 2rem;
+  }
+
   .card-columns .card {
     margin-bottom: 5rem;
   }
@@ -394,6 +436,8 @@ a .underline {
 
 .hero-flight {
   position: relative;
+  width: 100%;
+  height: 100%;
   background-image: url("../assets/background.png");
   animation: barberpole 15s linear infinite;
   background-repeat: repeat;

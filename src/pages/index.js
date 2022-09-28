@@ -3,7 +3,9 @@ import * as React from "react";
 import Layout from "../components/layout";
 import Seo from "../components/seo";
 import CarouselLanding from "../components/carousel";
-
+import { RecentProjects } from "../components/recentprojects";
+import Instagram from "../components/instagram";
+import { EmailForm } from "../components/emailform";
 const IndexPage = ({ data }) => {
   return (
     <Layout>
@@ -14,6 +16,9 @@ const IndexPage = ({ data }) => {
           className="spin-hero"
         />
       </div> */}
+      <RecentProjects />
+      <Instagram />
+      <EmailForm />
     </Layout>
   );
 };
