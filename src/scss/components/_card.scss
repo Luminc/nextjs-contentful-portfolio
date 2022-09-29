@@ -1,0 +1,97 @@
+.card {
+  border: none;
+  background-color: transparent;
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+
+  .card-body {
+    .overline {
+      font: 400 12px "Roboto", sans-serif;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 0.2rem;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+    .card-title {
+      font-size: 2rem;
+    }
+  }
+
+  &:hover {
+    .card-img {
+      opacity: 0.9;
+      transition: opacity 0.2s ease;
+      &-overlay {
+        opacity: 0;
+        transition: all 0.3s ease;
+      }
+      &-overlay:hover {
+        opacity: 1;
+        color: white;
+        background: rgba(0, 0, 0, 0.4);
+        transition: all 0.3s ease;
+      }
+    }
+
+    .card-body {
+      a {
+        color: var(--primary-dark) !important;
+      }
+      .overline + .card-title {
+        color: $color-primary;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .card-columns {
+    -webkit-column-count: 1;
+    -moz-column-count: 1;
+    column-count: 1;
+    & .card {
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+/* MD */
+@media screen and (min-width: 576px) {
+  .card-columns {
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+    column-count: 2;
+    column-gap: 3rem;
+  }
+
+  .card-columns-3 {
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3;
+    column-gap: 2rem;
+  }
+
+  .card-columns .card {
+    margin-bottom: 5rem;
+  }
+}
+
+/* LG */
+@media screen and (min-width: 992px) {
+  .card-columns {
+    column-gap: 10rem;
+  }
+
+  .row-cols-sm-4 > * {
+    flex: 0 0 auto;
+    width: 12.5%;
+  }
+}
+
+/* XL */
+@media screen and (min-width: 1200px) {
+}
