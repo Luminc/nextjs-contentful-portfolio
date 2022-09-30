@@ -54,5 +54,11 @@ export const query = graphql`
   }
 `;
 
-export const Head = () => <Seo title="Projects" />;
+export const Head = () => (
+  <Seo
+    title="Landing page"
+    description="Jeroen Kortekaas, (1991, NL) is an interdisciplinary artist working with a practice that shifts between psychogeography, research, drawing, sculpture, and assemblage."
+    keywords="Artist, Sculpture, Network, Animism, Agency "
+  />
+);
 export default ProjectPage;

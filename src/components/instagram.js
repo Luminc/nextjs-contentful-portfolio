@@ -14,7 +14,7 @@ const Instagram = () => {
             caption
             localImage {
               childImageSharp {
-                gatsbyImageData
+                gatsbyImageData(width: 200)
               }
             }
             permalink

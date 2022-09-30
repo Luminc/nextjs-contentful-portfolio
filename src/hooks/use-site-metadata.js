@@ -10,7 +10,9 @@ export const useSiteMetadata = () => {
             eMail
             author
             insta
+            instaHandle
             siteUrl
+            twitterUsername
           }
         }
       }

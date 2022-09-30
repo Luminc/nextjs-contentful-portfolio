@@ -1,7 +1,7 @@
 const HtmlAttributes = {
-  lang: "en"
-}
+  lang: "en",
+};
 
 exports.onRenderBody = ({ setHtmlAttributes }) => {
-    setHtmlAttributes(HtmlAttributes)
-  }
+  setHtmlAttributes(HtmlAttributes);
+};
