@@ -30,7 +30,7 @@ export const EmailForm = () => {
       .catch(error => alert(error));
   };
   return (
-    <Container size="xl" className="hero-flight mt-5">
+    <Container size="xl" className=" mt-5">
       <Container className="text-center container-email-form pt-5">
         <h2 className="h2 pb-3">Subscribe below to receive updates</h2>
         <form
@@ -59,7 +59,7 @@ export const EmailForm = () => {
             />
           </p>
           <p>
-            <button type="submit" className="shape-pill large-button">
+            <button type="submit" className="shape-pill large-button hot">
               Send
             </button>
           </p>

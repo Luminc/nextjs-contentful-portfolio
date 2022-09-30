@@ -1,6 +1,5 @@
 import React from "react";
 import { Link, useStaticQuery, graphql } from "gatsby";
-import { navLinks, navLinkItem } from "./layout.module.css";
 
 export const Header = () => {
   const data = useStaticQuery(graphql`
@@ -23,25 +22,23 @@ export const Header = () => {
     }
   `);
   return (
-    <nav className="mb-1">
-      <div className="d-flex justify-content-between align-items-end nav-links py-2 px-4">
-        <Link to="/" className="h2 p-0">
-          {data.site.siteMetadata.title}
-        </Link>
-        <div className={navLinks}>
-          <div className={navLinkItem}>
-            <Link to="/projects" className="h2">
-              Projects
+    <nav className="justify-content-between align-items-end nav-links py-2 px-4">
+      <Link to="/" className="brand">
+        {data.site.siteMetadata.title}
+      </Link>
+      <div className="nav-links">
+        <div className="nav-links-item">
+          <Link to="/projects" className="nav-links-text">
+            Projects
+          </Link>
+        </div>
+        {data.allContentfulPage.edges.map(item => (
+          <div key={item.node.slug} className="nav-links-item">
+            <Link to={`/${item.node.slug}`} className="nav-links-text">
+              {item.node.title}
             </Link>
           </div>
-          {data.allContentfulPage.edges.map(item => (
-            <div key={item.node.slug} className={navLinkItem}>
-              <Link to={`/${item.node.slug}`} className="h2">
-                {item.node.title}
-              </Link>
-            </div>
-          ))}
-        </div>
+        ))}
       </div>
     </nav>
   );

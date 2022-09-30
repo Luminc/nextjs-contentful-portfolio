@@ -11,6 +11,9 @@ module.exports = {
     eMail: `studio@jeroenkortekaas.com`,
     insta: `https://www.instagram.com/bluecarabiner`,
     instaHandle: `@bluecarabiner`,
+    github: "https://github.com/luminc/",
+    phone: "+31(0)615245858",
+    facebook: "https://www.facebook.com/jeroen.kortekaas.77",
   },
   plugins: [
     "gatsby-plugin-image",
@@ -29,6 +32,7 @@ module.exports = {
       },
     },
     "gatsby-plugin-mdx",
+    `gatsby-plugin-sass`,
     "gatsby-transformer-sharp",
     {
       resolve: `gatsby-source-contentful`,

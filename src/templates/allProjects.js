@@ -57,14 +57,16 @@ const Project = ({ data, pageContext }) => {
               <ContentfulRichTech richText={data.contentfulProject.content} />
               {data.contentfulProject.materials && (
                 <>
-                  <p className="materials-caption">Materials:</p>
-                  <p className="materials-caption">
+                  <p className="leading-loose caption caption-title">
+                    Materials:
+                  </p>
+                  <p className="leading-loose caption">
                     {data.contentfulProject.materials}
                   </p>
                 </>
               )}
-              <p className="materials-caption">Date:</p>
-              <p className="materials-caption">{d2}</p>
+              <p className="leading-loose caption caption-title">Date:</p>
+              <p className=" leading-loose caption">{d2}</p>
             </Container>
           </Col>
         )}
@@ -93,7 +95,7 @@ const Project = ({ data, pageContext }) => {
                     </Container>
                   ))}
                 {section.__typename === "ContentfulContainerVideo" && (
-                  <Container fluid="sm">
+                  <Container fluid="sm" className="my-5">
                     <Video Src={section.video.url} muted={true} />
                   </Container>
                 )}
@@ -121,10 +123,12 @@ const Project = ({ data, pageContext }) => {
             )
         )}
       {data.contentfulProject.video /*Checks is data exists and renders:*/ && (
-        <Video
-          Src={data.contentfulProject.video.url}
-          Title={data.contentfulProject.video.title}
-        />
+        <Container fluid className="my-5">
+          <Video
+            Src={data.contentfulProject.video.url}
+            Title={data.contentfulProject.video.title}
+          />
+        </Container>
       )}
 
       <Container>
@@ -140,45 +144,55 @@ const Project = ({ data, pageContext }) => {
           ))}
         <div className="card-group align-items-end justify-content-between py-5 mt-4">
           {prev ? (
-            <div className="card pagination-card">
-              <Link to={`/projects/${prev.url}`} key={prev.id}>
-                <GatsbyImage
-                  className="card-img "
-                  image={prev.featuredImage.gatsbyImageData}
-                  alt={prev.title}
-                  objectFit="contain"
-                />
-              </Link>
-
-              <div className="card-body">
+            <>
+              <div className="card pagination-card d-none d-md-block">
                 <Link to={`/projects/${prev.url}`} key={prev.id}>
-                  <h5 className="card-title">&lt; {prev.title} </h5>
+                  <GatsbyImage
+                    className="card-img "
+                    image={prev.featuredImage.gatsbyImageData}
+                    alt={prev.title}
+                    objectFit="contain"
+                  />
                 </Link>
+
+                <div className="card-body">
+                  <Link to={`/projects/${prev.url}`} key={prev.id}>
+                    <h5 className="card-title">&lt; {prev.title} </h5>
+                  </Link>
+                </div>
               </div>
-            </div>
+              <div className="d-md-none">
+                <Link to={`/projects/${prev.url}`}>Previous project &gt;</Link>
+              </div>
+            </>
           ) : (
             <div>
               <p className="card-title h2 grayed p2">&lt;</p>
             </div>
           )}
           {next ? (
-            <div className="card pagination-card">
-              <Link to={`/projects/${next.url}`} key={next.id}>
-                <GatsbyImage
-                  className="card-img"
-                  image={next.featuredImage.gatsbyImageData}
-                  alt={next.title}
-                  width={600}
-                  height={600}
-                />
-              </Link>
-
-              <LinkImageHover className="card-body">
+            <>
+              <div className="card pagination-card d-none d-md-block">
                 <Link to={`/projects/${next.url}`} key={next.id}>
-                  <h5 className="card-title text-right">{next.title} &gt;</h5>
+                  <GatsbyImage
+                    className="card-img"
+                    image={next.featuredImage.gatsbyImageData}
+                    alt={next.title}
+                    width={600}
+                    height={600}
+                  />
                 </Link>
-              </LinkImageHover>
-            </div>
+
+                <LinkImageHover className="card-body">
+                  <Link to={`/projects/${next.url}`} key={next.id}>
+                    <h5 className="card-title text-right">{next.title} &gt;</h5>
+                  </Link>
+                </LinkImageHover>
+              </div>
+              <div className="d-md-none">
+                <Link to={`/projects/${next.url}`}>Next project &gt;</Link>
+              </div>
+            </>
           ) : (
             <div>
               <p className="card-title h2 grayed p-3">&gt;</p>

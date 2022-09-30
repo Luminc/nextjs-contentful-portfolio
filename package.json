@@ -1,8 +1,8 @@
 {
-  "name": "gatsby-tutorial-site",
+  "name": "gatsby-contentful-portfolio",
   "version": "1.0.0",
   "private": true,
-  "description": "gatsby-tutorial-site",
+  "description": "gatsby-contentful-portfolio",
   "author": "Luminc",
   "keywords": [
     "gatsby"
@@ -18,14 +18,13 @@
     "@contentful/rich-text-react-renderer": "^15.12.1",
     "@contentful/rich-text-types": "^15.12.1",
     "@fontsource/commissioner": "^4.5.8",
-    "@fontsource/open-sans": "^4.5.11",
-    "@mdx-js/react": "^2.1.3",
     "bootstrap": "^5.2.1",
     "dotenv": "^16.0.2",
     "gatsby": "^4.22.0",
     "gatsby-plugin-image": "^2.22.0",
     "gatsby-plugin-manifest": "^4.23.0",
     "gatsby-plugin-mdx": "^4.1.0",
+    "gatsby-plugin-sass": "^5.24.0",
     "gatsby-plugin-sharp": "^4.22.0",
     "gatsby-source-contentful": "^7.20.0",
     "gatsby-source-filesystem": "^4.22.0",
@@ -36,6 +35,7 @@
     "react": "^18.1.0",
     "react-bootstrap": "^2.5.0",
     "react-dom": "^18.1.0",
+    "sass": "^1.55.0",
     "styled-components": "^5.3.5"
   }
 }

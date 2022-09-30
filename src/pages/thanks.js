@@ -7,22 +7,26 @@ import { navigate } from "gatsby";
 
 const NotFoundPage = () => {
   return (
-    <Layout>
+    <Layout pageTitle="Thank you!">
       <Container>
         <Row>
           <Col>
-            <div className="hero-flight"></div>
+            <div
+              className="hero-flight"
+              style={{ width: "100%", height: "50vh" }}
+            ></div>
           </Col>
           <Col md className="p-5">
-            <h1 className="display-1">Thank you!</h1>
-            <p className="leading-loose">Yay, you subscribed.</p>
+            <p className="leading-loose">
+              Thanks for subscribing! I will keep you posted.
+            </p>
             <button
               onClick={() => {
                 navigate("/");
               }}
               className="shape-pill large-button"
             >
-              Back to index
+              Return back
             </button>
           </Col>
         </Row>

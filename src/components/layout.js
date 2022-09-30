@@ -1,7 +1,7 @@
 import * as React from "react";
 import Seo from "../components/seo";
 
-import "./app.css";
+import "../scss/app.scss";
 import { Footer } from "../components/footer";
 import { Header } from "../components/header";
 import Container from "react-bootstrap/Container";
