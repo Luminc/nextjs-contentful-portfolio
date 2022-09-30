@@ -42,11 +42,22 @@ const Instagram = () => {
         {data.allInstagramContent.edges.map(post => (
           <Col className="mb-4">
             <div className="card">
-              <a href={post.node.permalink}>
+              <a
+                href={post.node.permalink}
+                aria-label={
+                  post.node.caption
+                    ? post.node.caption
+                    : "See more instagram posts from Jeroen Kortekaas"
+                }
+              >
                 <GatsbyImage
                   className="card-img"
                   image={post.node.localImage.childImageSharp.gatsbyImageData}
-                  alt={post.node.caption && post.node.caption}
+                  alt={
+                    post.node.caption
+                      ? post.node.caption
+                      : "Instagram post from Jeroen Kortekaas"
+                  }
                 />
               </a>
             </div>

@@ -12,3 +12,11 @@ body {
   font-size: $font-size;
   line-height: $line-height;
 }
+
+::-moz-selection {
+  background: $color-primary;
+}
+
+::selection {
+  background: $color-primary;
+}

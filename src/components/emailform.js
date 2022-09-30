@@ -59,7 +59,11 @@ export const EmailForm = () => {
             />
           </p>
           <p>
-            <button type="submit" className="shape-pill large-button hot">
+            <button
+              type="submit"
+              className="shape-pill large-button hot"
+              aria-label="Click here to subscribe!"
+            >
               Send
             </button>
           </p>
