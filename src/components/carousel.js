@@ -37,6 +37,7 @@ const CarouselLanding = () => {
               className="carousel-cover"
               image={image.node.image.gatsbyImageData}
               alt={image.node.description ? image.node.description : ""}
+              loading="eager"
             />
           </Link>
           <Link to={`/projects/${image.node.slug}`}>

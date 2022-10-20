@@ -10,12 +10,6 @@ const IndexPage = () => {
   return (
     <Layout>
       <CarouselLanding />
-      {/* <div className="spin-hero-container">
-        <GatsbyImage
-          image={data.contentfulAssets.asset.gatsbyImageData}
-          className="spin-hero"
-        />
-      </div> */}
       <RecentProjects />
       <Instagram />
       <EmailForm />

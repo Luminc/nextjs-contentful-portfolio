@@ -56,14 +56,14 @@ const Project = ({ data, pageContext }) => {
             <Container>
               <ContentfulRichTech richText={data.contentfulProject.content} />
               {data.contentfulProject.materials && (
-                <>
+                <div>
                   <p className="leading-loose caption caption-title">
                     Materials:
                   </p>
                   <p className="leading-loose caption">
                     {data.contentfulProject.materials}
                   </p>
-                </>
+                </div>
               )}
               <p className="leading-loose caption caption-title">Date:</p>
               <p className=" leading-loose caption">{d2}</p>

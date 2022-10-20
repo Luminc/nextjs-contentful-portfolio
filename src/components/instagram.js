@@ -58,6 +58,7 @@ const Instagram = () => {
                       ? post.node.caption
                       : "Instagram post from Jeroen Kortekaas"
                   }
+                  loading="lazy"
                 />
               </a>
             </div>
