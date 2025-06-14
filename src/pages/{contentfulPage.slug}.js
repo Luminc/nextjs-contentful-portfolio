@@ -23,7 +23,7 @@ const Page = ({ data }) => {
             />
           </Col>
           <Col>
-            <ContentfulRichTech richText={data.contentfulPage.richdescription} />
+            <ContentfulRichTech richText={data.contentfulPage.richDescription} />
           </Col>
         </Row>
         <EmailForm />
@@ -40,7 +40,7 @@ export const data = graphql`
         gatsbyImageData
         description
       }
-      richdescription {
+      richDescription {
         raw
       }
     }
