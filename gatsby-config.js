@@ -1,6 +1,7 @@
 require("dotenv").config({
-  path: `.env.${process.env.NODE_ENV}`,
 });
+
+const INSTAGRAM_ACCESS_TOKEN = process.env.INSTAGRAM_ACCESS_TOKEN;
 
 module.exports = {
   siteMetadata: {
@@ -41,12 +42,6 @@ module.exports = {
       options: {
         spaceId: process.env.CONTENTFUL_SPACE_ID,
         accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
-      },
-    },
-    {
-      resolve: `gatsby-source-instagram-all`,
-      options: {
-        access_token: process.env.INSTAGRAM_ACCESS_TOKEN,
       },
     },
     "gatsby-plugin-sitemap",
