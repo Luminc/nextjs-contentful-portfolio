@@ -1,42 +1,42 @@
 {
-  "name": "gatsby-contentful-portfolio",
+  "name": "nextjs-contentful-portfolio",
   "version": "1.0.0",
   "private": true,
-  "description": "gatsby-contentful-portfolio",
+  "description": "Next.js Contentful Portfolio for Jeroen Kortekaas",
   "author": "Luminc",
   "keywords": [
-    "gatsby"
+    "nextjs",
+    "contentful",
+    "portfolio"
   ],
   "scripts": {
-    "develop": "gatsby develop",
-    "start": "gatsby develop",
-    "build": "gatsby build",
-    "serve": "gatsby serve",
-    "clean": "gatsby clean"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@contentful/rich-text-react-renderer": "^15.12.1",
     "@contentful/rich-text-types": "^15.12.1",
     "@fontsource/commissioner": "^4.5.8",
+    "@sindresorhus/slugify": "^2.2.1",
     "bootstrap": "^5.2.1",
-    "dotenv": "^16.0.2",
-    "gatsby": "^4.22.0",
-    "gatsby-plugin-image": "^2.22.0",
-    "gatsby-plugin-manifest": "^4.23.0",
-    "gatsby-plugin-mdx": "^4.1.0",
-    "gatsby-plugin-sass": "^5.24.0",
-    "gatsby-plugin-sharp": "^4.22.0",
-    "gatsby-plugin-sitemap": "^5.24.0",
-    "gatsby-source-contentful": "^7.20.0",
-    "gatsby-source-filesystem": "^4.22.0",
-    "gatsby-source-instagram-all": "^5.2.1",
-    "gatsby-source-wordpress": "^6.22.0",
-    "gatsby-transformer-sharp": "^4.22.0",
-    "image-focus": "^1.2.1",
+    "contentful": "^10.3.6",
+    "next": "^14.0.0",
     "react": "^18.1.0",
     "react-bootstrap": "^2.5.0",
     "react-dom": "^18.1.0",
     "sass": "^1.55.0",
     "styled-components": "^5.3.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "@types/styled-components": "^5.1.26",
+    "eslint": "^8.0.0",
+    "eslint-config-next": "^14.0.0",
+    "typescript": "^5.0.0"
   }
 }

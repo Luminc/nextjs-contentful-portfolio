@@ -1,0 +1,10 @@
+{
+  "/[slug]/page": "app/[slug]/page.js",
+  "/api/contentful/pages/route": "app/api/contentful/pages/route.js",
+  "/api/contentful/hero-images/route": "app/api/contentful/hero-images/route.js",
+  "/projects/[slug]/page": "app/projects/[slug]/page.js",
+  "/projects/page": "app/projects/page.js",
+  "/api/contentful/projects/route": "app/api/contentful/projects/route.js",
+  "/page": "app/page.js",
+  "/api/contentful/projects/[slug]/route": "app/api/contentful/projects/[slug]/route.js"
+}

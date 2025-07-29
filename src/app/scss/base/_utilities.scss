@@ -1,0 +1,44 @@
+.contain {
+  object-fit: contain !important;
+}
+
+.cover {
+  object-fit: cover !important;
+}
+
+.text-right {
+  text-align: end !important;
+}
+
+.flex-wrapper {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.text-align-center {
+  text-align: center;
+}
+
+div.video {
+  width: auto;
+  max-width: 1500px;
+  margin: auto;
+}
+
+.image-wrapper {
+  padding-top: 1rem;
+}
+
+.gatsby-image-wrapper {
+  width: 100%;
+}
+
+.container-sm {
+  max-width: 900px;
+}
+
+.pagination-card {
+  max-width: 300px;
+}
