@@ -1,0 +1,35 @@
+.nav-bottom {
+  font-family: Arial, Helvetica, sans-serif;
+  color: $primary-light;
+  font-size: 1.25rem;
+}
+
+.copyright {
+  font-family: Roboto, Helvetica, sans-serif;
+  color: $primary-light;
+}
+
+footer {
+  padding-left: 1.5rem;
+  padding-bottom: 2rem;
+}
+
+.footer-links {
+  @include reset-list;
+  padding-top: 2rem;
+  padding-bottom: 0.8rem;
+  &-brand {
+    font-size: calc(1.9rem + 0.9vw);
+    padding-bottom: 1.5rem;
+  }
+}
+
+.contact-links {
+  @include reset-list;
+  padding-bottom: 1.2rem;
+}
+
+.social-links {
+  @include reset-list;
+  padding-bottom: 1.2rem;
+}

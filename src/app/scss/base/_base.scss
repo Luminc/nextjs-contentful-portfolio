@@ -1,0 +1,22 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow-x: hidden;
+  position: relative;
+  font-family: $font;
+  font-size: $font-size;
+  line-height: $line-height;
+}
+
+::-moz-selection {
+  background: $color-primary;
+}
+
+::selection {
+  background: $color-primary;
+}
