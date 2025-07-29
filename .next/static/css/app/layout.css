@@ -56,6 +56,122 @@
   unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
 
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[12].use[3]!./node_modules/@fontsource/commissioner/200.css ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************/
+/* commissioner-cyrillic-ext-200-normal*/
+@font-face {
+  font-family: 'Commissioner';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200;
+  src: url(/_next/static/media/commissioner-cyrillic-ext-200-normal.5ce02b77.woff2) format('woff2'), url(/_next/static/media/commissioner-all-200-normal.ddbe0717.woff) format('woff');
+  unicode-range: U+0460-052F,U+1C80-1C88,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;
+}
+/* commissioner-cyrillic-200-normal*/
+@font-face {
+  font-family: 'Commissioner';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200;
+  src: url(/_next/static/media/commissioner-cyrillic-200-normal.499aeecf.woff2) format('woff2'), url(/_next/static/media/commissioner-all-200-normal.ddbe0717.woff) format('woff');
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+/* commissioner-greek-200-normal*/
+@font-face {
+  font-family: 'Commissioner';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200;
+  src: url(/_next/static/media/commissioner-greek-200-normal.ec822ff0.woff2) format('woff2'), url(/_next/static/media/commissioner-all-200-normal.ddbe0717.woff) format('woff');
+  unicode-range: U+0370-03FF;
+}
+/* commissioner-vietnamese-200-normal*/
+@font-face {
+  font-family: 'Commissioner';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200;
+  src: url(/_next/static/media/commissioner-vietnamese-200-normal.85bfe361.woff2) format('woff2'), url(/_next/static/media/commissioner-all-200-normal.ddbe0717.woff) format('woff');
+  unicode-range: U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+1EA0-1EF9,U+20AB;
+}
+/* commissioner-latin-ext-200-normal*/
+@font-face {
+  font-family: 'Commissioner';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200;
+  src: url(/_next/static/media/commissioner-latin-ext-200-normal.95c75f1e.woff2) format('woff2'), url(/_next/static/media/commissioner-all-200-normal.ddbe0717.woff) format('woff');
+  unicode-range: U+0100-024F,U+0259,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20CF,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+/* commissioner-latin-200-normal*/
+@font-face {
+  font-family: 'Commissioner';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200;
+  src: url(/_next/static/media/commissioner-latin-200-normal.eababaff.woff2) format('woff2'), url(/_next/static/media/commissioner-all-200-normal.ddbe0717.woff) format('woff');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[12].use[3]!./node_modules/@fontsource/commissioner/300.css ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************/
+/* commissioner-cyrillic-ext-300-normal*/
+@font-face {
+  font-family: 'Commissioner';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 300;
+  src: url(/_next/static/media/commissioner-cyrillic-ext-300-normal.7804336d.woff2) format('woff2'), url(/_next/static/media/commissioner-all-300-normal.4d2f3bb0.woff) format('woff');
+  unicode-range: U+0460-052F,U+1C80-1C88,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;
+}
+/* commissioner-cyrillic-300-normal*/
+@font-face {
+  font-family: 'Commissioner';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 300;
+  src: url(/_next/static/media/commissioner-cyrillic-300-normal.b2a74494.woff2) format('woff2'), url(/_next/static/media/commissioner-all-300-normal.4d2f3bb0.woff) format('woff');
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+/* commissioner-greek-300-normal*/
+@font-face {
+  font-family: 'Commissioner';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 300;
+  src: url(/_next/static/media/commissioner-greek-300-normal.9b504a7d.woff2) format('woff2'), url(/_next/static/media/commissioner-all-300-normal.4d2f3bb0.woff) format('woff');
+  unicode-range: U+0370-03FF;
+}
+/* commissioner-vietnamese-300-normal*/
+@font-face {
+  font-family: 'Commissioner';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 300;
+  src: url(/_next/static/media/commissioner-vietnamese-300-normal.e8c1ecf6.woff2) format('woff2'), url(/_next/static/media/commissioner-all-300-normal.4d2f3bb0.woff) format('woff');
+  unicode-range: U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+1EA0-1EF9,U+20AB;
+}
+/* commissioner-latin-ext-300-normal*/
+@font-face {
+  font-family: 'Commissioner';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 300;
+  src: url(/_next/static/media/commissioner-latin-ext-300-normal.71981374.woff2) format('woff2'), url(/_next/static/media/commissioner-all-300-normal.4d2f3bb0.woff) format('woff');
+  unicode-range: U+0100-024F,U+0259,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20CF,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+/* commissioner-latin-300-normal*/
+@font-face {
+  font-family: 'Commissioner';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 300;
+  src: url(/_next/static/media/commissioner-latin-300-normal.582d633d.woff2) format('woff2'), url(/_next/static/media/commissioner-all-300-normal.4d2f3bb0.woff) format('woff');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
 /*!***********************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[12].use[3]!./node_modules/bootstrap/dist/css/bootstrap.min.css ***!
   \***********************************************************************************************************************************************************************************************************************************************************************************************/
@@ -191,6 +307,11 @@ h1 {
   padding: 0 !important;
 }
 
+h2, h3, h4, h5, h6 {
+  font-weight: 200 !important;
+  padding: 0 !important;
+}
+
 a {
   text-decoration: none;
   color: #141414;
@@ -273,6 +394,91 @@ div.video {
   max-width: 300px;
 }
 
+*:focus {
+  outline: none;
+}
+*:focus-visible {
+  outline: 2px solid rgb(255, 0, 0);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+  outline: 2px solid rgb(255, 0, 0);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.card:focus-within {
+  box-shadow: 0 0 0 2px rgb(255, 0, 0);
+  border-radius: 4px;
+}
+.card a:focus-visible {
+  outline: 2px solid rgb(255, 0, 0);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.nav-links a:focus-visible {
+  outline: 2px solid rgb(255, 0, 0);
+  outline-offset: 2px;
+  border-radius: 4px;
+  background: rgba(231, 213, 44, 0.1);
+}
+
+.btn:focus-visible, .large-button:focus-visible, .shape-pill:focus-visible {
+  outline: 2px solid rgb(255, 0, 0);
+  outline-offset: 2px;
+  border-radius: 4px;
+  box-shadow: 0 0 0 2px rgb(255, 0, 0);
+}
+
+.input:focus-visible {
+  outline: 2px solid rgb(255, 0, 0);
+  outline-offset: 2px;
+  border-radius: 4px;
+  border-color: rgb(231, 213, 44);
+}
+
+.carousel:focus-within .carousel-indicators button:focus-visible {
+  outline: 2px solid rgb(255, 0, 0);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+.carousel:focus-within .carousel-control-prev:focus-visible,
+.carousel:focus-within .carousel-control-next:focus-visible {
+  outline: 2px solid rgb(255, 0, 0);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.skip-link:focus-visible {
+  outline: 3px solid white;
+  outline-offset: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.sr-only-focusable:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
 .heading {
   color: black;
   z-index: 3;
@@ -284,6 +490,17 @@ div.video {
   padding-left: 0;
   z-index: 3;
   text-decoration: none;
+}
+.nav-links a {
+  text-decoration: none !important;
+  color: #141414 !important;
+}
+.nav-links a:hover {
+  color: rgb(231, 213, 44) !important;
+  text-decoration: none !important;
+}
+.nav-links a:active {
+  color: rgb(255, 0, 0) !important;
 }
 .nav-links .brand {
   font-size: calc(1.325rem + 0.9vw);
@@ -311,16 +528,29 @@ div.video {
   font-family: Arial, Helvetica, sans-serif;
   color: rgba(20, 20, 20, 0.7);
   font-size: 1.25rem;
+  font-weight: 300;
 }
 
 .copyright {
   font-family: Roboto, Helvetica, sans-serif;
   color: rgba(20, 20, 20, 0.7);
+  font-weight: 300;
 }
 
 footer {
   padding-left: 1.5rem;
   padding-bottom: 2rem;
+  font-weight: 300;
+}
+footer a {
+  font-weight: 300;
+}
+footer .h2 {
+  font-weight: 300;
+}
+footer .footer-links-brand a,
+footer .text-center .h2:first-child {
+  font-weight: 200;
 }
 
 .footer-links {
@@ -399,6 +629,7 @@ button.hot:active {
 }
 .card .card-body .card-title {
   font-size: 2rem;
+  font-weight: 200;
 }
 .card:hover .card-img {
   opacity: 0.9;
@@ -421,39 +652,39 @@ button.hot:active {
   color: rgb(231, 213, 44);
 }
 
-@media screen and (max-width: 576px) {
-  .card-columns {
+/* Small screens: 1 column */
+@media screen and (max-width: 768px) {
+  .card-columns, .card-columns-3 {
     column-count: 1;
   }
-  .card-columns .card {
+  .card-columns .card, .card-columns-3 .card {
     margin-bottom: 1rem;
   }
 }
-/* MD */
-@media screen and (min-width: 576px) {
-  .card-columns {
+/* Medium screens: 2 columns */
+@media screen and (min-width: 768px) and (max-width: 1200px) {
+  .card-columns, .card-columns-3 {
     column-count: 2;
     column-gap: 3rem;
   }
+  .card-columns .card {
+    margin-bottom: 3rem;
+  }
+}
+/* Large screens: 3 columns */
+@media screen and (min-width: 1200px) {
   .card-columns-3 {
     column-count: 3;
     column-gap: 2rem;
+  }
+  .card-columns {
+    column-count: 2;
+    column-gap: 3rem;
   }
   .card-columns .card {
     margin-bottom: 5rem;
   }
 }
-/* LG */
-@media screen and (min-width: 992px) {
-  .card-columns {
-    column-gap: 10rem;
-  }
-  .row-cols-sm-4 > * {
-    flex: 0 0 auto;
-    width: 12.5%;
-  }
-}
-/* XL */
 .carousel-caption {
   position: relative;
   color: #141414;
@@ -487,4 +718,146 @@ button.hot:active {
 
 .container-email-form {
   min-height: 300px;
+}
+
+.skeleton-loading {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+  border-radius: 4px;
+}
+
+.skeleton-text {
+  height: 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 2px;
+}
+
+.skeleton-rectangular {
+  border-radius: 4px;
+}
+
+.skeleton-circular {
+  border-radius: 50%;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .skeleton-loading {
+    background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
+    background-size: 200% 100%;
+  }
+}
+.skip-links {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+}
+.skip-links .skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: rgb(255, 0, 0);
+  color: white;
+  padding: 8px 16px;
+  text-decoration: none;
+  font-weight: 500;
+  border-radius: 0 0 4px 4px;
+  border: 2px solid white;
+  transition: top 0.3s ease;
+  white-space: nowrap;
+  font-size: 14px;
+}
+.skip-links .skip-link:focus, .skip-links .skip-link.skip-link-focused {
+  top: 0;
+  text-decoration: none;
+  color: white;
+}
+.skip-links .skip-link:hover {
+  background: #cc0000;
+  color: white;
+  text-decoration: none;
+}
+.skip-links .skip-link:nth-child(2) {
+  left: 140px;
+}
+.skip-links .skip-link:nth-child(3) {
+  left: 280px;
+}
+.skip-links .skip-link:nth-child(4) {
+  left: 420px;
+}
+
+@media screen and (max-width: 768px) {
+  .skip-links .skip-link {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+  .skip-links .skip-link:nth-child(2) {
+    left: 120px;
+  }
+  .skip-links .skip-link:nth-child(3) {
+    left: 240px;
+  }
+  .skip-links .skip-link:nth-child(4) {
+    left: 360px;
+  }
+}
+.project-page a,
+.project-page a.text-primary,
+.project-page a.text-decoration-underline {
+  color: #141414 !important;
+  text-decoration: underline !important;
+}
+.project-page a:hover,
+.project-page a.text-primary:hover,
+.project-page a.text-decoration-underline:hover {
+  color: rgb(255, 0, 0) !important;
+  text-decoration: underline !important;
+}
+.project-page a:active,
+.project-page a.text-primary:active,
+.project-page a.text-decoration-underline:active {
+  color: rgb(255, 0, 0) !important;
+}
+.project-page a:visited,
+.project-page a.text-primary:visited,
+.project-page a.text-decoration-underline:visited {
+  color: #141414 !important;
+}
+.project-page .pagination-card a,
+.project-page .pagination-card a.text-primary,
+.project-page .pagination-card a.text-decoration-underline {
+  color: #141414 !important;
+  text-decoration: none !important;
+}
+.project-page .pagination-card a:hover,
+.project-page .pagination-card a.text-primary:hover,
+.project-page .pagination-card a.text-decoration-underline:hover {
+  color: rgb(231, 213, 44) !important;
+  text-decoration: none !important;
+}
+.project-page .pagination-card a:active,
+.project-page .pagination-card a.text-primary:active,
+.project-page .pagination-card a.text-decoration-underline:active {
+  color: rgb(255, 0, 0) !important;
+}
+.project-page .carousel-caption a,
+.project-page .nav-links a {
+  color: #141414 !important;
+  text-decoration: none !important;
+}
+.project-page .carousel-caption a:hover,
+.project-page .nav-links a:hover {
+  color: rgb(231, 213, 44) !important;
+  text-decoration: none !important;
 }

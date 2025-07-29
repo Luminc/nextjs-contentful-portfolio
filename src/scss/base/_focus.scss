@@ -1,0 +1,113 @@
+// Focus management and accessibility styles
+
+// Custom focus ring for better accessibility
+@mixin focus-ring {
+  outline: 2px solid $color-secondary;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+// Remove default focus styles and apply custom ones
+* {
+  &:focus {
+    outline: none;
+  }
+  
+  &:focus-visible {
+    @include focus-ring;
+  }
+}
+
+// Specific focus styles for interactive elements
+a, button, input, textarea, select {
+  &:focus-visible {
+    @include focus-ring;
+  }
+}
+
+// Card focus styles for better navigation
+.card {
+  &:focus-within {
+    box-shadow: 0 0 0 2px $color-secondary;
+    border-radius: 4px;
+  }
+  
+  a:focus-visible {
+    @include focus-ring;
+  }
+}
+
+// Navigation focus styles
+.nav-links {
+  a:focus-visible {
+    @include focus-ring;
+    background: rgba($color-primary, 0.1);
+  }
+}
+
+// Button focus styles
+.btn, .large-button, .shape-pill {
+  &:focus-visible {
+    @include focus-ring;
+    box-shadow: 0 0 0 2px $color-secondary;
+  }
+}
+
+// Form focus styles
+.input {
+  &:focus-visible {
+    @include focus-ring;
+    border-color: $color-primary;
+  }
+}
+
+// Carousel focus management
+.carousel {
+  &:focus-within {
+    .carousel-indicators {
+      button:focus-visible {
+        @include focus-ring;
+      }
+    }
+    
+    .carousel-control-prev,
+    .carousel-control-next {
+      &:focus-visible {
+        @include focus-ring;
+      }
+    }
+  }
+}
+
+// Skip link enhanced focus
+.skip-link {
+  &:focus-visible {
+    outline: 3px solid white;
+    outline-offset: 2px;
+  }
+}
+
+// Focus management for screen readers
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.sr-only-focusable {
+  &:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+  }
+}

@@ -6,6 +6,7 @@
 @import "base/animation";
 @import "base/typography";
 @import "base/utilities";
+@import "base/focus";
 
 @import "layout/header";
 @import "layout/footer";
@@ -14,3 +15,7 @@
 @import "components/card";
 @import "components/carousel";
 @import "components/emailform";
+@import "components/skeleton";
+@import "components/skip-links";
+
+@import "pages/project";

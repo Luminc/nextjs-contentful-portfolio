@@ -1,60 +1,69 @@
 <p align="center">
-  <a href="https://www.gatsbyjs.com/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter">
-    <img alt="Gatsby" src="https://www.gatsbyjs.com/Gatsby-Monogram.svg" width="60" />
+  <a href="https://nextjs.org">
+    <img alt="Next.js" src="https://assets.vercel.com/image/upload/v1607554385/repositories/next-js/next-logo.png" width="60" />
   </a>
 </p>
 <h1 align="center">
-  Gatsby Contentful Portfolio
+  Next.js Contentful Portfolio
 </h1>
 
 ## About
 
-This is an artist portfolio website using Gatsby. Data is sourced from contentful and the website uses conditional rendering in order for project pages to have components that can be added and ordered directly from the CMS. This means the owner has more control over how project pages are rendered, allowing more creative freedom. I create content model using Contentful's reference features to make pages composeable directly from the CMS. In the front-end, we check which content types are present and render them to the page.
+This is an artist portfolio website built with **Next.js** and **Contentful**. It leverages the power of the Next.js App Router and Contentful's flexible content modeling to create a dynamic and highly customizable experience.
 
-In the finished state, each component on the website will be able to be controlled and changed based on the users desires. New pages can also be added without any changes to the front-end.
+The core feature is its use of conditional rendering for project pages. Components can be added, removed, and reordered directly from the Contentful CMS. This gives the site owner granular control over page layouts, allowing for more creative freedom without needing to touch the code. This is achieved by using Contentful's reference fields to create composable content models. The front-end inspects the incoming content types and renders the appropriate React components.
 
-## 🚀 Quick start
+In its finished state, every component on the website will be configurable from the CMS, and new pages can be added seamlessly without any front-end code changes.
 
-1.  **Create a Gatsby site.**
+## 🚀 Getting Started
 
-    Use the Gatsby CLI to create a new site, specifying the minimal starter.
-
-    ```shell
-    # create a new Gatsby site using the minimal starter
-    npm init gatsby
-    ```
-
-2.  **Start developing.**
-
-    Navigate into your new site’s directory and start it up.
+1.  **Clone the repository.**
 
     ```shell
-    cd my-gatsby-site/
-    npm run develop
+    git clone https://github.com/your-username/your-repo-name.git
+    cd your-repo-name
     ```
 
-3.  **Open the code and start customizing!**
+2.  **Install dependencies.**
 
-    Your site is now running at http://localhost:8000!
+    ```shell
+    npm install
+    ```
 
-    Edit `src/pages/index.js` to see your site update in real-time!
+3.  **Set up environment variables.**
 
-4.  **Learn more**
+    Create a `.env.local` file in the root of your project and add your Contentful credentials. You can copy the example file:
 
-    - [Documentation](https://www.gatsbyjs.com/docs/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
+    ```shell
+    cp .env.example .env.local
+    ```
 
-    - [Tutorials](https://www.gatsbyjs.com/tutorial/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
+    Your `.env.local` should look like this:
+    ```
+    CONTENTFUL_SPACE_ID=...
+    CONTENTFUL_ACCESS_TOKEN=...
+    CONTENTFUL_PREVIEW_ACCESS_TOKEN=...
+    CONTENTFUL_PREVIEW_SECRET=...
+    ```
 
-    - [Guides](https://www.gatsbyjs.com/tutorial/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
+4.  **Run the development server.**
 
-    - [API Reference](https://www.gatsbyjs.com/docs/api-reference/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
+    ```shell
+    npm run dev
+    ```
 
-    - [Plugin Library](https://www.gatsbyjs.com/plugins?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
+5.  **Open your browser.**
 
-    - [Cheat Sheet](https://www.gatsbyjs.com/docs/cheat-sheet/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
+    Your site is now running at http://localhost:3000!
 
-## 🚀 Quick start (Gatsby Cloud)
+## 📚 Learn More
 
-Deploy this starter with one click on [Gatsby Cloud](https://www.gatsbyjs.com/cloud/):
+- Next.js Documentation - learn about Next.js features and API.
+- Learn Next.js - an interactive Next.js tutorial.
+- Contentful Documentation - learn about Contentful.
 
-[<img src="https://www.gatsbyjs.com/deploynow.svg" alt="Deploy to Gatsby Cloud">](https://www.gatsbyjs.com/dashboard/deploynow?url=https://github.com/gatsbyjs/gatsby-starter-minimal)
+## ▲ Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the Vercel Platform from the creators of Next.js.
+
+[!Deploy with Vercel](https://vercel.com/new/clone?repository-url=https://github.com/your-username/your-repo-name)

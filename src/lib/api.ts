@@ -1,14 +1,9 @@
 // Client-side API functions that call our Next.js API routes
-
-export interface ContentfulProject {
-  sys: any
-  fields: any
-}
-
-export interface ContentfulPage {
-  sys: any
-  fields: any
-}
+import { 
+  ContentfulProject, 
+  ContentfulPage, 
+  ContentfulHeroImage 
+} from '@/types/contentful'
 
 export const getProjects = async (): Promise<ContentfulProject[]> => {
   const response = await fetch('/api/contentful/projects')
@@ -48,7 +43,7 @@ export const getPage = async (slug: string): Promise<ContentfulPage | null> => {
   return response.json()
 }
 
-export const getHeroImages = async (): Promise<any[]> => {
+export const getHeroImages = async (): Promise<ContentfulHeroImage[]> => {
   const response = await fetch('/api/contentful/hero-images')
   if (!response.ok) {
     throw new Error('Failed to fetch hero images')

@@ -4,10 +4,7 @@ import { INLINES, BLOCKS, MARKS } from '@contentful/rich-text-types'
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
 import Image from 'next/image'
 import slugify from '@sindresorhus/slugify'
-
-const createImageUrl = (url: string) => {
-  return url.startsWith('//') ? `https:${url}` : url
-}
+import { createImageUrl } from '@/lib/utils'
 
 const createJumpLink = (children: any) => {
   return (
@@ -106,6 +103,7 @@ const options = {
               alt={description || title || 'Embedded image'}
               width={file.details.image?.width || 800}
               height={file.details.image?.height || 600}
+              loading="lazy"
               className="img-fluid"
             />
           </div>

@@ -9,16 +9,14 @@ import { getProject, getProjects } from '@/lib/api'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Container, Row, Col, Carousel } from 'react-bootstrap'
-
-const createImageUrl = (url: string) => {
-  return url.startsWith('//') ? `https:${url}` : url
-}
+import { createImageUrl, formatDate } from '@/lib/utils'
+import { ContentfulProject } from '@/types/contentful'
 
 export default function ProjectPage() {
   const params = useParams()
-  const [project, setProject] = useState<any>(null)
-  const [prev, setPrev] = useState<any>(null)
-  const [next, setNext] = useState<any>(null)
+  const [project, setProject] = useState<ContentfulProject | null>(null)
+  const [prev, setPrev] = useState<ContentfulProject | null>(null)
+  const [next, setNext] = useState<ContentfulProject | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -59,12 +57,11 @@ export default function ProjectPage() {
     return <Layout><Container><p>Project not found</p></Container></Layout>
   }
 
-  const options = { year: 'numeric' as const, month: 'long' as const, day: 'numeric' as const }
-  const formattedDate = new Date(project.fields.date).toLocaleDateString('en-GB', options)
+  const formattedDate = formatDate(project.fields.date)
   const projectYear = new Date(project.fields.date).getFullYear()
 
   return (
-    <Layout>
+    <Layout className="project-page">
       <Container fluid="xxl">
         <p className="text-center project-subtitle pt-5">{projectYear}</p>
         <h1 className="text-center display-1 py-2">
@@ -75,7 +72,7 @@ export default function ProjectPage() {
         </p>
       </Container>
       
-      <Row className="mb-5">
+      <Row id="project-content" className="mb-5">
         <Col md className="pb-5 featured-project-image">
           <Image
             src={createImageUrl(project.fields.featuredImage?.fields?.file?.url || '/placeholder.jpg')}
@@ -122,6 +119,7 @@ export default function ProjectPage() {
                 alt={section.fields.alt || section.fields.title}
                 width={section.fields.image.fields.file.details.image.width}
                 height={section.fields.image.fields.file.details.image.height}
+                loading="lazy"
                 style={{ width: '100%', height: 'auto' }}
               />
             )}
@@ -135,6 +133,7 @@ export default function ProjectPage() {
                       alt={image.fields.fileName}
                       width={image.fields.file.details.image.width}
                       height={image.fields.file.details.image.height}
+                      loading="lazy"
                       style={{ width: '100%', height: 'auto' }}
                     />
                   </div>
@@ -156,13 +155,14 @@ export default function ProjectPage() {
                   controls={section.fields.controls}
                   indicators={section.fields.indicators}
                 >
-                  {section.fields.images?.map((image: any) => (
+                  {section.fields.images?.map((image: any, index: number) => (
                     <Carousel.Item key={image.fields.fileName}>
                       <Image
                         src={createImageUrl(image.fields.file.url)}
                         alt={section.fields.title}
                         width={image.fields.file.details.image.width}
                         height={image.fields.file.details.image.height}
+                        loading={index === 0 ? "eager" : "lazy"}
                         style={{ width: '100%', height: 'auto' }}
                       />
                     </Carousel.Item>
@@ -193,6 +193,7 @@ export default function ProjectPage() {
               src={createImageUrl(image.fields.file.url)}
               width={image.fields.file.details.image.width}
               height={image.fields.file.details.image.height}
+              loading="lazy"
               style={{ width: '100%', height: 'auto' }}
             />
           </div>
@@ -210,6 +211,7 @@ export default function ProjectPage() {
                     alt={prev.fields.title}
                     width={600}
                     height={600}
+                    loading="lazy"
                     style={{ objectFit: 'contain' }}
                   />
                 </Link>
@@ -220,7 +222,7 @@ export default function ProjectPage() {
                 </div>
               </div>
               <div className="d-md-none">
-                <Link href={`/projects/${prev.fields.url}`}>Previous project &lt;</Link>
+                <Link href={`/projects/${prev.fields.url}`}>&lt; Previous project</Link>
               </div>
             </>
           ) : (
@@ -239,6 +241,8 @@ export default function ProjectPage() {
                     alt={next.fields.title}
                     width={600}
                     height={600}
+                    loading="lazy"
+                    style={{ objectFit: 'contain' }}
                   />
                 </Link>
                 <div className="card-body">

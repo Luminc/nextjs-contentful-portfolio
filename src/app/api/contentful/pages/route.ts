@@ -8,13 +8,14 @@ const client = createClient({
 
 export async function GET() {
   try {
+    // Fetch the 'about' content type (which appears to be the page content)
     const entries = await client.getEntries({
-      content_type: 'page',
+      content_type: 'about',
     })
     
     return NextResponse.json(entries.items)
   } catch (error) {
     console.error('Error fetching pages:', error)
-    return NextResponse.json({ error: 'Failed to fetch pages' }, { status: 500 })
+    return NextResponse.json({ error: 'Failed to fetch pages', details: error.message }, { status: 500 })
   }
 }

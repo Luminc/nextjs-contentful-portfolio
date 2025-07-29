@@ -5,11 +5,15 @@ import { useParams } from 'next/navigation'
 import Layout from '@/components/layout'
 import ContentfulRichText from '@/components/contentful-rich-text'
 import { getPage } from '@/lib/api'
-import { Container } from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap'
+import Image from 'next/image'
+import { createImageUrl } from '@/lib/utils'
+import { PageSkeleton } from '@/components/skeleton'
+import { ContentfulPage } from '@/types/contentful'
 
 export default function DynamicPage() {
   const params = useParams()
-  const [page, setPage] = useState<any>(null)
+  const [page, setPage] = useState<ContentfulPage | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -30,7 +34,11 @@ export default function DynamicPage() {
   }, [params.slug])
 
   if (loading) {
-    return <Layout><Container><p>Loading...</p></Container></Layout>
+    return (
+      <Layout>
+        <PageSkeleton />
+      </Layout>
+    )
   }
 
   if (!page) {
@@ -39,11 +47,31 @@ export default function DynamicPage() {
 
   return (
     <Layout pageTitle={page.fields.title}>
-      <Container>
-        {page.fields.richDescription && (
-          <ContentfulRichText richText={page.fields.richDescription} />
+      <Row className="mb-5">
+        {page.fields.image && (
+          <Col md className="pb-5">
+            <Image
+              src={createImageUrl(page.fields.image.fields.file.url)}
+              alt={page.fields.image.fields.description || page.fields.title}
+              width={page.fields.image.fields.file.details.image.width}
+              height={page.fields.image.fields.file.details.image.height}
+              style={{
+                width: '100%',
+                height: 'auto',
+                objectFit: 'contain'
+              }}
+            />
+          </Col>
         )}
-      </Container>
+
+        {page.fields.richDescription && (
+          <Col>
+            <Container>
+              <ContentfulRichText richText={page.fields.richDescription} />
+            </Container>
+          </Col>
+        )}
+      </Row>
     </Layout>
   )
 }
