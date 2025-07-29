@@ -1,0 +1,68 @@
+.skip-links {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  
+  .skip-link {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: $color-secondary;
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: 0 0 4px 4px;
+    border: 2px solid white;
+    transition: top 0.3s ease;
+    white-space: nowrap;
+    font-size: 14px;
+    
+    &:focus,
+    &.skip-link-focused {
+      top: 0;
+      text-decoration: none;
+      color: white;
+    }
+    
+    &:hover {
+      background: darken($color-secondary, 10%);
+      color: white;
+      text-decoration: none;
+    }
+    
+    // Stack multiple skip links
+    &:nth-child(2) {
+      left: 140px;
+    }
+    
+    &:nth-child(3) {
+      left: 280px;
+    }
+    
+    &:nth-child(4) {
+      left: 420px;
+    }
+  }
+}
+
+// Ensure skip links work with different screen sizes
+@media screen and (max-width: 768px) {
+  .skip-links .skip-link {
+    font-size: 12px;
+    padding: 6px 12px;
+    
+    &:nth-child(2) {
+      left: 120px;
+    }
+    
+    &:nth-child(3) {
+      left: 240px;
+    }
+    
+    &:nth-child(4) {
+      left: 360px;
+    }
+  }
+}

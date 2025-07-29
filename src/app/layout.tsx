@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { siteMetadata } from '@/lib/site-metadata'
 import '@fontsource/commissioner'
+import '@fontsource/commissioner/200.css'
+import '@fontsource/commissioner/300.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '../scss/app.scss'
 

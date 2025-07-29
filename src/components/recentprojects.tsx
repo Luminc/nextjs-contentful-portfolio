@@ -6,30 +6,37 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { Container } from 'react-bootstrap'
 import { getProjects, ContentfulProject } from '@/lib/api'
+import { createImageUrl, getProjectYear } from '@/lib/utils'
+import { ProjectsGridSkeleton } from './skeleton'
 
 export const RecentProjects = () => {
   const [projects, setProjects] = useState<ContentfulProject[]>([])
+  const [loading, setLoading] = useState(true)
   const router = useRouter()
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
+        setLoading(true)
         const allProjects = await getProjects()
         setProjects(allProjects.slice(0, 3))
       } catch (error) {
         console.error('Error fetching projects:', error)
+      } finally {
+        setLoading(false)
       }
     }
 
     fetchProjects()
   }, [])
 
-  const createImageUrl = (url: string) => {
-    return url.startsWith('//') ? `https:${url}` : url
-  }
-
-  const getProjectYear = (dateString: string) => {
-    return new Date(dateString).getFullYear()
+  if (loading) {
+    return (
+      <Container>
+        <h1 className="display-2 py-5">Recent Projects</h1>
+        <ProjectsGridSkeleton />
+      </Container>
+    )
   }
 
   return (

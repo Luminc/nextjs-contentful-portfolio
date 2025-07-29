@@ -2,16 +2,33 @@
   font-family: Arial, Helvetica, sans-serif;
   color: $primary-light;
   font-size: 1.25rem;
+  font-weight: 300;
 }
 
 .copyright {
   font-family: Roboto, Helvetica, sans-serif;
   color: $primary-light;
+  font-weight: 300;
 }
 
 footer {
   padding-left: 1.5rem;
   padding-bottom: 2rem;
+  font-weight: 300;
+  
+  a {
+    font-weight: 300;
+  }
+  
+  .h2 {
+    font-weight: 300;
+  }
+  
+  // Keep brand lighter for hierarchy
+  .footer-links-brand a,
+  .text-center .h2:first-child {
+    font-weight: 200;
+  }
 }
 
 .footer-links {

@@ -9,6 +9,21 @@
   padding-left: 0;
   z-index: 3;
   text-decoration: none;
+  
+  a {
+    text-decoration: none !important;
+    color: $text-primary-dark !important;
+    
+    &:hover {
+      color: $color-primary !important;
+      text-decoration: none !important;
+    }
+    
+    &:active {
+      color: $color-secondary !important;
+    }
+  }
+  
   .brand {
     font-size: calc(1.325rem + 0.9vw);
   }

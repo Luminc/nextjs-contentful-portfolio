@@ -9,7 +9,7 @@ const client = createClient({
 export async function GET(request: Request, { params }: { params: { slug: string } }) {
   try {
     const entries = await client.getEntries({
-      content_type: 'page',
+      content_type: 'about',
       'fields.slug': params.slug,
       limit: 1,
     })

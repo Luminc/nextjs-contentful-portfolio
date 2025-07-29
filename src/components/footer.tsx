@@ -3,31 +3,25 @@
 import Link from 'next/link'
 import { Container, Row, Col } from 'react-bootstrap'
 import { siteMetadata } from '@/lib/site-metadata'
-import { useEffect, useState } from 'react'
-import { getPages, ContentfulPage } from '@/lib/api'
+import { usePages } from '@/hooks/usePages'
 
 interface FooterProps {
   className?: string
 }
 
 export const Footer: React.FC<FooterProps> = ({ className }) => {
-  const [pages, setPages] = useState<ContentfulPage[]>([])
-
-  useEffect(() => {
-    const fetchPages = async () => {
-      try {
-        const fetchedPages = await getPages()
-        setPages(fetchedPages)
-      } catch (error) {
-        console.error('Error fetching pages:', error)
-      }
-    }
-
-    fetchPages()
-  }, [])
+  const { data: pages, error } = usePages()
+  
+  // Gracefully handle errors - show footer without dynamic pages
+  const safePages = pages || []
 
   return (
-    <footer className={className}>
+    <footer 
+      id="footer" 
+      className={className}
+      role="contentinfo"
+      aria-label="Site footer"
+    >
       <Container className="d-sm-block d-md-none">
         <ul className="footer-links">
           <li className="footer-links-brand">
@@ -36,7 +30,7 @@ export const Footer: React.FC<FooterProps> = ({ className }) => {
           <li className="footer-links-item">
             <Link href="/projects">Projects</Link>
           </li>
-          {pages.map(page => (
+          {safePages.map(page => (
             <li className="footer-links-item" key={page.fields.slug}>
               <Link href={`/${page.fields.slug}`}>{page.fields.title}</Link>
             </li>
@@ -105,9 +99,9 @@ export const Footer: React.FC<FooterProps> = ({ className }) => {
                   <div className="d-inline">
                     <Link href="/projects">PROJECTS</Link>
                   </div>
-                  {" | "}
-                  {pages.map(page => (
+                  {safePages.map(page => (
                     <div key={page.fields.slug} className="d-inline">
+                      {" | "}
                       <Link href={`/${page.fields.slug}`}>
                         {page.fields.title.toUpperCase()}
                       </Link>

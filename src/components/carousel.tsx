@@ -5,22 +5,18 @@ import { Carousel } from 'react-bootstrap'
 import Image from 'next/image'
 import Link from 'next/link'
 import { getHeroImages } from '@/lib/api'
-
-interface HeroImage {
-  sys: {
-    id: string
-  }
-  fields: any
-}
+import { createImageUrl } from '@/lib/utils'
+import { CarouselSkeleton } from './skeleton'
+import { ContentfulHeroImage } from '@/types/contentful'
 
 const CarouselLanding = () => {
-  const [heroImages, setHeroImages] = useState<HeroImage[]>([])
+  const [heroImages, setHeroImages] = useState<ContentfulHeroImage[]>([])
 
   useEffect(() => {
     const fetchHeroImages = async () => {
       try {
         const images = await getHeroImages()
-        setHeroImages(images as HeroImage[])
+        setHeroImages(images)
       } catch (error) {
         console.error('Error fetching hero images:', error)
       }
@@ -29,12 +25,8 @@ const CarouselLanding = () => {
     fetchHeroImages()
   }, [])
 
-  const createImageUrl = (url: string) => {
-    return url.startsWith('//') ? `https:${url}` : url
-  }
-
   if (heroImages.length === 0) {
-    return <div>Loading...</div>
+    return <CarouselSkeleton />
   }
 
   return (
