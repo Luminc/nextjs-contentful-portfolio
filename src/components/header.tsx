@@ -26,6 +26,11 @@ export const Header = () => {
             Projects
           </Link>
         </div>
+        <div className="nav-links-item">
+          <Link href="/blog" className="nav-links-text">
+            Blog
+          </Link>
+        </div>
         {safePages.map(page => (
           <div key={page.fields.slug} className="nav-links-item">
             <Link href={`/${page.fields.slug}`} className="nav-links-text">
