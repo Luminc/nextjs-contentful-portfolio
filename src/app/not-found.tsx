@@ -24,7 +24,7 @@ export default function NotFound() {
         <Row className="justify-content-center text-center py-5">
           <Col lg={8}>
             {/* Large 404 display */}
-            <div className="display-1 fw-bold text-primary mb-4" style={{ fontSize: '8rem', lineHeight: '1' }}>
+            <div className="display-1 mb-4" style={{ fontSize: '8rem', lineHeight: '1' }}>
               404
             </div>
             
@@ -41,24 +41,14 @@ export default function NotFound() {
             
             {/* Navigation options */}
             <div className="d-flex flex-column flex-sm-row gap-3 justify-content-center">
-              <Link href="/" className="btn btn-primary btn-lg">
+              <Link href="/" className="shape-pill large-button hot">
                 ← Back to Home
               </Link>
-              <Link href="/projects" className="btn btn-outline-primary btn-lg">
+              <Link href="/projects" className="shape-pill large-button hot">
                 View Projects
               </Link>
             </div>
-            
-            {/* Additional help text */}
-            <div className="mt-5 pt-4 border-top">
-              <p className="text-muted small">
-                If you believe this is an error, please{' '}
-                <Link href="/#contact" className="text-primary text-decoration-underline">
-                  get in touch
-                </Link>
-                .
-              </p>
-            </div>
+          
           </Col>
         </Row>
       </Container>
