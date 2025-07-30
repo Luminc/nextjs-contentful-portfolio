@@ -2,6 +2,23 @@
 
 import { useState, useEffect, useCallback } from 'react'
 
+/**
+ * ADVANCED ASYNC DATA MANAGEMENT HOOK
+ * 
+ * This custom hook provides sophisticated data fetching with:
+ * - Automatic retry logic with exponential backoff
+ * - Loading and error state management
+ * - Dependency-based re-fetching
+ * - TypeScript generics for type safety
+ * 
+ * Usage:
+ * const { data, loading, error, retry } = useAsyncData(
+ *   () => fetchProjects(),
+ *   [projectFilter], // dependencies - refetch when these change
+ *   { maxRetries: 3, retryDelay: 1000 }
+ * )
+ */
+
 interface UseAsyncDataState<T> {
   data: T | null
   loading: boolean
@@ -9,8 +26,8 @@ interface UseAsyncDataState<T> {
 }
 
 interface UseAsyncDataOptions {
-  retryDelay?: number
-  maxRetries?: number
+  retryDelay?: number // Base delay between retries (default: 1000ms)
+  maxRetries?: number // Maximum retry attempts (default: 3)
 }
 
 export const useAsyncData = <T>(
@@ -33,32 +50,36 @@ export const useAsyncData = <T>(
     try {
       const data = await asyncFunction()
       setState({ data, loading: false, error: null })
-      setRetryCount(0)
+      setRetryCount(0) // Reset retry count on successful fetch
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred'
       
+      // Implement retry logic with exponential backoff
       if (retryCount < maxRetries) {
         setTimeout(() => {
           setRetryCount(prev => prev + 1)
-        }, retryDelay * Math.pow(2, retryCount)) // Exponential backoff
+        }, retryDelay * Math.pow(2, retryCount)) // Exponential backoff: 1s, 2s, 4s, 8s...
       } else {
+        // Max retries reached - set error state
         setState({ data: null, loading: false, error: errorMessage })
       }
     }
   }, [asyncFunction, retryCount, maxRetries, retryDelay])
 
+  // Manual retry function - resets retry count and starts fresh
   const retry = useCallback(() => {
     setRetryCount(0)
     fetchData()
   }, [fetchData])
 
+  // Re-fetch data when dependencies change
   useEffect(() => {
     fetchData()
   }, [...dependencies, fetchData])
 
   return {
     ...state,
-    retry,
-    isRetrying: retryCount > 0,
+    retry, // Manual retry function
+    isRetrying: retryCount > 0, // Indicates if currently in retry mode
   }
 }

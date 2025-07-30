@@ -1,6 +1,22 @@
 import { NextResponse } from 'next/server'
 import { createClient } from 'contentful'
 
+/**
+ * NEXT.JS API ROUTE - Pages Endpoint
+ * 
+ * This API route provides a RESTful endpoint for fetching page data from Contentful.
+ * It's used for client-side data fetching when you need dynamic content updates.
+ * 
+ * Route: GET /api/contentful/pages
+ * Returns: JSON array of page entries from Contentful
+ * 
+ * Benefits of API Routes:
+ * - Keep sensitive credentials on the server
+ * - Enable client-side data fetching
+ * - Provide structured error handling
+ * - Cache responses for better performance
+ */
+
 const client = createClient({
   space: process.env.CONTENTFUL_SPACE_ID!,
   accessToken: process.env.CONTENTFUL_ACCESS_TOKEN!,
@@ -13,9 +29,14 @@ export async function GET() {
       content_type: 'about',
     })
     
+    // Return JSON response with page data
     return NextResponse.json(entries.items)
   } catch (error) {
+    // Structured error handling with details for debugging
     console.error('Error fetching pages:', error)
-    return NextResponse.json({ error: 'Failed to fetch pages', details: error.message }, { status: 500 })
+    return NextResponse.json(
+      { error: 'Failed to fetch pages', details: error.message }, 
+      { status: 500 }
+    )
   }
 }
