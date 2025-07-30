@@ -38,7 +38,7 @@ export default function BlogPage() {
 
   if (loading) {
     return (
-      <Layout pageTitle="Blog">
+      <Layout pageTitle="Writing">
         <Container>
           <div className="text-center py-5">
             <div className="spinner-border" role="status">
@@ -52,7 +52,7 @@ export default function BlogPage() {
 
   if (error) {
     return (
-      <Layout pageTitle="Blog">
+      <Layout pageTitle="Writing">
         <Container>
           <div className="alert alert-danger" role="alert">
             Error loading blog posts: {error}
@@ -63,7 +63,7 @@ export default function BlogPage() {
   }
 
   return (
-    <Layout pageTitle="Blog">
+    <Layout pageTitle="Writing">
       <div className="blog-page">
         <Container>
           {posts.length === 0 ? (

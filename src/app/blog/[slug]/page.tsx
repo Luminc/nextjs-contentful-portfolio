@@ -74,7 +74,7 @@ export default function BlogPostPage() {
                 The blog post you&apos;re looking for doesn&apos;t exist or has been moved.
               </p>
               <Link href="/blog" className="btn btn-primary">
-                ← Back to Blog
+                ← Back to Writing
               </Link>
             </Col>
           </Row>
@@ -85,6 +85,11 @@ export default function BlogPostPage() {
 
   return (
     <Layout>
+      <Container>
+        <h1 className="text-center display-1 py-2">
+          {post.title}
+        </h1>
+      </Container>
       <div className="blog-page">
         <Container>
           <Row className="justify-content-center">
@@ -92,18 +97,12 @@ export default function BlogPostPage() {
               {/* Back navigation */}
               <div className="mb-5">
                 <Link href="/blog" className="text-decoration-none" style={{ color: 'rgba(20, 20, 20, 0.5)' }}>
-                  ← Back to Blog
+                  ← Back to Writing
                 </Link>
               </div>
 
               {/* Post header */}
               <header className="mb-5">
-                <h1 
-                  className="display-2 fw-light text-dark lh-sm mb-4"
-                  style={{ fontSize: '3rem', fontWeight: '200 !important' }}
-                >
-                  {post.title}
-                </h1>
                 
                 <div className="d-flex flex-wrap align-items-center mb-4 blog-meta">
                   <span className="me-4">
@@ -138,7 +137,7 @@ export default function BlogPostPage() {
               <footer className="blog-post-nav">
                 <div className="d-flex justify-content-between align-items-center">
                   <Link href="/blog" className="btn">
-                    ← All Posts
+                    ← All Writing
                   </Link>
                   
                   <div className="blog-meta">
