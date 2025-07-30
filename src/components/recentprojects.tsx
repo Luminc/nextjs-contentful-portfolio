@@ -47,18 +47,20 @@ export const RecentProjects = () => {
         {projects.map(project => (
           <div className="card d-block" key={project.sys.id}>
             <Link href={`/projects/${project.fields.url}`}>
-              <Image
-                className="card-img"
-                src={createImageUrl(project.fields.featuredImage.fields.file.url)}
-                alt={project.fields.title}
-                width={1000}
-                height={600}
-                style={{
-                  width: '100%',
-                  height: 'auto',
-                  objectFit: 'cover'
-                }}
-              />
+              {project.fields.featuredImage && (
+                <Image
+                  className="card-img"
+                  src={createImageUrl(project.fields.featuredImage.fields.file.url)}
+                  alt={project.fields.title}
+                  width={1000}
+                  height={600}
+                  style={{
+                    width: '100%',
+                    height: 'auto',
+                    objectFit: 'cover'
+                  }}
+                />
+              )}
             </Link>
 
             <div className="card-body">
