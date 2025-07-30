@@ -85,74 +85,71 @@ export default function BlogPostPage() {
 
   return (
     <Layout>
-      <Container>
-        <Row className="justify-content-center">
-          <Col lg={8}>
-            {/* Back navigation */}
-            <div className="mb-4">
-              <Link href="/blog" className="text-decoration-none text-muted">
-                ← Back to Blog
-              </Link>
-            </div>
-
-            {/* Post header */}
-            <header className="mb-5">
-              <h1 className="display-4 fw-bold text-dark lh-sm mb-3">
-                {post.title}
-              </h1>
-              
-              <div className="d-flex flex-wrap align-items-center text-muted mb-4">
-                <span className="me-3">
-                  By {post.author}
-                </span>
-                <span className="me-3">
-                  {format(new Date(post.date), 'MMMM d, yyyy')}
-                </span>
-                <span>
-                  {post.readingTime} min read
-                </span>
-              </div>
-
-              {post.tags && post.tags.length > 0 && (
-                <div className="mb-4">
-                  {post.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="badge bg-light text-dark me-2 mb-1"
-                      style={{ fontSize: '0.85rem' }}
-                    >
-                      #{tag}
-                    </span>
-                  ))}
-                </div>
-              )}
-            </header>
-
-            {/* Post content */}
-            <article 
-              className="blog-content lh-lg"
-              dangerouslySetInnerHTML={{ __html: post.content }}
-              style={{
-                fontSize: '1.1rem',
-                color: '#333'
-              }}
-            />
-
-            {/* Post footer */}
-            <footer className="border-top pt-4 mt-5">
-              <div className="d-flex justify-content-between align-items-center">
-                <Link href="/blog" className="btn btn-outline-primary">
-                  ← All Posts
+      <div className="blog-page">
+        <Container>
+          <Row className="justify-content-center">
+            <Col lg={8}>
+              {/* Back navigation */}
+              <div className="mb-5">
+                <Link href="/blog" className="text-decoration-none" style={{ color: 'rgba(20, 20, 20, 0.5)' }}>
+                  ← Back to Blog
                 </Link>
-                
-                <div className="text-muted small">
-                  Published {format(new Date(post.date), 'MMMM d, yyyy')}
-                </div>
               </div>
-            </footer>
-          </Col>
-        </Row>
-      </Container>
+
+              {/* Post header */}
+              <header className="mb-5">
+                <h1 
+                  className="display-2 fw-light text-dark lh-sm mb-4"
+                  style={{ fontSize: '3rem', fontWeight: '200 !important' }}
+                >
+                  {post.title}
+                </h1>
+                
+                <div className="d-flex flex-wrap align-items-center mb-4 blog-meta">
+                  <span className="me-4">
+                    By {post.author}
+                  </span>
+                  <span className="me-4">
+                    {format(new Date(post.date), 'MMMM d, yyyy')}
+                  </span>
+                  <span>
+                    {post.readingTime} min read
+                  </span>
+                </div>
+
+                {post.tags && post.tags.length > 0 && (
+                  <div className="blog-tags mb-5">
+                    {post.tags.map((tag) => (
+                      <span key={tag} className="badge me-2 mb-1">
+                        #{tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </header>
+
+              {/* Post content */}
+              <article 
+                className="blog-content"
+                dangerouslySetInnerHTML={{ __html: post.content }}
+              />
+
+              {/* Post footer */}
+              <footer className="blog-post-nav">
+                <div className="d-flex justify-content-between align-items-center">
+                  <Link href="/blog" className="btn">
+                    ← All Posts
+                  </Link>
+                  
+                  <div className="blog-meta">
+                    Published {format(new Date(post.date), 'MMMM d, yyyy')}
+                  </div>
+                </div>
+              </footer>
+            </Col>
+          </Row>
+        </Container>
+      </div>
     </Layout>
   )
 }
