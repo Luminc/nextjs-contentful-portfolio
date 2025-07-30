@@ -99,7 +99,7 @@ export const NotFoundErrorFallback: React.FC = () => (
   <Container className="text-center py-5">
     <h2 className="h3 mb-3">Content Not Found</h2>
     <p className="text-muted mb-4">
-      The content you're looking for doesn't exist or has been moved.
+      The content you&apos;re looking for doesn&apos;t exist or has been moved.
     </p>
     <a href="/" className="btn btn-primary">
       Go Home

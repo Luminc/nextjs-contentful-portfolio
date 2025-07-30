@@ -75,6 +75,7 @@ export const useAsyncData = <T>(
   // Re-fetch data when dependencies change
   useEffect(() => {
     fetchData()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [...dependencies, fetchData])
 
   return {
