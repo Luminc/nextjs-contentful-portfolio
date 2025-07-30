@@ -104,30 +104,20 @@
     }
   }
 
-  // Consistent paragraph text with academic indentation
+  // Consistent paragraph text without indentation
   p {
     font-family: $font;
     font-size: 1.5rem; // Consistent body text size
     line-height: $line-height;
     color: $text-primary-dark;
     margin-bottom: 2rem;
-    text-indent: 2rem; // Book-style academic indentation
     
     @media screen and (max-width: 576px) {
       font-size: 1.25rem;
-      text-indent: 1.5rem;
     }
   }
 
-  // First paragraph after headings has no indent (academic style)
-  h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p {
-    text-indent: 0; // No indent after headings
-  }
-  
-  // First paragraph of article has no indent
-  p:first-of-type {
-    text-indent: 0; // Academic style: first paragraph no indent
-  }
+  // Clean, minimal paragraph styling for maximum readability
 
   // Links follow project page behavior
   a {
@@ -173,11 +163,9 @@
       font-weight: 200;
       color: rgba($text-primary-dark, 0.8);
       margin-bottom: 1rem;
-      text-indent: 2rem; // Academic book-style indent
       
       @media screen and (max-width: 576px) {
         font-size: 1.25rem;
-        text-indent: 1.5rem;
       }
       
       &:last-child {
