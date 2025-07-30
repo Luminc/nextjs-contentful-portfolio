@@ -53,8 +53,8 @@ export default function DynamicPage() {
             <Image
               src={createImageUrl(page.fields.image.fields.file.url)}
               alt={page.fields.image.fields.description || page.fields.title}
-              width={page.fields.image.fields.file.details.image.width}
-              height={page.fields.image.fields.file.details.image.height}
+              width={page.fields.image.fields.file.details?.image?.width || 800}
+              height={page.fields.image.fields.file.details?.image?.height || 600}
               style={{
                 width: '100%',
                 height: 'auto',
