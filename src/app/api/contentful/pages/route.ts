@@ -34,8 +34,9 @@ export async function GET() {
   } catch (error) {
     // Structured error handling with details for debugging
     console.error('Error fetching pages:', error)
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred'
     return NextResponse.json(
-      { error: 'Failed to fetch pages', details: error.message }, 
+      { error: 'Failed to fetch pages', details: errorMessage }, 
       { status: 500 }
     )
   }
