@@ -1,71 +1,86 @@
-import { Metadata } from 'next'
-import { notFound } from 'next/navigation'
+'use client'
+
+import { useState, useEffect } from 'react'
+import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { Container, Row, Col } from 'react-bootstrap'
 import Layout from '@/components/layout'
-import { getPost, getAllPosts } from '@/lib/blog'
+import { BlogPost } from '@/lib/blog'
 import { format } from 'date-fns'
 
 /**
  * INDIVIDUAL BLOG POST PAGE
  * 
  * This page displays a single blog post with:
- * - Dynamic metadata for SEO
+ * - Client-side rendering with loading states
  * - Full markdown content rendered as HTML
  * - Post metadata and navigation
  * - Responsive typography
  * - Back to blog navigation
  */
 
-interface BlogPostPageProps {
-  params: {
-    slug: string
-  }
-}
-
-// Generate metadata for SEO
-export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
-  const post = await getPost(params.slug)
+export default function BlogPostPage() {
+  const params = useParams()
+  const slug = params.slug as string
   
-  if (!post) {
-    return {
-      title: 'Post Not Found'
-    }
+  const [post, setPost] = useState<BlogPost | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!slug) return
+
+    fetch(`/api/blog/${slug}`)
+      .then(res => {
+        if (!res.ok) {
+          throw new Error('Post not found')
+        }
+        return res.json()
+      })
+      .then(data => {
+        setPost(data)
+        setLoading(false)
+      })
+      .catch(err => {
+        setError(err.message)
+        setLoading(false)
+      })
+  }, [slug])
+
+  if (loading) {
+    return (
+      <Layout>
+        <Container>
+          <div className="text-center py-5">
+            <div className="spinner-border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        </Container>
+      </Layout>
+    )
   }
 
-  return {
-    title: post.title,
-    description: post.excerpt,
-    openGraph: {
-      title: post.title,
-      description: post.excerpt,
-      type: 'article',
-      publishedTime: post.date,
-      authors: [post.author || 'Jeroen Kortekaas'],
-      tags: post.tags,
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: post.title,
-      description: post.excerpt,
-    }
-  }
-}
-
-// Generate static paths for all blog posts (for optimization)
-export async function generateStaticParams() {
-  const posts = await getAllPosts()
-  
-  return posts.map((post) => ({
-    slug: post.slug,
-  }))
-}
-
-export default async function BlogPostPage({ params }: BlogPostPageProps) {
-  const post = await getPost(params.slug)
-
-  if (!post) {
-    notFound()
+  if (error || !post) {
+    return (
+      <Layout>
+        <Container>
+          <Row className="justify-content-center text-center py-5">
+            <Col lg={8}>
+              <h1 className="display-4 fw-bold text-dark mb-4">
+                Post Not Found
+              </h1>
+              <p className="lead text-muted mb-4">
+                The blog post you&apos;re looking for doesn&apos;t exist or has been moved.
+              </p>
+              <Link href="/blog" className="btn btn-primary">
+                ← Back to Blog
+              </Link>
+            </Col>
+          </Row>
+        </Container>
+      </Layout>
+    )
   }
 
   return (

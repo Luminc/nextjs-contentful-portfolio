@@ -1,8 +1,10 @@
-import { Metadata } from 'next'
+'use client'
+
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Container, Row, Col, Card } from 'react-bootstrap'
 import Layout from '@/components/layout'
-import { getAllPosts, BlogPost } from '@/lib/blog'
+import { BlogPost } from '@/lib/blog'
 import { format } from 'date-fns'
 
 /**
@@ -10,19 +12,55 @@ import { format } from 'date-fns'
  * 
  * This page displays all published blog posts from the Obsidian vault.
  * Features:
- * - Server-side rendering for SEO
+ * - Client-side rendering with loading states
  * - Responsive card layout
  * - Post metadata (date, reading time, tags)
  * - Graceful handling when no posts exist
  */
 
-export const metadata: Metadata = {
-  title: 'Blog',
-  description: 'Thoughts, insights, and stories from Jeroen Kortekaas',
-}
+export default function BlogPage() {
+  const [posts, setPosts] = useState<BlogPost[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-export default async function BlogPage() {
-  const posts = await getAllPosts()
+  useEffect(() => {
+    fetch('/api/blog')
+      .then(res => res.json())
+      .then(data => {
+        setPosts(data)
+        setLoading(false)
+      })
+      .catch(err => {
+        setError(err.message)
+        setLoading(false)
+      })
+  }, [])
+
+  if (loading) {
+    return (
+      <Layout pageTitle="Blog">
+        <Container>
+          <div className="text-center py-5">
+            <div className="spinner-border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        </Container>
+      </Layout>
+    )
+  }
+
+  if (error) {
+    return (
+      <Layout pageTitle="Blog">
+        <Container>
+          <div className="alert alert-danger" role="alert">
+            Error loading blog posts: {error}
+          </div>
+        </Container>
+      </Layout>
+    )
+  }
 
   return (
     <Layout pageTitle="Blog">
