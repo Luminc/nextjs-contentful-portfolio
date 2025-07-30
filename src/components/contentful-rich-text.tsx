@@ -6,6 +6,23 @@ import Image from 'next/image'
 import slugify from '@sindresorhus/slugify'
 import { createImageUrl } from '@/lib/utils'
 
+/**
+ * RICH TEXT RENDERER SYSTEM
+ * 
+ * This component transforms Contentful's rich text content into React components.
+ * It provides custom rendering for all rich text elements with Bootstrap styling.
+ * 
+ * Key Features:
+ * - Automatic jump links for headings (creates anchor navigation)
+ * - Next.js Image optimization for embedded assets
+ * - Custom styling with Bootstrap classes
+ * - Handles all Contentful rich text node types
+ */
+
+/**
+ * Creates clickable anchor links for headings
+ * Used for in-page navigation - clicking a heading scrolls to that section
+ */
 const createJumpLink = (children: any) => {
   return (
     <a
@@ -17,7 +34,14 @@ const createJumpLink = (children: any) => {
   )
 }
 
+/**
+ * RENDERING OPTIONS CONFIGURATION
+ * 
+ * This object defines how each rich text element type gets rendered.
+ * It maps Contentful's rich text node types to React components with Bootstrap styling.
+ */
 const options = {
+  // Text formatting (inline styles)
   renderMark: {
     [MARKS.BOLD]: (text: any) => <b className="fw-bold">{text}</b>,
     [MARKS.ITALIC]: (text: any) => <i className="fst-italic">{text}</i>,
@@ -28,7 +52,9 @@ const options = {
       </code>
     ),
   },
+  // Block and inline elements
   renderNode: {
+    // External links - opens in new tab with security attributes
     [INLINES.HYPERLINK]: (node: any, children: any) => (
       <a
         href={node.data.uri}
@@ -39,6 +65,7 @@ const options = {
         {children}
       </a>
     ),
+    // Headings: H1 is plain, H2-H6 get automatic jump links for navigation
     [BLOCKS.HEADING_1]: (node: any, children: any) => (
       <h2 className="display-4 text-start fw-bold text-dark lh-sm mb-2">
         {children}
@@ -91,10 +118,12 @@ const options = {
       </blockquote>
     ),
     [BLOCKS.HR]: () => <hr className="mb-4" />,
+    // Embedded assets from Contentful (images, files, etc.)
     [BLOCKS.EMBEDDED_ASSET]: (node: any) => {
       const { file, description, title } = node.data.target.fields
       const imageUrl = createImageUrl(file.url)
       
+      // If it's an image, use Next.js Image component for optimization
       if (file.contentType?.startsWith('image/')) {
         return (
           <div className="mb-4">
@@ -103,13 +132,14 @@ const options = {
               alt={description || title || 'Embedded image'}
               width={file.details.image?.width || 800}
               height={file.details.image?.height || 600}
-              loading="lazy"
+              loading="lazy" // Lazy loading for performance
               className="img-fluid"
             />
           </div>
         )
       }
       
+      // For non-image files, create a download link
       return (
         <a href={imageUrl} target="_blank" rel="noopener noreferrer">
           {title || file.fileName}
