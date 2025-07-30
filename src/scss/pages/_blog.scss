@@ -104,27 +104,29 @@
     }
   }
 
-  // Large paragraph text for contemplative reading
+  // Consistent paragraph text with academic indentation
   p {
     font-family: $font;
-    font-size: 1.5rem; // Match project page paragraph size
+    font-size: 1.5rem; // Consistent body text size
     line-height: $line-height;
     color: $text-primary-dark;
     margin-bottom: 2rem;
+    text-indent: 2rem; // Book-style academic indentation
     
     @media screen and (max-width: 576px) {
-      font-size: 1.25rem; // Match responsive project typography
+      font-size: 1.25rem;
+      text-indent: 1.5rem;
     }
   }
 
-  // First paragraph gets special treatment (drop cap or larger text)
+  // First paragraph after headings has no indent (academic style)
+  h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p {
+    text-indent: 0; // No indent after headings
+  }
+  
+  // First paragraph of article has no indent
   p:first-of-type {
-    font-size: 1.7rem;
-    margin-bottom: 2.5rem;
-    
-    @media screen and (max-width: 576px) {
-      font-size: 1.4rem;
-    }
+    text-indent: 0; // Academic style: first paragraph no indent
   }
 
   // Links follow project page behavior
@@ -158,34 +160,24 @@
     }
   }
 
-  // Elegant blockquotes for philosophical content
+  // Clean academic blockquotes without graphic elements
   blockquote {
     border: none;
     background: none;
     margin: 3rem 0;
     padding: 0 3rem;
-    position: relative;
-    
-    &::before {
-      content: '"';
-      font-size: 6rem;
-      color: rgba($text-primary-dark, 0.1);
-      position: absolute;
-      top: -2rem;
-      left: 0;
-      font-family: $font;
-      font-weight: 200;
-    }
     
     p {
-      font-size: 1.8rem;
+      font-size: 1.5rem; // Consistent with body text
       font-style: italic;
       font-weight: 200;
       color: rgba($text-primary-dark, 0.8);
       margin-bottom: 1rem;
+      text-indent: 2rem; // Academic book-style indent
       
       @media screen and (max-width: 576px) {
-        font-size: 1.4rem;
+        font-size: 1.25rem;
+        text-indent: 1.5rem;
       }
       
       &:last-child {
@@ -244,7 +236,7 @@
     width: 100%;
     margin: 2rem 0;
     border-collapse: collapse;
-    font-size: 1.2rem;
+    font-size: 1.5rem; // Consistent with body text
     
     th, td {
       padding: 1rem;
@@ -291,7 +283,7 @@
     }
     
     .card-text {
-      font-size: 1.2rem;
+      font-size: 1.5rem; // Consistent with body text
       line-height: $line-height;
       color: rgba($text-primary-dark, 0.7);
     }

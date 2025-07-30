@@ -1,10 +1,12 @@
 ---
-title: "Welcome to the Blog"
+title: "Welcome to Writing"
 date: "2024-07-30"
-excerpt: "Introducing the new blog section of my portfolio, powered by Obsidian vault integration and Next.js."
-tags: ["announcement", "blog", "nextjs", "obsidian"]
+excerpt: "Introducing the writing section of my portfolio - a space for philosophical reflections and artistic explorations at the intersection of design and technology."
+tags: ["philosophy", "writing", "design", "technology", "creativity"]
 published: true
 author: "Jeroen Kortekaas"
+category: "reflection"
+readingTime: 4
 ---
 
 # Welcome to My Blog
