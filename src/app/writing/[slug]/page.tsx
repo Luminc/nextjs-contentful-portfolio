@@ -30,7 +30,7 @@ export default function BlogPostPage() {
   useEffect(() => {
     if (!slug) return
 
-    fetch(`/api/blog/${slug}`)
+    fetch(`/api/writing/${slug}`)
       .then(res => {
         if (!res.ok) {
           throw new Error('Post not found')
@@ -73,7 +73,7 @@ export default function BlogPostPage() {
               <p className="lead text-muted mb-4">
                 The blog post you&apos;re looking for doesn&apos;t exist or has been moved.
               </p>
-              <Link href="/blog" className="btn btn-primary">
+              <Link href="/writing" className="btn btn-primary">
                 ← Back to Writing
               </Link>
             </Col>
@@ -96,7 +96,7 @@ export default function BlogPostPage() {
             <Col lg={8}>
               {/* Back navigation */}
               <div className="mb-5">
-                <Link href="/blog" className="text-decoration-none" style={{ color: 'rgba(20, 20, 20, 0.5)' }}>
+                <Link href="/writing" className="text-decoration-none" style={{ color: 'rgba(20, 20, 20, 0.5)' }}>
                   ← Back to Writing
                 </Link>
               </div>
@@ -136,7 +136,7 @@ export default function BlogPostPage() {
               {/* Post footer */}
               <footer className="blog-post-nav">
                 <div className="d-flex justify-content-between align-items-center">
-                  <Link href="/blog" className="btn">
+                  <Link href="/writing" className="btn">
                     ← All Writing
                   </Link>
                   

@@ -27,7 +27,7 @@ export const Header = () => {
           </Link>
         </div>
         <div className="nav-links-item">
-          <Link href="/blog" className="nav-links-text">
+          <Link href="/writing" className="nav-links-text">
             Writing
           </Link>
         </div>

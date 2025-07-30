@@ -24,7 +24,7 @@ export default function BlogPage() {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    fetch('/api/blog')
+    fetch('/api/writing')
       .then(res => res.json())
       .then(data => {
         setPosts(data)
@@ -99,7 +99,7 @@ export default function BlogPage() {
                         </div>
                         
                         <Card.Title className="card-title mb-3">
-                          <Link href={`/blog/${post.slug}`}>
+                          <Link href={`/writing/${post.slug}`}>
                             {post.title}
                           </Link>
                         </Card.Title>
@@ -119,7 +119,7 @@ export default function BlogPage() {
                         )}
                         
                         <div className="mt-auto">
-                          <Link href={`/blog/${post.slug}`} className="btn">
+                          <Link href={`/writing/${post.slug}`} className="btn">
                             Read More →
                           </Link>
                         </div>
