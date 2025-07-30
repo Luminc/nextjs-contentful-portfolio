@@ -23,30 +23,41 @@ export default function NotFound() {
       <Container>
         <Row className="justify-content-center text-center py-5">
           <Col lg={8}>
-            {/* Large 404 display */}
-            <div className="display-1 mb-4" style={{ fontSize: '8rem', lineHeight: '1' }}>
+            {/* Large 404 display matching site typography */}
+            <div className="display-1 fw-bold text-dark mb-4" style={{ fontSize: '6rem', lineHeight: '1' }}>
               404
             </div>
             
-            {/* Main error message */}
-            <h1 className="display-4 fw-bold text-dark mb-4">
+            {/* Main error message using site's heading pattern */}
+            <h1 className="display-2 fw-bold text-dark lh-sm mb-4">
               Page Not Found
             </h1>
             
             {/* Descriptive message */}
-            <p className="lead text-muted mb-5">
+            <p className="lead text-muted mb-5 lh-lg">
               Sorry, the page you&apos;re looking for doesn&apos;t exist or has been moved. 
               Let&apos;s get you back on track.
             </p>
             
-            {/* Navigation options */}
-            <div className="d-flex flex-column flex-sm-row gap-3 justify-content-center">
-              <Link href="/" className="shape-pill large-button hot">
+            {/* Navigation options using site's button design */}
+            <div className="d-flex flex-column flex-sm-row gap-3 justify-content-center mb-5">
+              <Link href="/" className="shape-pill large-button hot" aria-label="Go back to homepage">
                 ← Back to Home
               </Link>
-              <Link href="/projects" className="shape-pill large-button hot">
+              <Link href="/projects" className="shape-pill large-button hot" aria-label="View all projects">
                 View Projects
               </Link>
+            </div>
+            
+            {/* Additional help text with site's typography */}
+            <div className="mt-4 pt-4 border-top">
+              <p className="text-muted lh-lg" style={{ fontSize: '0.95rem' }}>
+                If you believe this is an error, please{' '}
+                <Link href="/#contact" className="text-decoration-underline" style={{ color: 'inherit' }}>
+                  get in touch
+                </Link>
+                .
+              </p>
             </div>
           
           </Col>
