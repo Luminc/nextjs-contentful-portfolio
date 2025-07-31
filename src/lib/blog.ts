@@ -232,8 +232,8 @@ function extractLinkContext(content: string, linkTitle: string, postTitle: strin
           }
         }
         
-        // Generate text fragment for highlighting - use the actual link title for better matching
-        const textFragment = encodeURIComponent(linkTitle)
+        // Generate text fragment for highlighting - use a portion of the context for better matching
+        const textFragment = context.substring(0, 50).trim()
         
         return {
           context,
@@ -248,7 +248,7 @@ function extractLinkContext(content: string, linkTitle: string, postTitle: strin
   return {
     context: `Referenced in ${postTitle}`,
     lineNumber: 1,
-    textFragment: encodeURIComponent(`Referenced in ${postTitle}`)
+    textFragment: `Referenced in ${postTitle}`
   }
 }
 
@@ -280,7 +280,7 @@ function buildBacklinkMap(posts: BlogPost[]): Map<string, BacklinkContext[]> {
             context: `Referenced in ${post.title}`,
             anchorId: undefined,
             lineNumber: 1,
-            textFragment: encodeURIComponent(`Referenced in ${post.title}`)
+            textFragment: `Referenced in ${post.title}`
           }
           
           try {

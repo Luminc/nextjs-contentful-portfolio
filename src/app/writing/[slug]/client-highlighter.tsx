@@ -14,14 +14,32 @@ export default function ClientHighlighter({ post }: ClientHighlighterProps) {
     if (!window.getSelection) return false
 
     const contentElement = document.querySelector('.blog-content')
-    if (!contentElement) return false
+    if (!contentElement) {
+      console.log('Blog content element not found!')
+      return false
+    }
+    
+    // Debug: show first 200 chars of content
+    const contentText = contentElement.textContent || ''
+    console.log('Content preview:', contentText.substring(0, 200) + '...')
+    console.log('Content length:', contentText.length)
 
     // Clear any existing selection
     window.getSelection()?.removeAllRanges()
 
-    // Decode the URL-encoded text
-    const decodedText = decodeURIComponent(searchText)
-    console.log('Searching for text:', decodedText)
+    // Handle double URL encoding by decoding twice if needed
+    let decodedText = decodeURIComponent(searchText)
+    // Check if it still contains encoded characters and decode again
+    if (decodedText.includes('%')) {
+      try {
+        decodedText = decodeURIComponent(decodedText)
+        console.log('Double-decoded text:', decodedText)
+      } catch (e) {
+        console.log('Failed to double-decode, using single decode')
+      }
+    }
+    console.log('Final search text:', decodedText)
+    console.log('Original parameter:', searchText)
     
     // Use the native find functionality to locate and select text (if available)
     if ('find' in window && typeof (window as any).find === 'function') {
@@ -109,13 +127,20 @@ export default function ClientHighlighter({ post }: ClientHighlighterProps) {
     const urlParams = new URLSearchParams(window.location.search)
     const highlightParam = urlParams.get('highlight')
     
+    console.log('ClientHighlighter effect running, post:', !!post, 'highlightParam:', highlightParam)
+    
     if (highlightParam) {
-      console.log('Highlighting text:', highlightParam)
+      console.log('Raw highlight parameter:', highlightParam)
+      console.log('Current URL:', window.location.href)
+      
       // Wait for content to fully render
       setTimeout(() => {
+        console.log('Starting highlighting process...')
         const success = highlightTextInContent(highlightParam)
-        console.log('Highlighting success:', success)
-      }, 1500) // Increased timeout for slower connections
+        console.log('Highlighting result:', success)
+      }, 2000) // Increased timeout
+    } else {
+      console.log('No highlight parameter found')
     }
   }, [post, highlightTextInContent])
 
