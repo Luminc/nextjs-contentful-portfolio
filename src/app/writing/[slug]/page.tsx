@@ -141,10 +141,12 @@ export default function BlogPostPage() {
     const highlightParam = urlParams.get('highlight')
     
     if (highlightParam) {
+      console.log('Highlighting text:', highlightParam)
       // Wait for content to fully render
       setTimeout(() => {
-        highlightTextInContent(highlightParam)
-      }, 1000)
+        const success = highlightTextInContent(highlightParam)
+        console.log('Highlighting success:', success)
+      }, 1500) // Increased timeout for slower connections
     }
   }, [post, highlightTextInContent])
 
@@ -284,7 +286,7 @@ export default function BlogPostPage() {
                             </div>
                           </div>
                           <Link 
-                            href={`/writing/${backlink.slug}${backlink.anchorId ? `#${backlink.anchorId}` : ''}?highlight=${backlink.textFragment || ''}`}
+                            href={`/writing/${backlink.slug}${backlink.anchorId ? `#${backlink.anchorId}` : ''}?highlight=${encodeURIComponent(backlink.textFragment || backlink.context.substring(0, 50))}`}
                             className="backlink-context-link"
                             title="Click to view this excerpt in context"
                           >

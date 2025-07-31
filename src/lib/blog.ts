@@ -17,7 +17,21 @@ import slugify from '@sindresorhus/slugify'
  * - Converting markdown to HTML
  * - Generating slugs and metadata
  * - Sorting and filtering posts
+ * - Simple in-memory caching for performance
  */
+
+// Simple in-memory cache
+let postsCache: BlogPost[] | null = null
+let cacheTimestamp: number = 0
+const CACHE_TTL = process.env.NODE_ENV === 'production' ? 300000 : 60000 // 5 min in prod, 1 min in dev
+
+/**
+ * Clear the posts cache (useful for development)
+ */
+export function clearCache() {
+  postsCache = null
+  cacheTimestamp = 0
+}
 
 // Types for blog content
 export interface BlogPost {
@@ -340,8 +354,14 @@ function getAllMarkdownFiles(dir: string, baseDir: string = dir): string[] {
 /**
  * Get all blog posts from multiple content directories
  * Filters out unpublished posts in production
+ * Uses in-memory caching for performance
  */
 export async function getAllPosts(): Promise<BlogPost[]> {
+  // Check cache first
+  const now = Date.now()
+  if (postsCache && (now - cacheTimestamp) < CACHE_TTL) {
+    return postsCache
+  }
   const allPosts: BlogPost[] = []
   
   // Get posts from regular blog directory
@@ -382,7 +402,13 @@ export async function getAllPosts(): Promise<BlogPost[]> {
   })
 
   // Sort by date (newest first)
-  return validPosts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  const sortedPosts = validPosts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  
+  // Cache the results
+  postsCache = sortedPosts
+  cacheTimestamp = Date.now()
+  
+  return sortedPosts
 }
 
 /**
