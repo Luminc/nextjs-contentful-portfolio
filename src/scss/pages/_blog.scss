@@ -118,6 +118,16 @@
   }
 
   // Clean, minimal paragraph styling for maximum readability
+  
+  // Style Obsidian concept references from dark-intelligibility content
+  .concept-reference {
+    color: rgba($text-primary-dark, 0.8);
+    font-style: italic;
+    font-weight: 300;
+    text-decoration: none;
+    border-bottom: 1px dotted rgba($text-primary-dark, 0.3);
+    padding-bottom: 0.1em;
+  }
 
   // Links follow project page behavior
   a {

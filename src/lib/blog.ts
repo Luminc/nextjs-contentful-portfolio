@@ -41,32 +41,71 @@ export interface BlogMatter {
   author?: string
 }
 
-// Directory where blog content is stored (will be git submodule)
+// Directories where blog content is stored
 const BLOG_DIRECTORY = path.join(process.cwd(), 'src/content/blog')
+const DARK_INTELLIGIBILITY_DIRECTORY = path.join(process.cwd(), 'src/content/dark-intelligibility')
 
 /**
- * Get all blog posts from the content directory
+ * Recursively get all markdown files from a directory
+ */
+function getAllMarkdownFiles(dir: string, baseDir: string = dir): string[] {
+  if (!fs.existsSync(dir)) {
+    return []
+  }
+  
+  const files: string[] = []
+  const items = fs.readdirSync(dir)
+  
+  for (const item of items) {
+    const fullPath = path.join(dir, item)
+    const stat = fs.statSync(fullPath)
+    
+    if (stat.isDirectory()) {
+      // Recursively scan subdirectories
+      files.push(...getAllMarkdownFiles(fullPath, baseDir))
+    } else if (item.endsWith('.md')) {
+      // Store relative path from base directory
+      const relativePath = path.relative(baseDir, fullPath)
+      files.push(relativePath)
+    }
+  }
+  
+  return files
+}
+
+/**
+ * Get all blog posts from multiple content directories
  * Filters out unpublished posts in production
  */
 export async function getAllPosts(): Promise<BlogPost[]> {
-  // Check if blog directory exists (graceful degradation if submodule not initialized)
-  if (!fs.existsSync(BLOG_DIRECTORY)) {
-    console.warn('Blog directory not found. Initialize git submodule to enable blog features.')
-    return []
+  const allPosts: BlogPost[] = []
+  
+  // Get posts from regular blog directory
+  if (fs.existsSync(BLOG_DIRECTORY)) {
+    const blogFiles = fs.readdirSync(BLOG_DIRECTORY).filter(file => file.endsWith('.md'))
+    const blogPosts = await Promise.all(
+      blogFiles.map(async (filename) => {
+        const post = await getPostByFilename(filename, BLOG_DIRECTORY)
+        return post
+      })
+    )
+    allPosts.push(...blogPosts.filter((post): post is BlogPost => post !== null))
+  }
+  
+  // Get posts from dark-intelligibility repository
+  if (fs.existsSync(DARK_INTELLIGIBILITY_DIRECTORY)) {
+    const darkIntelFiles = getAllMarkdownFiles(DARK_INTELLIGIBILITY_DIRECTORY)
+    const darkIntelPosts = await Promise.all(
+      darkIntelFiles.map(async (relativePath) => {
+        const post = await getPostByFilename(relativePath, DARK_INTELLIGIBILITY_DIRECTORY, true)
+        return post
+      })
+    )
+    allPosts.push(...darkIntelPosts.filter((post): post is BlogPost => post !== null))
   }
 
-  const files = fs.readdirSync(BLOG_DIRECTORY)
-  const mdFiles = files.filter(file => file.endsWith('.md'))
-
-  const posts = await Promise.all(
-    mdFiles.map(async (filename) => {
-      const post = await getPostByFilename(filename)
-      return post
-    })
-  )
-
-  // Filter out null posts and unpublished posts in production
-  const validPosts = posts.filter((post): post is BlogPost => {
+  // Filter out unpublished posts in production
+  const validPosts = allPosts.filter((post): post is BlogPost => {
     if (!post) return false
     if (process.env.NODE_ENV === 'production' && post.published === false) return false
     return true
@@ -80,48 +119,64 @@ export async function getAllPosts(): Promise<BlogPost[]> {
  * Get a specific blog post by its slug
  */
 export async function getPost(slug: string): Promise<BlogPost | null> {
-  if (!fs.existsSync(BLOG_DIRECTORY)) {
-    return null
+  // First, try regular blog directory
+  if (fs.existsSync(BLOG_DIRECTORY)) {
+    const files = fs.readdirSync(BLOG_DIRECTORY)
+    const filename = files.find(file => {
+      const fileSlug = slugify(file.replace(/\.md$/, ''))
+      return fileSlug === slug
+    })
+    
+    if (filename) {
+      return await getPostByFilename(filename, BLOG_DIRECTORY)
+    }
   }
-
-  const files = fs.readdirSync(BLOG_DIRECTORY)
-  const filename = files.find(file => {
-    const fileSlug = slugify(file.replace(/\.md$/, ''))
-    return fileSlug === slug
-  })
-
-  if (!filename) return null
-
-  return await getPostByFilename(filename)
+  
+  // Then try dark-intelligibility directory
+  if (fs.existsSync(DARK_INTELLIGIBILITY_DIRECTORY)) {
+    const darkIntelFiles = getAllMarkdownFiles(DARK_INTELLIGIBILITY_DIRECTORY)
+    const filename = darkIntelFiles.find(file => {
+      const fileSlug = slugify(`dark-intel-${file.replace(/\.md$/, '').replace(/\//g, '-')}`)
+      return fileSlug === slug
+    })
+    
+    if (filename) {
+      return await getPostByFilename(filename, DARK_INTELLIGIBILITY_DIRECTORY, true)
+    }
+  }
+  
+  return null
 }
 
 /**
  * Load and process a blog post from a markdown file
  */
-async function getPostByFilename(filename: string): Promise<BlogPost | null> {
+async function getPostByFilename(filename: string, baseDir: string, isFromDarkIntel: boolean = false): Promise<BlogPost | null> {
   try {
-    const filePath = path.join(BLOG_DIRECTORY, filename)
+    const filePath = path.join(baseDir, filename)
     const fileContent = fs.readFileSync(filePath, 'utf-8')
     
     // Parse frontmatter and content
     const { data, content } = matter(fileContent)
     const frontmatter = data as BlogMatter
 
-    // Generate slug from filename
-    const slug = slugify(filename.replace(/\.md$/, ''))
+    // Generate slug from filename (use relative path for dark-intel files to avoid conflicts)
+    const slug = isFromDarkIntel 
+      ? slugify(`dark-intel-${filename.replace(/\.md$/, '').replace(/\//g, '-')}`)
+      : slugify(filename.replace(/\.md$/, ''))
 
-    // Process markdown content
-    const processedContent = await processMarkdown(content)
+    // Process markdown content (handle Obsidian wikilinks if from dark-intelligibility)
+    const processedContent = await processMarkdown(content, isFromDarkIntel)
 
     // Calculate reading time (rough estimate: 200 words per minute)
     const wordCount = content.split(/\s+/).length
     const readingTime = Math.ceil(wordCount / 200)
 
     // Use frontmatter title or derive from filename
-    const title = frontmatter.title || filename.replace(/\.md$/, '').replace(/-/g, ' ')
+    const title = frontmatter.title || path.basename(filename, '.md').replace(/-/g, ' ')
 
     // Use frontmatter date or file modification date
-    const date = frontmatter.date || getFileDate(path.join(BLOG_DIRECTORY, filename))
+    const date = frontmatter.date || getFileDate(filePath)
 
     return {
       slug,
@@ -129,7 +184,7 @@ async function getPostByFilename(filename: string): Promise<BlogPost | null> {
       date,
       content: processedContent,
       excerpt: frontmatter.excerpt || generateExcerpt(content),
-      topics: frontmatter.topics || [],
+      topics: frontmatter.topics || (isFromDarkIntel ? ['dark-intelligibility'] : []),
       published: frontmatter.published !== false, // Default to published
       readingTime,
       author: frontmatter.author || 'Jeroen Kortekaas'
@@ -143,15 +198,28 @@ async function getPostByFilename(filename: string): Promise<BlogPost | null> {
 /**
  * Process markdown content with Obsidian-style features
  */
-async function processMarkdown(content: string): Promise<string> {
-  // Process Obsidian-style [[wikilinks]] (convert to regular links)
-  const processedContent = content.replace(
-    /\[\[([^\]]+)\]\]/g, 
-    (match, linkText) => {
-      const slug = slugify(linkText)
-      return `[${linkText}](/blog/${slug})`
-    }
-  )
+async function processMarkdown(content: string, isFromDarkIntel: boolean = false): Promise<string> {
+  let processedContent = content
+  
+  if (isFromDarkIntel) {
+    // Process Obsidian-style [[wikilinks]] (convert to spans for now, since internal links won't work)
+    processedContent = content.replace(
+      /\[\[([^\]]+)\]\]/g, 
+      (match, linkText) => {
+        // For now, just style them as concept references
+        return `<em class="concept-reference">${linkText}</em>`
+      }
+    )
+  } else {
+    // Process Obsidian-style [[wikilinks]] (convert to regular links)
+    processedContent = content.replace(
+      /\[\[([^\]]+)\]\]/g, 
+      (match, linkText) => {
+        const slug = slugify(linkText)
+        return `[${linkText}](/writing/${slug})`
+      }
+    )
+  }
 
   // Convert markdown to HTML
   const result = await remark()

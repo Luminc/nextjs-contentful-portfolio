@@ -1,0 +1,3 @@
+[submodule "src/content/dark-intelligibility"]
+	path = src/content/dark-intelligibility
+	url = https://github.com/Luminc/dark-intelligibility.git
