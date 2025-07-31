@@ -9,6 +9,29 @@ interface ClientHighlighterProps {
   }
 }
 
+// Helper function to extract titles from parentheses
+function extractTitleFromParentheses(text: string): string[] {
+  const results: string[] = []
+  
+  // Match text in parentheses like "(The Poison, the Purge"
+  const parenMatch = text.match(/\(([^)]+)/g)
+  if (parenMatch) {
+    parenMatch.forEach(match => {
+      const title = match.substring(1).trim() // Remove opening parenthesis
+      if (title.length > 3) {
+        results.push(title)
+        // Also try with common title patterns
+        if (title.includes(',')) {
+          const parts = title.split(',').map(p => p.trim())
+          results.push(...parts.filter(p => p.length > 3))
+        }
+      }
+    })
+  }
+  
+  return results
+}
+
 export default function ClientHighlighter({ post }: ClientHighlighterProps) {
   const searchParams = useSearchParams()
   const pathname = usePathname()
@@ -41,8 +64,15 @@ export default function ClientHighlighter({ post }: ClientHighlighterProps) {
         console.log('Failed to double-decode, using single decode')
       }
     }
-    console.log('Final search text:', decodedText)
+    
+    // Clean up the search text - remove trailing punctuation that might cause issues
+    const cleanedText = decodedText.replace(/[.,;!?]+$/, '').trim()
+    console.log('Final search text:', cleanedText)
     console.log('Original parameter:', searchText)
+    console.log('Text after cleaning:', cleanedText)
+    
+    // Use the cleaned text for searching
+    decodedText = cleanedText
     
     // Use the native find functionality to locate and select text (if available)
     if ('find' in window && typeof (window as any).find === 'function') {
@@ -121,6 +151,10 @@ export default function ClientHighlighter({ post }: ClientHighlighterProps) {
       words.slice(0, Math.min(4, words.length)).join(' '), // Up to 4 words
       words.slice(0, Math.min(3, words.length)).join(' '), // Up to 3 words
       words.slice(0, 2).join(' '), // First 2 words
+      
+      // Try to extract just the title in parentheses if present
+      ...extractTitleFromParentheses(decodedText),
+      
       words[0], // First word only
       // Character-based fallbacks as last resort
       decodedText.substring(0, 30).trim(),
