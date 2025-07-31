@@ -2,7 +2,7 @@
 title: "Gift and Debt: The Giftedness of Being and Our Response"
 date: "2024-07-30"
 excerpt: "Exploring the fundamental debt inherent in our being-given-being, from birthday cake rituals to the vulnerable openness required for authentic compassion and self-love."
-tags: ["philosophy", "being", "gift", "debt", "vulnerability", "compassion", "ontology", "spirituality"]
+topics: ["philosophy", "being", "gift", "debt", "vulnerability", "compassion", "ontology", "spirituality"]
 published: true
 author: "Jeroen Kortekaas"
 category: "philosophy"

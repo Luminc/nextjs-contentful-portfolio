@@ -26,7 +26,7 @@ export interface BlogPost {
   date: string
   excerpt?: string
   content: string
-  tags?: string[]
+  topics?: string[]
   published?: boolean
   readingTime?: number
   author?: string
@@ -35,7 +35,7 @@ export interface BlogPost {
 export interface BlogMatter {
   title?: string
   date?: string
-  tags?: string[]
+  topics?: string[]
   published?: boolean
   excerpt?: string
   author?: string
@@ -129,7 +129,7 @@ async function getPostByFilename(filename: string): Promise<BlogPost | null> {
       date,
       content: processedContent,
       excerpt: frontmatter.excerpt || generateExcerpt(content),
-      tags: frontmatter.tags || [],
+      topics: frontmatter.topics || [],
       published: frontmatter.published !== false, // Default to published
       readingTime,
       author: frontmatter.author || 'Jeroen Kortekaas'
@@ -186,23 +186,23 @@ function getFileDate(filePath: string): string {
 }
 
 /**
- * Get all unique tags from blog posts
+ * Get all unique topics from blog posts
  */
-export async function getAllTags(): Promise<string[]> {
+export async function getAllTopics(): Promise<string[]> {
   const posts = await getAllPosts()
-  const tagSet = new Set<string>()
+  const topicSet = new Set<string>()
   
   posts.forEach(post => {
-    post.tags?.forEach(tag => tagSet.add(tag))
+    post.topics?.forEach(topic => topicSet.add(topic))
   })
   
-  return Array.from(tagSet).sort()
+  return Array.from(topicSet).sort()
 }
 
 /**
- * Get posts filtered by tag
+ * Get posts filtered by topic
  */
-export async function getPostsByTag(tag: string): Promise<BlogPost[]> {
+export async function getPostsByTopic(topic: string): Promise<BlogPost[]> {
   const posts = await getAllPosts()
-  return posts.filter(post => post.tags?.includes(tag))
+  return posts.filter(post => post.topics?.includes(topic))
 }

@@ -116,15 +116,6 @@ export default function BlogPostPage() {
                   </span>
                 </div>
 
-                {post.tags && post.tags.length > 0 && (
-                  <div className="blog-tags mb-5">
-                    {post.tags.map((tag) => (
-                      <span key={tag} className="badge me-2 mb-1">
-                        #{tag}
-                      </span>
-                    ))}
-                  </div>
-                )}
               </header>
 
               {/* Post content */}
@@ -132,6 +123,15 @@ export default function BlogPostPage() {
                 className="blog-content"
                 dangerouslySetInnerHTML={{ __html: post.content }}
               />
+
+              {/* Topics colophon */}
+              {post.topics && post.topics.length > 0 && (
+                <div className="post-colophon">
+                  <div className="colophon-topics">
+                    {post.topics.join(', ')}
+                  </div>
+                </div>
+              )}
 
               {/* Post footer */}
               <footer className="blog-post-nav">

@@ -108,15 +108,6 @@ export default function BlogPage() {
                           {post.excerpt}
                         </Card.Text>
                         
-                        {post.tags && post.tags.length > 0 && (
-                          <div className="blog-tags mb-3">
-                            {post.tags.map((tag) => (
-                              <span key={tag} className="badge me-2 mb-1">
-                                #{tag}
-                              </span>
-                            ))}
-                          </div>
-                        )}
                         
                         <div className="mt-auto">
                           <Link href={`/writing/${post.slug}`} className="btn">

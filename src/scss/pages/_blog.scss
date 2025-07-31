@@ -284,30 +284,31 @@
   }
 }
 
-// Tag styling with brand colors
-.blog-tags {
-  .badge {
-    background-color: transparent !important;
-    border: 1px solid rgba($text-primary-dark, 0.2);
-    color: $text-primary-dark !important;
+
+// Minimal colophon for topics (inspired by e-flux)
+.post-colophon {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba($text-primary-dark, 0.08);
+  
+  .colophon-topics {
+    font-family: $font;
+    font-size: 1rem;
     font-weight: 200;
-    font-size: 0.9rem;
-    padding: 0.4rem 0.8rem;
-    border-radius: 0;
+    color: rgba($text-primary-dark, 0.6);
+    line-height: 1.6;
+    font-style: italic;
     
-    &:hover {
-      background-color: $color-primary !important;
-      color: $text-primary-dark !important;
-      border-color: $color-primary;
+    @media screen and (max-width: 576px) {
+      font-size: 0.9rem;
     }
   }
 }
 
 // Post navigation
 .blog-post-nav {
-  margin-top: 4rem;
+  margin-top: 3rem;
   padding-top: 2rem;
-  border-top: 1px solid rgba($text-primary-dark, 0.1);
   
   .btn {
     font-family: $font;
