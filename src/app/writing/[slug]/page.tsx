@@ -1,22 +1,24 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { Container, Row, Col } from 'react-bootstrap'
 import Layout from '@/components/layout'
 import { BlogPost, BacklinkContext } from '@/lib/blog'
 import { format } from 'date-fns'
+import ClientHighlighter from './client-highlighter'
+import BacklinksSection from './backlinks-section'
 
 /**
  * INDIVIDUAL BLOG POST PAGE
  * 
  * This page displays a single blog post with:
- * - Client-side rendering with loading states
+ * - Client-side rendering with optimized caching
  * - Full markdown content rendered as HTML
  * - Post metadata and navigation
  * - Responsive typography
- * - Back to blog navigation
+ * - Native text selection highlighting
  */
 
 export default function BlogPostPage() {
@@ -25,7 +27,6 @@ export default function BlogPostPage() {
   
   const [post, setPost] = useState<BlogPost | null>(null)
   const [backlinks, setBacklinks] = useState<BacklinkContext[]>([])
-  const [showBacklinks, setShowBacklinks] = useState(false)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -54,101 +55,6 @@ export default function BlogPostPage() {
         setLoading(false)
       })
   }, [slug])
-
-  // Custom text highlighting system
-  const highlightTextInContent = useCallback((searchText: string) => {
-    const contentElement = document.querySelector('.blog-content')
-    if (!contentElement) return false
-
-    // Decode the URL-encoded text
-    const decodedText = decodeURIComponent(searchText)
-    
-    // Remove existing highlights
-    const existingHighlights = contentElement.querySelectorAll('.custom-highlight')
-    existingHighlights.forEach(el => {
-      const parent = el.parentNode
-      if (parent) {
-        parent.replaceChild(document.createTextNode(el.textContent || ''), el)
-        parent.normalize()
-      }
-    })
-
-    // Find and highlight the text
-    const walker = document.createTreeWalker(
-      contentElement,
-      NodeFilter.SHOW_TEXT,
-      null
-    )
-
-    const textNodes: Text[] = []
-    let node
-    while (node = walker.nextNode()) {
-      textNodes.push(node as Text)
-    }
-
-    for (const textNode of textNodes) {
-      const text = textNode.textContent || ''
-      const lowerText = text.toLowerCase()
-      const lowerSearch = decodedText.toLowerCase()
-      
-      const index = lowerText.indexOf(lowerSearch)
-      if (index !== -1) {
-        // Split the text and wrap the matching part
-        const beforeText = text.substring(0, index)
-        const matchText = text.substring(index, index + decodedText.length)
-        const afterText = text.substring(index + decodedText.length)
-        
-        const span = document.createElement('span')
-        span.className = 'custom-highlight'
-        span.textContent = matchText
-        
-        const parent = textNode.parentNode
-        if (parent) {
-          if (beforeText) parent.insertBefore(document.createTextNode(beforeText), textNode)
-          parent.insertBefore(span, textNode)
-          if (afterText) parent.insertBefore(document.createTextNode(afterText), textNode)
-          parent.removeChild(textNode)
-          
-          // Scroll to and animate the highlight
-          setTimeout(() => {
-            span.scrollIntoView({ 
-              behavior: 'smooth', 
-              block: 'center',
-              inline: 'nearest' 
-            })
-            span.classList.add('highlight-animate')
-          }, 100)
-          
-          return true
-        }
-      }
-    }
-    
-    // Fallback: try to find just the first few words if exact match fails
-    if (decodedText.length > 10) {
-      const fallbackSearch = decodedText.substring(0, 15).trim()
-      return highlightTextInContent(fallbackSearch)
-    }
-    
-    return false
-  }, [])
-
-  // Handle highlighting when page loads
-  useEffect(() => {
-    if (!post || !post.content) return
-
-    const urlParams = new URLSearchParams(window.location.search)
-    const highlightParam = urlParams.get('highlight')
-    
-    if (highlightParam) {
-      console.log('Highlighting text:', highlightParam)
-      // Wait for content to fully render
-      setTimeout(() => {
-        const success = highlightTextInContent(highlightParam)
-        console.log('Highlighting success:', success)
-      }, 1500) // Increased timeout for slower connections
-    }
-  }, [post, highlightTextInContent])
 
   if (loading) {
     return (
@@ -185,6 +91,7 @@ export default function BlogPostPage() {
       </Layout>
     )
   }
+
 
   return (
     <Layout>
@@ -245,66 +152,7 @@ export default function BlogPostPage() {
               )}
 
               {/* Rhizomatic Backlinks Dropdown */}
-              {backlinks.length > 0 && (
-                <div className="post-backlinks">
-                  <div 
-                    className="backlinks-toggle"
-                    onClick={() => setShowBacklinks(!showBacklinks)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    <h6 className="backlinks-heading">
-                      <span className="toggle-icon">
-                        {showBacklinks ? '▼' : '▶'}
-                      </span>
-                      Referenced By ({backlinks.length})
-                    </h6>
-                  </div>
-                  
-                  {showBacklinks && (
-                    <div className="backlinks-dropdown">
-                      {backlinks.map((backlink) => (
-                        <div key={backlink.slug} className="backlink-card">
-                          <div className="backlink-header">
-                            <Link 
-                              href={`/writing/${backlink.slug}${backlink.anchorId ? `#${backlink.anchorId}` : ''}`} 
-                              className="backlink-title"
-                              title={`Go to ${backlink.title}${backlink.anchorId ? ` (${backlink.anchorId})` : ''}`}
-                            >
-                              {backlink.title}
-                            </Link>
-                            <div className="backlink-meta">
-                              {backlink.folderPath && (
-                                <span className="backlink-folder">
-                                  {backlink.folderPath}
-                                </span>
-                              )}
-                              {backlink.lineNumber && (
-                                <span className="backlink-line">
-                                  Line {backlink.lineNumber}
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                          <Link 
-                            href={`/writing/${backlink.slug}${backlink.anchorId ? `#${backlink.anchorId}` : ''}?highlight=${encodeURIComponent(backlink.textFragment || backlink.context.substring(0, 50))}`}
-                            className="backlink-context-link"
-                            title="Click to view this excerpt in context"
-                          >
-                            <div className="backlink-context">
-                              &ldquo;{backlink.context}&rdquo;
-                            </div>
-                          </Link>
-                          {backlink.excerpt && backlink.excerpt !== backlink.context && (
-                            <div className="backlink-excerpt">
-                              {backlink.excerpt}
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
+              <BacklinksSection backlinks={backlinks} />
 
               {/* Post footer */}
               <footer className="blog-post-nav">
@@ -322,6 +170,9 @@ export default function BlogPostPage() {
           </Row>
         </Container>
       </div>
+      
+      {/* Client-side highlighting functionality */}
+      <ClientHighlighter post={post} />
     </Layout>
   )
 }

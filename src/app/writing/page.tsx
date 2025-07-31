@@ -12,7 +12,7 @@ import { format } from 'date-fns'
  * 
  * This page displays all published blog posts from the Obsidian vault.
  * Features:
- * - Client-side rendering with loading states
+ * - Client-side rendering with optimized caching
  * - Responsive card layout
  * - Post metadata (date, reading time, tags)
  * - Graceful handling when no posts exist
@@ -55,7 +55,7 @@ export default function BlogPage() {
       <Layout pageTitle="Writing">
         <Container>
           <div className="alert alert-danger" role="alert">
-            Error loading blog posts: {error}
+            Error loading posts: {error}
           </div>
         </Container>
       </Layout>
@@ -66,59 +66,86 @@ export default function BlogPage() {
     <Layout pageTitle="Writing">
       <div className="blog-page">
         <Container>
+          <Row className="justify-content-center mb-5">
+            <Col lg={10} className="text-center">
+              <h1 className="display-1 mb-4">Writing</h1>
+              <p className="lead" style={{ fontSize: '1.3rem', color: 'rgba(20, 20, 20, 0.7)' }}>
+                Philosophical explorations, contemplative fragments, and interconnected thoughts from the dark-intelligibility vault.
+              </p>
+              <div className="d-flex justify-content-center gap-3 mt-4">
+                <Link href="/writing/vault" className="btn btn-outline-dark">
+                  📁 Explore Vault
+                </Link>
+              </div>
+            </Col>
+          </Row>
+
           {posts.length === 0 ? (
             <Row className="justify-content-center text-center py-5">
               <Col lg={8}>
+                <h2 className="h4 mb-4">No Posts Available</h2>
                 <p className="lead text-muted mb-4">
-                  No blog posts available yet. The blog content will appear here once the Obsidian vault is connected.
+                  The writing vault appears to be empty or the dark-intelligibility repository hasn&apos;t been initialized yet.
                 </p>
-                <div className="alert alert-info">
-                  <strong>Development Note:</strong> Initialize the git submodule with your Obsidian vault to see blog posts.
-                  <br />
-                  <code>git submodule add [your-blog-repo-url] src/content/blog</code>
-                </div>
               </Col>
             </Row>
           ) : (
             <div className="blog-index">
-              <Row className="justify-content-center mb-5">
-                <Col lg={8} className="text-center">
-                  <p className="lead" style={{ fontSize: '1.3rem', color: 'rgba(20, 20, 20, 0.7)' }}>
-                    Philosophical reflections and artistic explorations from the intersection of design and technology.
-                  </p>
-                  <div className="mt-4">
-                    <Link href="/writing/vault" className="btn btn-outline-primary">
-                      Explore Knowledge Vault →
-                    </Link>
-                  </div>
-                </Col>
-              </Row>
-              
-              <Row>
+              <Row className="gy-4">
                 {posts.map((post) => (
-                  <Col key={post.slug} lg={6} className="mb-5">
-                    <Card className="blog-card h-100">
-                      <Card.Body className="d-flex flex-column p-4">
-                        <div className="blog-meta mb-3">
-                          {format(new Date(post.date), 'MMMM d, yyyy')} • {post.readingTime} min read
+                  <Col lg={6} key={post.slug}>
+                    <Card className="h-100 blog-card shadow-sm">
+                      <Card.Body className="d-flex flex-column">
+                        <div className="mb-3">
+                          <Card.Title className="h4 mb-2">
+                            <Link href={`/writing/${post.slug}`} className="text-decoration-none">
+                              {post.title}
+                            </Link>
+                          </Card.Title>
+                          <div className="blog-meta small text-muted mb-3">
+                            {format(new Date(post.date), 'MMMM d, yyyy')} • {post.readingTime}min read
+                            {post.folderPath && (
+                              <>
+                                {' • '}
+                                <Link 
+                                  href={`/writing/folder/${encodeURIComponent(post.folderPath)}`}
+                                  className="text-muted text-decoration-none"
+                                >
+                                  📁 {post.folderPath}
+                                </Link>
+                              </>
+                            )}
+                            {post.backlinks && post.backlinks.length > 0 && (
+                              <> • {post.backlinks.length} connection{post.backlinks.length !== 1 ? 's' : ''}</>
+                            )}
+                          </div>
                         </div>
                         
-                        <Card.Title className="card-title mb-3">
-                          <Link href={`/writing/${post.slug}`}>
-                            {post.title}
-                          </Link>
-                        </Card.Title>
-                        
-                        <Card.Text className="card-text mb-4 flex-grow-1">
+                        <Card.Text className="flex-grow-1 mb-3">
                           {post.excerpt}
                         </Card.Text>
-                        
-                        
-                        <div className="mt-auto">
-                          <Link href={`/writing/${post.slug}`} className="btn">
-                            Read More →
-                          </Link>
-                        </div>
+
+                        {post.topics && post.topics.length > 0 && (
+                          <div className="mt-auto">
+                            <div className="d-flex flex-wrap gap-1">
+                              {post.topics.slice(0, 3).map((topic) => (
+                                <Link
+                                  key={topic}
+                                  href={`/writing/topic/${topic.toLowerCase().replace(/\s+/g, '-')}`}
+                                  className="badge bg-light text-dark text-decoration-none"
+                                  style={{ fontSize: '0.75rem' }}
+                                >
+                                  {topic}
+                                </Link>
+                              ))}
+                              {post.topics.length > 3 && (
+                                <span className="badge bg-light text-muted" style={{ fontSize: '0.75rem' }}>
+                                  +{post.topics.length - 3} more
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        )}
                       </Card.Body>
                     </Card>
                   </Col>
