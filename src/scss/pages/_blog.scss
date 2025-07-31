@@ -481,3 +481,103 @@
     }
   }
 }
+
+// Interactive vault explorer
+.vault-explorer {
+  background: rgba($text-primary-dark, 0.02);
+  border: 1px solid rgba($text-primary-dark, 0.08);
+  border-radius: 4px;
+  padding: 1.5rem;
+  
+  .vault-folder {
+    margin-bottom: 0.5rem;
+    
+    .folder-header {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+      user-select: none;
+      
+      &:hover {
+        background: rgba($color-primary, 0.1);
+      }
+      
+      .folder-icon {
+        margin-right: 0.75rem;
+        font-size: 1.2rem;
+      }
+      
+      .folder-name {
+        font-family: $font;
+        font-weight: 400;
+        font-size: 1.1rem;
+        color: $text-primary-dark;
+        flex-grow: 1;
+      }
+      
+      .folder-count {
+        font-size: 0.9rem;
+        color: rgba($text-primary-dark, 0.6);
+        margin-left: 0.5rem;
+      }
+      
+      .expand-icon {
+        margin-left: auto;
+        color: rgba($text-primary-dark, 0.5);
+        font-size: 0.8rem;
+        transition: transform 0.2s ease;
+      }
+    }
+    
+    .folder-contents {
+      margin-top: 0.5rem;
+      border-left: 2px solid rgba($text-primary-dark, 0.1);
+      margin-left: 1rem;
+      
+      .vault-file {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        transition: background 0.2s ease;
+        
+        &:hover {
+          background: rgba($text-primary-dark, 0.03);
+        }
+        
+        .file-icon {
+          margin-right: 0.75rem;
+          font-size: 1rem;
+          opacity: 0.7;
+        }
+        
+        .file-link {
+          font-family: $font;
+          font-weight: 300;
+          font-size: 1rem;
+          color: $text-primary-dark !important;
+          text-decoration: none !important;
+          flex-grow: 1;
+          
+          &:hover {
+            color: $color-primary !important;
+            text-decoration: underline !important;
+          }
+        }
+        
+        .file-meta {
+          margin-left: auto;
+          font-size: 0.85rem;
+          color: rgba($text-primary-dark, 0.5);
+          
+          .backlink-count {
+            color: rgba($color-primary, 0.8);
+            font-weight: 400;
+          }
+        }
+      }
+    }
+  }
+}

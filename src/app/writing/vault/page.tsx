@@ -2,26 +2,37 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { Container, Row, Col, Card } from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap'
 import Layout from '@/components/layout'
+import { BlogPost } from '@/lib/blog'
 
 /**
  * VAULT OVERVIEW PAGE
  * 
- * This page displays the folder structure of the dark-intelligibility vault.
+ * Interactive folder explorer with expandable dropdowns.
  * Features:
- * - Hierarchical folder navigation
- * - File counts per folder
- * - Clean, organized layout
- * - Direct links to folder browsing
+ * - Expandable folder tree navigation
+ * - Inline content preview
+ * - Direct links to individual posts
+ * - Hierarchical organization
  */
 
 interface FolderStructure {
   [key: string]: string[]
 }
 
+interface ExpandedFolders {
+  [key: string]: boolean
+}
+
+interface FolderContents {
+  [key: string]: BlogPost[]
+}
+
 export default function VaultPage() {
   const [folderStructure, setFolderStructure] = useState<FolderStructure>({})
+  const [expandedFolders, setExpandedFolders] = useState<ExpandedFolders>({})
+  const [folderContents, setFolderContents] = useState<FolderContents>({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -43,21 +54,51 @@ export default function VaultPage() {
       })
   }, [])
 
-  // Organize folders by hierarchy
+  // Toggle folder expansion and load content if needed
+  const toggleFolder = async (folderPath: string) => {
+    const isExpanded = expandedFolders[folderPath]
+    
+    setExpandedFolders(prev => ({
+      ...prev,
+      [folderPath]: !isExpanded
+    }))
+    
+    // Load folder contents if expanding and not already loaded
+    if (!isExpanded && !folderContents[folderPath]) {
+      try {
+        const response = await fetch(`/api/writing/folder/${encodeURIComponent(folderPath)}`)
+        if (response.ok) {
+          const posts = await response.json()
+          setFolderContents(prev => ({
+            ...prev,
+            [folderPath]: posts
+          }))
+        }
+      } catch (error) {
+        console.error('Failed to load folder contents:', error)
+      }
+    }
+  }
+
+  // Organize folders hierarchically
   const organizeFolders = (structure: FolderStructure) => {
-    const organized: { [key: string]: { files: string[], subfolders: string[] } } = {}
+    const mainFolders: string[] = []
+    const subFolders: { [key: string]: string[] } = {}
     
     Object.keys(structure).forEach(folderPath => {
       const parts = folderPath.split('/')
-      const folderName = parts[parts.length - 1] || 'Root'
-      
-      organized[folderPath] = {
-        files: structure[folderPath],
-        subfolders: []
+      if (parts.length === 1) {
+        mainFolders.push(folderPath)
+      } else {
+        const parent = parts[0]
+        if (!subFolders[parent]) {
+          subFolders[parent] = []
+        }
+        subFolders[parent].push(folderPath)
       }
     })
     
-    return organized
+    return { mainFolders: mainFolders.sort(), subFolders }
   }
 
   if (loading) {
@@ -89,16 +130,66 @@ export default function VaultPage() {
     )
   }
 
-  const organizedFolders = organizeFolders(folderStructure)
-  const folderEntries = Object.entries(organizedFolders)
-    .sort(([a], [b]) => a.localeCompare(b))
+  const { mainFolders, subFolders } = organizeFolders(folderStructure)
+
+  // Render folder with expandable content
+  const renderFolder = (folderPath: string, level: number = 0) => {
+    const folderName = folderPath.split('/').pop() || 'Root'
+    const displayName = folderName.replace(/^\d+\s*/, '') // Remove number prefix
+    const isExpanded = expandedFolders[folderPath]
+    const contents = folderContents[folderPath] || []
+    const fileCount = folderStructure[folderPath]?.length || 0
+    const hasSubfolders = subFolders[folderPath]?.length > 0
+
+    return (
+      <div key={folderPath} className={`vault-folder level-${level}`}>
+        <div 
+          className="folder-header"
+          onClick={() => toggleFolder(folderPath)}
+          style={{ cursor: 'pointer', paddingLeft: `${level * 1.5}rem` }}
+        >
+          <span className="folder-icon">
+            {isExpanded ? '📂' : '📁'}
+          </span>
+          <span className="folder-name">{displayName}</span>
+          <span className="folder-count">({fileCount})</span>
+          <span className="expand-icon">
+            {isExpanded ? '▼' : '▶'}
+          </span>
+        </div>
+        
+        {isExpanded && (
+          <div className="folder-contents">
+            {contents.map(post => (
+              <div key={post.slug} className="vault-file" style={{ paddingLeft: `${(level + 1) * 1.5}rem` }}>
+                <span className="file-icon">📄</span>
+                <Link href={`/writing/${post.slug}`} className="file-link">
+                  {post.title}
+                </Link>
+                <span className="file-meta">
+                  {post.readingTime}min
+                  {post.backlinks && post.backlinks.length > 0 && (
+                    <span className="backlink-count"> • {post.backlinks.length} refs</span>
+                  )}
+                </span>
+              </div>
+            ))}
+            
+            {hasSubfolders && subFolders[folderPath]?.map(subPath => 
+              renderFolder(subPath, level + 1)
+            )}
+          </div>
+        )}
+      </div>
+    )
+  }
 
   return (
     <Layout pageTitle="Knowledge Vault">
       <div className="blog-page">
         <Container>
           <Row className="justify-content-center mb-4">
-            <Col lg={8}>
+            <Col lg={10}>
               <Link href="/writing" className="text-decoration-none" style={{ color: 'rgba(20, 20, 20, 0.5)' }}>
                 ← Back to Writing
               </Link>
@@ -106,14 +197,14 @@ export default function VaultPage() {
           </Row>
 
           <Row className="justify-content-center mb-5">
-            <Col lg={8} className="text-center">
+            <Col lg={10} className="text-center">
               <p className="lead" style={{ fontSize: '1.3rem', color: 'rgba(20, 20, 20, 0.7)' }}>
-                Explore the organized structure of philosophical concepts, thinkers, and reflections.
+                Interactive exploration of the philosophical knowledge base. Click folders to expand and explore content.
               </p>
             </Col>
           </Row>
 
-          {folderEntries.length === 0 ? (
+          {Object.keys(folderStructure).length === 0 ? (
             <Row className="justify-content-center text-center py-5">
               <Col lg={8}>
                 <p className="lead text-muted mb-4">
@@ -125,35 +216,14 @@ export default function VaultPage() {
               </Col>
             </Row>
           ) : (
-            <Row>
-              {folderEntries.map(([folderPath, { files }]) => {
-                const folderName = folderPath.split('/').pop() || 'Root'
-                const displayName = folderName.replace(/^\d+\s*/, '') // Remove number prefix
-                
-                return (
-                  <Col key={folderPath} lg={4} md={6} className="mb-4">
-                    <Card className="folder-card h-100">
-                      <Card.Body className="d-flex flex-column p-4">
-                        <Card.Title className="folder-title mb-3">
-                          <Link href={`/writing/folder/${encodeURIComponent(folderPath)}`}>
-                            📁 {displayName}
-                          </Link>
-                        </Card.Title>
-                        
-                        <Card.Text className="folder-description mb-4 flex-grow-1">
-                          {files.length} {files.length === 1 ? 'item' : 'items'}
-                        </Card.Text>
-                        
-                        <div className="mt-auto">
-                          <Link href={`/writing/folder/${encodeURIComponent(folderPath)}`} className="btn btn-sm">
-                            Browse →
-                          </Link>
-                        </div>
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                )
-              })}
+            <Row className="justify-content-center">
+              <Col lg={10}>
+                <div className="vault-explorer">
+                  {mainFolders.map(folderPath => renderFolder(folderPath, 0))}
+                  {/* Handle root level files if any */}
+                  {folderStructure['.'] && folderStructure['.'].length > 0 && renderFolder('.', 0)}
+                </div>
+              </Col>
             </Row>
           )}
         </Container>
