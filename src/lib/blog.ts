@@ -165,6 +165,7 @@ function extractLinkContext(content: string, linkTitle: string, postTitle: strin
         // Found the link! Now extract meaningful context
         let context = ''
         let anchorId: string | undefined
+        let originalTextForHighlighting = ''
         
         // Check if we're in a heading - if so, include it for anchor linking
         if (line.match(/^#+\s/)) {
@@ -172,6 +173,7 @@ function extractLinkContext(content: string, linkTitle: string, postTitle: strin
           if (headingMatch) {
             anchorId = generateAnchorId(headingMatch[1])
             context = cleanMarkdownFormatting(line)
+            originalTextForHighlighting = context
           }
         } else {
           // Extract paragraph context with surrounding sentences
@@ -198,9 +200,13 @@ function extractLinkContext(content: string, linkTitle: string, postTitle: strin
           const rawContext = contextLines.join(' ').trim()
           
           // Clean and format the context
-          context = cleanMarkdownFormatting(rawContext)
+          const fullContext = cleanMarkdownFormatting(rawContext)
           
-          // Truncate if too long, but keep the citation visible
+          // Extract text fragment for highlighting BEFORE truncating
+          let originalTextForHighlighting = fullContext
+          
+          // Truncate context for display, but keep original for text fragment
+          context = fullContext
           if (context.length > 300) {
             const linkPosition = context.toLowerCase().indexOf(linkTitle.toLowerCase())
             if (linkPosition !== -1) {
@@ -210,6 +216,10 @@ function extractLinkContext(content: string, linkTitle: string, postTitle: strin
               const beforeText = context.slice(beforeLink, linkPosition)
               const afterText = context.slice(linkPosition + linkTitle.length, afterLink)
               
+              // For highlighting, use the untruncated portion around the link
+              originalTextForHighlighting = beforeText + linkTitle + afterText
+              
+              // For display, add ellipses
               context = (beforeLink > 0 ? '...' : '') + 
                        beforeText + 
                        linkTitle + 
@@ -218,7 +228,8 @@ function extractLinkContext(content: string, linkTitle: string, postTitle: strin
             } else {
               // Fallback truncation
               const cutoff = context.lastIndexOf(' ', 300)
-              context = context.slice(0, cutoff > 0 ? cutoff : 300) + '...'
+              originalTextForHighlighting = context.slice(0, cutoff > 0 ? cutoff : 300)
+              context = originalTextForHighlighting + '...'
             }
           }
           
@@ -232,34 +243,64 @@ function extractLinkContext(content: string, linkTitle: string, postTitle: strin
           }
         }
         
-        // Generate text fragment for highlighting - find meaningful phrases
+        // Generate text fragment for highlighting - find meaningful phrases that include the linked term
         let textFragment = ''
         
-        // Clean context for better phrase extraction
-        const cleanContext = context.replace(/[""]/g, '"').replace(/\s+/g, ' ').trim()
-        const contextWords = cleanContext.split(' ')
+        // Use original text for highlighting (without ellipses) if available
+        const textForFragment = originalTextForHighlighting || context
         
-        if (contextWords.length >= 8) {
-          // For longer contexts, use a 6-8 word phrase from the beginning
-          textFragment = contextWords.slice(0, 8).join(' ')
-        } else if (contextWords.length >= 5) {
-          // Use 5-6 words for medium contexts
-          textFragment = contextWords.slice(0, 6).join(' ')
-        } else if (contextWords.length >= 3) {
-          // Use 3-4 words for shorter contexts
-          textFragment = contextWords.slice(0, 4).join(' ')
+        // Clean text for better phrase extraction - remove ellipses and normalize
+        const cleanContext = textForFragment
+          .replace(/[""]/g, '"')
+          .replace(/\.\.\./g, '') // Remove ellipses
+          .replace(/\s+/g, ' ')
+          .trim()
+        
+        // Find where the linked term appears in the context
+        const linkTitleLower = linkTitle.toLowerCase()
+        const contextLower = cleanContext.toLowerCase()
+        const linkPosition = contextLower.indexOf(linkTitleLower)
+        
+        if (linkPosition !== -1) {
+          // Create a text fragment that includes the linked term in the center
+          const contextWords = cleanContext.split(' ').filter(word => word.length > 0)
+          
+          // Find which word contains or is near the linked term
+          let linkWordIndex = -1
+          for (let i = 0; i < contextWords.length; i++) {
+            const wordPosition = contextLower.indexOf(contextWords[i].toLowerCase())
+            if (wordPosition <= linkPosition && wordPosition + contextWords[i].length >= linkPosition) {
+              linkWordIndex = i
+              break
+            }
+          }
+          
+          if (linkWordIndex !== -1) {
+            // Create a window around the linked term (3-4 words before and after)
+            const windowSize = 3
+            const start = Math.max(0, linkWordIndex - windowSize)
+            const end = Math.min(contextWords.length, linkWordIndex + windowSize + 1)
+            textFragment = contextWords.slice(start, end).join(' ')
+          } else {
+            // Fallback: include the linked term with some context
+            const beforeLink = cleanContext.substring(Math.max(0, linkPosition - 50), linkPosition).trim()
+            const afterLink = cleanContext.substring(linkPosition + linkTitle.length, linkPosition + linkTitle.length + 50).trim()
+            const beforeWords = beforeLink.split(' ').slice(-3).join(' ')
+            const afterWords = afterLink.split(' ').slice(0, 3).join(' ')
+            textFragment = `${beforeWords} ${linkTitle} ${afterWords}`.trim()
+          }
         } else {
-          // Fallback to first 60 characters for very short contexts
-          textFragment = cleanContext.substring(0, 60).trim()
-        }
-        
-        // Ensure we don't cut off mid-word
-        if (textFragment.length < cleanContext.length && !textFragment.endsWith(' ')) {
-          const lastSpaceIndex = textFragment.lastIndexOf(' ')
-          if (lastSpaceIndex > 0) {
-            textFragment = textFragment.substring(0, lastSpaceIndex)
+          // Fallback to beginning of context if link term not found
+          const contextWords = cleanContext.split(' ').filter(word => word.length > 0)
+          if (contextWords.length >= 6) {
+            textFragment = contextWords.slice(0, 6).join(' ')
+          } else {
+            textFragment = cleanContext.substring(0, 60).trim()
           }
         }
+        
+        // Clean up the text fragment
+        textFragment = textFragment.replace(/\s+/g, ' ').trim()
         
         return {
           context,
