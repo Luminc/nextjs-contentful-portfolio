@@ -291,6 +291,20 @@
   padding-top: 2rem;
   border-top: 1px solid rgba($text-primary-dark, 0.08);
   
+  .colophon-heading {
+    font-family: $font;
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: rgba($text-primary-dark, 0.7);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    
+    @media screen and (max-width: 576px) {
+      font-size: 0.85rem;
+    }
+  }
+  
   .colophon-topics {
     font-family: $font;
     font-size: 1rem;
@@ -301,6 +315,21 @@
     
     @media screen and (max-width: 576px) {
       font-size: 0.9rem;
+    }
+    
+    .topic-link {
+      color: rgba($text-primary-dark, 0.6) !important;
+      text-decoration: none !important;
+      transition: color 0.2s ease;
+      
+      &:hover {
+        color: $color-primary !important;
+        text-decoration: underline !important;
+      }
+      
+      &:active {
+        color: $color-secondary !important;
+      }
     }
   }
 }

@@ -127,8 +127,16 @@ export default function BlogPostPage() {
               {/* Topics colophon */}
               {post.topics && post.topics.length > 0 && (
                 <div className="post-colophon">
+                  <h6 className="colophon-heading">Topics</h6>
                   <div className="colophon-topics">
-                    {post.topics.join(', ')}
+                    {post.topics.map((topic, index) => (
+                      <span key={topic}>
+                        <Link href={`/writing/topic/${topic.toLowerCase().replace(/\s+/g, '-')}`} className="topic-link">
+                          {topic}
+                        </Link>
+                        {index < post.topics.length - 1 && ', '}
+                      </span>
+                    ))}
                   </div>
                 </div>
               )}
