@@ -256,10 +256,26 @@ function extractLinkContext(content: string, linkTitle: string, postTitle: strin
           .replace(/\s+/g, ' ')
           .trim()
         
-        // Find where the linked term appears in the context
+        // Find where the linked term appears in the context (try multiple variations)
         const linkTitleLower = linkTitle.toLowerCase()
         const contextLower = cleanContext.toLowerCase()
-        const linkPosition = contextLower.indexOf(linkTitleLower)
+        
+        // Try to find the link title or key words from it
+        let linkPosition = contextLower.indexOf(linkTitleLower)
+        let actualLinkTerm = linkTitle
+        
+        // If exact match not found, try individual words from the link title
+        if (linkPosition === -1) {
+          const linkWords = linkTitleLower.split(' ').filter(word => word.length > 2) // Skip short words
+          for (const word of linkWords) {
+            const wordPos = contextLower.indexOf(word)
+            if (wordPos !== -1) {
+              linkPosition = wordPos
+              actualLinkTerm = word
+              break
+            }
+          }
+        }
         
         if (linkPosition !== -1) {
           // Create a text fragment that includes the linked term in the center
@@ -284,10 +300,10 @@ function extractLinkContext(content: string, linkTitle: string, postTitle: strin
           } else {
             // Fallback: include the linked term with some context
             const beforeLink = cleanContext.substring(Math.max(0, linkPosition - 50), linkPosition).trim()
-            const afterLink = cleanContext.substring(linkPosition + linkTitle.length, linkPosition + linkTitle.length + 50).trim()
+            const afterLink = cleanContext.substring(linkPosition + actualLinkTerm.length, linkPosition + actualLinkTerm.length + 50).trim()
             const beforeWords = beforeLink.split(' ').slice(-3).join(' ')
             const afterWords = afterLink.split(' ').slice(0, 3).join(' ')
-            textFragment = `${beforeWords} ${linkTitle} ${afterWords}`.trim()
+            textFragment = `${beforeWords} ${actualLinkTerm} ${afterWords}`.trim()
           }
         } else {
           // Fallback to beginning of context if link term not found
@@ -301,6 +317,14 @@ function extractLinkContext(content: string, linkTitle: string, postTitle: strin
         
         // Clean up the text fragment
         textFragment = textFragment.replace(/\s+/g, ' ').trim()
+        
+        // Debug logging for text fragment generation
+        if (process.env.NODE_ENV === 'development') {
+          console.log('Text fragment generation:')
+          console.log('- Link title:', linkTitle)
+          console.log('- Context:', cleanContext.substring(0, 100) + '...')
+          console.log('- Generated fragment:', textFragment)
+        }
         
         return {
           context,
