@@ -30,6 +30,11 @@ export interface BlogPost {
   published?: boolean
   readingTime?: number
   author?: string
+  // Obsidian vault features
+  folderPath?: string
+  wikilinks?: string[] // Links this post contains
+  backlinks?: string[] // Posts that link to this one
+  isDarkIntel?: boolean
 }
 
 export interface BlogMatter {
@@ -44,6 +49,52 @@ export interface BlogMatter {
 // Directories where blog content is stored
 const BLOG_DIRECTORY = path.join(process.cwd(), 'src/content/blog')
 const DARK_INTELLIGIBILITY_DIRECTORY = path.join(process.cwd(), 'src/content/dark-intelligibility')
+
+/**
+ * Extract wikilinks from content
+ */
+function extractWikilinks(content: string): string[] {
+  const wikilinkRegex = /\[\[([^\]]+)\]\]/g
+  const links: string[] = []
+  let match
+  
+  while ((match = wikilinkRegex.exec(content)) !== null) {
+    // Handle pipe links: [[Link|Display Text]] -> Link
+    const linkText = match[1].split('|')[0].trim()
+    if (!links.includes(linkText)) {
+      links.push(linkText)
+    }
+  }
+  
+  return links
+}
+
+/**
+ * Build backlink map for all posts
+ */
+function buildBacklinkMap(posts: BlogPost[]): Map<string, string[]> {
+  const backlinkMap = new Map<string, string[]>()
+  
+  // Initialize map
+  posts.forEach(post => {
+    backlinkMap.set(post.title, [])
+  })
+  
+  // Build backlinks
+  posts.forEach(post => {
+    if (post.wikilinks) {
+      post.wikilinks.forEach(linkedTitle => {
+        const backlinks = backlinkMap.get(linkedTitle) || []
+        if (!backlinks.includes(post.slug)) {
+          backlinks.push(post.slug)
+          backlinkMap.set(linkedTitle, backlinks)
+        }
+      })
+    }
+  })
+  
+  return backlinkMap
+}
 
 /**
  * Recursively get all markdown files from a directory
@@ -109,6 +160,12 @@ export async function getAllPosts(): Promise<BlogPost[]> {
     if (!post) return false
     if (process.env.NODE_ENV === 'production' && post.published === false) return false
     return true
+  })
+
+  // Build backlink relationships
+  const backlinkMap = buildBacklinkMap(validPosts)
+  validPosts.forEach(post => {
+    post.backlinks = backlinkMap.get(post.title) || []
   })
 
   // Sort by date (newest first)
@@ -178,6 +235,12 @@ async function getPostByFilename(filename: string, baseDir: string, isFromDarkIn
     // Use frontmatter date or file modification date
     const date = frontmatter.date || getFileDate(filePath)
 
+    // Extract wikilinks from content
+    const wikilinks = isFromDarkIntel ? extractWikilinks(content) : []
+    
+    // Get folder path for dark-intel content
+    const folderPath = isFromDarkIntel ? path.dirname(filename) : undefined
+
     return {
       slug,
       title,
@@ -187,10 +250,30 @@ async function getPostByFilename(filename: string, baseDir: string, isFromDarkIn
       topics: frontmatter.topics || (isFromDarkIntel ? ['dark-intelligibility'] : []),
       published: frontmatter.published !== false, // Default to published
       readingTime,
-      author: frontmatter.author || 'Jeroen Kortekaas'
+      author: frontmatter.author || 'Jeroen Kortekaas',
+      // Obsidian vault features
+      folderPath,
+      wikilinks,
+      backlinks: [], // Will be populated in getAllPosts
+      isDarkIntel: isFromDarkIntel
     }
   } catch (error) {
     console.error(`Error processing blog post ${filename}:`, error)
+    return null
+  }
+}
+
+/**
+ * Find post slug by title (for wikilink resolution)
+ */
+async function findPostSlugByTitle(title: string): Promise<string | null> {
+  // This is a simplified version - in practice, you'd want to cache this
+  // or pass a posts map to avoid re-reading files
+  try {
+    const allPosts = await getAllPosts()
+    const post = allPosts.find(p => p.title.toLowerCase() === title.toLowerCase())
+    return post?.slug || null
+  } catch {
     return null
   }
 }
@@ -202,14 +285,27 @@ async function processMarkdown(content: string, isFromDarkIntel: boolean = false
   let processedContent = content
   
   if (isFromDarkIntel) {
-    // Process Obsidian-style [[wikilinks]] (convert to spans for now, since internal links won't work)
-    processedContent = content.replace(
-      /\[\[([^\]]+)\]\]/g, 
-      (match, linkText) => {
-        // For now, just style them as concept references
-        return `<em class="concept-reference">${linkText}</em>`
-      }
-    )
+    // Process Obsidian-style [[wikilinks]] (make them clickable)
+    const wikilinkRegex = /\[\[([^\]]+)\]\]/g
+    const matches = Array.from(content.matchAll(wikilinkRegex))
+    
+    for (const match of matches) {
+      const fullMatch = match[0]
+      const linkText = match[1]
+      
+      // Handle pipe syntax: [[Title|Display Text]]
+      const [title, displayText] = linkText.split('|').map(s => s.trim())
+      const finalDisplayText = displayText || title
+      
+      // Generate slug for dark-intel content
+      const linkedSlug = slugify(`dark-intel-${title.toLowerCase().replace(/\s+/g, '-')}`)
+      
+      // Replace with clickable link
+      processedContent = processedContent.replace(
+        fullMatch,
+        `<a href="/writing/${linkedSlug}" class="wikilink" title="${title}">${finalDisplayText}</a>`
+      )
+    }
   } else {
     // Process Obsidian-style [[wikilinks]] (convert to regular links)
     processedContent = content.replace(
@@ -273,4 +369,50 @@ export async function getAllTopics(): Promise<string[]> {
 export async function getPostsByTopic(topic: string): Promise<BlogPost[]> {
   const posts = await getAllPosts()
   return posts.filter(post => post.topics?.includes(topic))
+}
+
+/**
+ * Get folder structure from dark-intelligibility vault
+ */
+export function getFolderStructure(): { [key: string]: string[] } {
+  if (!fs.existsSync(DARK_INTELLIGIBILITY_DIRECTORY)) {
+    return {}
+  }
+
+  const structure: { [key: string]: string[] } = {}
+  const files = getAllMarkdownFiles(DARK_INTELLIGIBILITY_DIRECTORY)
+  
+  files.forEach(filePath => {
+    const folderPath = path.dirname(filePath)
+    const fileName = path.basename(filePath, '.md')
+    
+    if (!structure[folderPath]) {
+      structure[folderPath] = []
+    }
+    structure[folderPath].push(fileName)
+  })
+  
+  return structure
+}
+
+/**
+ * Get posts from a specific folder
+ */
+export async function getPostsByFolder(folderPath: string): Promise<BlogPost[]> {
+  const posts = await getAllPosts()
+  return posts.filter(post => post.folderPath === folderPath)
+}
+
+/**
+ * Get backlinks for a specific post
+ */
+export async function getBacklinksForPost(slug: string): Promise<BlogPost[]> {
+  const allPosts = await getAllPosts()
+  const targetPost = allPosts.find(p => p.slug === slug)
+  
+  if (!targetPost || !targetPost.backlinks) {
+    return []
+  }
+  
+  return allPosts.filter(p => targetPost.backlinks?.includes(p.slug))
 }

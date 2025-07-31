@@ -24,6 +24,7 @@ export default function BlogPostPage() {
   const slug = params.slug as string
   
   const [post, setPost] = useState<BlogPost | null>(null)
+  const [backlinks, setBacklinks] = useState<BlogPost[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -39,7 +40,17 @@ export default function BlogPostPage() {
       })
       .then(data => {
         setPost(data)
-        setLoading(false)
+        // Fetch backlinks if post has any
+        if (data.backlinks && data.backlinks.length > 0) {
+          return fetch(`/api/writing/backlinks/${slug}`)
+            .then(res => res.ok ? res.json() : [])
+            .then(backlinkData => {
+              setBacklinks(backlinkData)
+              setLoading(false)
+            })
+        } else {
+          setLoading(false)
+        }
       })
       .catch(err => {
         setError(err.message)
@@ -136,6 +147,27 @@ export default function BlogPostPage() {
                         </Link>
                         {index < post.topics.length - 1 && ', '}
                       </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Backlinks section */}
+              {backlinks.length > 0 && (
+                <div className="post-backlinks">
+                  <h6 className="backlinks-heading">Referenced By</h6>
+                  <div>
+                    {backlinks.map((backlink) => (
+                      <div key={backlink.slug} className="backlink-item">
+                        <Link href={`/writing/${backlink.slug}`} className="backlink-title">
+                          {backlink.title}
+                        </Link>
+                        {backlink.folderPath && (
+                          <span className="backlink-folder">
+                            in {backlink.folderPath}
+                          </span>
+                        )}
+                      </div>
                     ))}
                   </div>
                 </div>

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { Container, Row, Col, Card } from 'react-bootstrap'
 import Layout from '@/components/layout'
@@ -8,24 +9,35 @@ import { BlogPost } from '@/lib/blog'
 import { format } from 'date-fns'
 
 /**
- * BLOG INDEX PAGE
+ * FOLDER BROWSING PAGE
  * 
- * This page displays all published blog posts from the Obsidian vault.
+ * This page displays all posts from a specific folder in the dark-intelligibility vault.
  * Features:
- * - Client-side rendering with loading states
+ * - Folder hierarchy navigation
+ * - Posts organized by vault structure
+ * - Breadcrumb navigation
  * - Responsive card layout
- * - Post metadata (date, reading time, tags)
- * - Graceful handling when no posts exist
  */
 
-export default function BlogPage() {
+export default function FolderPage() {
+  const params = useParams()
+  const pathSegments = Array.isArray(params.path) ? params.path : [params.path].filter(Boolean)
+  const folderPath = pathSegments.join('/')
+  
   const [posts, setPosts] = useState<BlogPost[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    fetch('/api/writing')
-      .then(res => res.json())
+    if (!folderPath) return
+
+    fetch(`/api/writing/folder/${encodeURIComponent(folderPath)}`)
+      .then(res => {
+        if (!res.ok) {
+          throw new Error('Failed to load folder posts')
+        }
+        return res.json()
+      })
       .then(data => {
         setPosts(data)
         setLoading(false)
@@ -34,11 +46,36 @@ export default function BlogPage() {
         setError(err.message)
         setLoading(false)
       })
-  }, [])
+  }, [folderPath])
+
+  // Generate breadcrumbs
+  const generateBreadcrumbs = () => {
+    const breadcrumbs = [
+      { name: 'Writing', path: '/writing' },
+      { name: 'Vault', path: '/writing/vault' }
+    ]
+    
+    let currentPath = ''
+    pathSegments.forEach((segment, index) => {
+      currentPath += segment
+      breadcrumbs.push({
+        name: segment,
+        path: `/writing/folder/${currentPath}`
+      })
+      if (index < pathSegments.length - 1) {
+        currentPath += '/'
+      }
+    })
+    
+    return breadcrumbs
+  }
+
+  const breadcrumbs = generateBreadcrumbs()
+  const folderName = pathSegments[pathSegments.length - 1] || 'Root'
 
   if (loading) {
     return (
-      <Layout pageTitle="Writing">
+      <Layout pageTitle={`Folder: ${folderName}`}>
         <Container>
           <div className="text-center py-5">
             <div className="spinner-border" role="status">
@@ -52,45 +89,63 @@ export default function BlogPage() {
 
   if (error) {
     return (
-      <Layout pageTitle="Writing">
+      <Layout pageTitle={`Folder: ${folderName}`}>
         <Container>
           <div className="alert alert-danger" role="alert">
-            Error loading blog posts: {error}
+            Error loading folder: {error}
           </div>
+          <Link href="/writing" className="btn btn-primary">
+            ← Back to Writing
+          </Link>
         </Container>
       </Layout>
     )
   }
 
   return (
-    <Layout pageTitle="Writing">
+    <Layout pageTitle={`${folderName}`}>
       <div className="blog-page">
         <Container>
+          {/* Breadcrumb navigation */}
+          <Row className="justify-content-center mb-4">
+            <Col lg={10}>
+              <nav aria-label="breadcrumb">
+                <ol className="breadcrumb">
+                  {breadcrumbs.map((crumb, index) => (
+                    <li 
+                      key={crumb.path} 
+                      className={`breadcrumb-item ${index === breadcrumbs.length - 1 ? 'active' : ''}`}
+                    >
+                      {index === breadcrumbs.length - 1 ? (
+                        crumb.name
+                      ) : (
+                        <Link href={crumb.path}>{crumb.name}</Link>
+                      )}
+                    </li>
+                  ))}
+                </ol>
+              </nav>
+            </Col>
+          </Row>
+
           {posts.length === 0 ? (
             <Row className="justify-content-center text-center py-5">
               <Col lg={8}>
                 <p className="lead text-muted mb-4">
-                  No blog posts available yet. The blog content will appear here once the Obsidian vault is connected.
+                  No posts found in this folder.
                 </p>
-                <div className="alert alert-info">
-                  <strong>Development Note:</strong> Initialize the git submodule with your Obsidian vault to see blog posts.
-                  <br />
-                  <code>git submodule add [your-blog-repo-url] src/content/blog</code>
-                </div>
+                <Link href="/writing" className="btn btn-primary">
+                  ← Back to Writing
+                </Link>
               </Col>
             </Row>
           ) : (
             <div className="blog-index">
               <Row className="justify-content-center mb-5">
                 <Col lg={8} className="text-center">
-                  <p className="lead" style={{ fontSize: '1.3rem', color: 'rgba(20, 20, 20, 0.7)' }}>
-                    Philosophical reflections and artistic explorations from the intersection of design and technology.
+                  <p className="lead" style={{ fontSize: '1.2rem', color: 'rgba(20, 20, 20, 0.7)' }}>
+                    {posts.length} {posts.length === 1 ? 'piece' : 'pieces'} in {folderName}
                   </p>
-                  <div className="mt-4">
-                    <Link href="/writing/vault" className="btn btn-outline-primary">
-                      Explore Knowledge Vault →
-                    </Link>
-                  </div>
                 </Col>
               </Row>
               
@@ -112,7 +167,6 @@ export default function BlogPage() {
                         <Card.Text className="card-text mb-4 flex-grow-1">
                           {post.excerpt}
                         </Card.Text>
-                        
                         
                         <div className="mt-auto">
                           <Link href={`/writing/${post.slug}`} className="btn">

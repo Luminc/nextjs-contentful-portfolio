@@ -119,14 +119,25 @@
 
   // Clean, minimal paragraph styling for maximum readability
   
-  // Style Obsidian concept references from dark-intelligibility content
-  .concept-reference {
-    color: rgba($text-primary-dark, 0.8);
-    font-style: italic;
-    font-weight: 300;
-    text-decoration: none;
-    border-bottom: 1px dotted rgba($text-primary-dark, 0.3);
-    padding-bottom: 0.1em;
+  // Style Obsidian wikilinks from dark-intelligibility content
+  .wikilink {
+    color: $text-primary-dark !important;
+    text-decoration: none !important;
+    background: rgba($color-primary, 0.1);
+    padding: 0.1em 0.3em;
+    border-radius: 2px;
+    font-weight: 400;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background: rgba($color-primary, 0.2);
+      color: $text-primary-dark !important;
+      text-decoration: none !important;
+    }
+    
+    &:active {
+      background: rgba($color-secondary, 0.2);
+    }
   }
 
   // Links follow project page behavior
@@ -344,9 +355,49 @@
   }
 }
 
+// Backlinks section
+.post-backlinks {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba($text-primary-dark, 0.08);
+  
+  .backlinks-heading {
+    font-family: $font;
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: rgba($text-primary-dark, 0.7);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  .backlink-item {
+    margin-bottom: 0.8rem;
+    
+    .backlink-title {
+      font-size: 1.1rem;
+      color: $text-primary-dark;
+      text-decoration: none !important;
+      font-weight: 300;
+      
+      &:hover {
+        color: $color-primary !important;
+        text-decoration: underline !important;
+      }
+    }
+    
+    .backlink-folder {
+      font-size: 0.9rem;
+      color: rgba($text-primary-dark, 0.5);
+      font-style: italic;
+      margin-left: 0.5rem;
+    }
+  }
+}
+
 // Post navigation
 .blog-post-nav {
-  margin-top: 3rem;
+  margin-top: 2rem;
   padding-top: 2rem;
   
   .btn {
@@ -362,6 +413,71 @@
       background-color: $color-primary;
       border-color: $color-primary;
       color: $text-primary-dark;
+    }
+  }
+}
+
+// Vault and folder browsing
+.folder-card {
+  border: none !important;
+  background: transparent;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 40px rgba($text-primary-dark, 0.1) !important;
+  }
+  
+  .folder-title {
+    font-family: $font;
+    font-weight: 200 !important;
+    font-size: 1.4rem;
+    color: $text-primary-dark;
+    line-height: 1.3;
+    
+    a {
+      color: $text-primary-dark !important;
+      text-decoration: none !important;
+      
+      &:hover {
+        color: $color-primary !important;
+      }
+    }
+  }
+  
+  .folder-description {
+    font-size: 1rem;
+    line-height: $line-height;
+    color: rgba($text-primary-dark, 0.6);
+  }
+}
+
+// Breadcrumb navigation
+.breadcrumb {
+  background: none;
+  padding: 0;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+  
+  .breadcrumb-item {
+    color: rgba($text-primary-dark, 0.6);
+    
+    a {
+      color: rgba($text-primary-dark, 0.6) !important;
+      text-decoration: none !important;
+      
+      &:hover {
+        color: $color-primary !important;
+        text-decoration: underline !important;
+      }
+    }
+    
+    &.active {
+      color: $text-primary-dark;
+    }
+    
+    &::before {
+      color: rgba($text-primary-dark, 0.4);
     }
   }
 }
