@@ -112,14 +112,20 @@ export default function ClientHighlighter({ post }: ClientHighlighterProps) {
       }
     }
     
-    // Try multiple fallback strategies
+    // Try multiple fallback strategies, prioritizing longer phrases
+    const words = decodedText.split(' ')
     const fallbackStrategies = [
-      decodedText.substring(0, 20).trim(), // First 20 chars
-      decodedText.substring(0, 15).trim(), // First 15 chars  
-      decodedText.substring(0, 10).trim(), // First 10 chars
-      decodedText.split(' ').slice(0, 3).join(' '), // First 3 words
-      decodedText.split(' ').slice(0, 2).join(' '), // First 2 words
-      decodedText.split(' ')[0] // First word only
+      // Try progressively shorter word-based phrases first
+      words.slice(0, Math.min(8, words.length)).join(' '), // Up to 8 words
+      words.slice(0, Math.min(6, words.length)).join(' '), // Up to 6 words
+      words.slice(0, Math.min(4, words.length)).join(' '), // Up to 4 words
+      words.slice(0, Math.min(3, words.length)).join(' '), // Up to 3 words
+      words.slice(0, 2).join(' '), // First 2 words
+      words[0], // First word only
+      // Character-based fallbacks as last resort
+      decodedText.substring(0, 30).trim(),
+      decodedText.substring(0, 20).trim(),
+      decodedText.substring(0, 15).trim()
     ]
     
     for (const fallback of fallbackStrategies) {

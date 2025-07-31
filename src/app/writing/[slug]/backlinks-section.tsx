@@ -56,7 +56,7 @@ export default function BacklinksSection({ backlinks }: BacklinksSectionProps) {
                 </div>
               </div>
               <Link 
-                href={`/writing/${backlink.slug}${backlink.anchorId ? `#${backlink.anchorId}` : ''}?highlight=${encodeURIComponent(backlink.context.substring(0, 30).trim())}`}
+                href={`/writing/${backlink.slug}${backlink.anchorId ? `#${backlink.anchorId}` : ''}?highlight=${encodeURIComponent(backlink.textFragment || backlink.context.substring(0, 50).trim())}`}
                 className="backlink-context-link"
                 title="Click to view this excerpt in context"
               >

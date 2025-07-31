@@ -232,22 +232,33 @@ function extractLinkContext(content: string, linkTitle: string, postTitle: strin
           }
         }
         
-        // Generate text fragment for highlighting - find a unique phrase around the link
+        // Generate text fragment for highlighting - find meaningful phrases
         let textFragment = ''
         
-        // Try to find a phrase that includes some words before and after the link mention
-        const contextWords = context.split(' ')
-        if (contextWords.length > 5) {
-          // Use a 5-word window around the middle of the context
-          const startIndex = Math.max(0, Math.floor(contextWords.length / 2) - 2)
-          const endIndex = Math.min(contextWords.length, startIndex + 5)
-          textFragment = contextWords.slice(startIndex, endIndex).join(' ')
-        } else if (contextWords.length > 2) {
-          // Use first few words if context is short
-          textFragment = contextWords.slice(0, Math.min(3, contextWords.length)).join(' ')
+        // Clean context for better phrase extraction
+        const cleanContext = context.replace(/[""]/g, '"').replace(/\s+/g, ' ').trim()
+        const contextWords = cleanContext.split(' ')
+        
+        if (contextWords.length >= 8) {
+          // For longer contexts, use a 6-8 word phrase from the beginning
+          textFragment = contextWords.slice(0, 8).join(' ')
+        } else if (contextWords.length >= 5) {
+          // Use 5-6 words for medium contexts
+          textFragment = contextWords.slice(0, 6).join(' ')
+        } else if (contextWords.length >= 3) {
+          // Use 3-4 words for shorter contexts
+          textFragment = contextWords.slice(0, 4).join(' ')
         } else {
-          // Fallback to first 30 characters
-          textFragment = context.substring(0, 30).trim()
+          // Fallback to first 60 characters for very short contexts
+          textFragment = cleanContext.substring(0, 60).trim()
+        }
+        
+        // Ensure we don't cut off mid-word
+        if (textFragment.length < cleanContext.length && !textFragment.endsWith(' ')) {
+          const lastSpaceIndex = textFragment.lastIndexOf(' ')
+          if (lastSpaceIndex > 0) {
+            textFragment = textFragment.substring(0, lastSpaceIndex)
+          }
         }
         
         return {
