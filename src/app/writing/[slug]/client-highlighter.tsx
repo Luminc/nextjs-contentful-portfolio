@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useCallback } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams, usePathname } from 'next/navigation'
 
 interface ClientHighlighterProps {
   post: {
@@ -11,6 +11,7 @@ interface ClientHighlighterProps {
 
 export default function ClientHighlighter({ post }: ClientHighlighterProps) {
   const searchParams = useSearchParams()
+  const pathname = usePathname()
   // Native text selection highlighting system
   const highlightTextInContent = useCallback((searchText: string) => {
     if (!window.getSelection) return false
@@ -139,18 +140,28 @@ export default function ClientHighlighter({ post }: ClientHighlighterProps) {
     if (!post || !post.content) return
 
     const checkForHighlight = (attempt = 1) => {
-      // Try both Next.js searchParams and manual URL parsing
+      // Multiple ways to extract the highlight parameter
       const nextHighlightParam = searchParams.get('highlight')
-      const urlParams = new URLSearchParams(window.location.search)
-      const manualHighlightParam = urlParams.get('highlight')
-      const highlightParam = nextHighlightParam || manualHighlightParam
+      
+      // Manual parsing from current URL
+      const currentUrl = window.location.href
+      const urlObj = new URL(currentUrl)
+      const manualHighlightParam = urlObj.searchParams.get('highlight')
+      
+      // Direct regex extraction as fallback
+      const regexMatch = currentUrl.match(/[?&]highlight=([^&#]*)/i)
+      const regexHighlightParam = regexMatch ? decodeURIComponent(regexMatch[1]) : null
+      
+      const highlightParam = nextHighlightParam || manualHighlightParam || regexHighlightParam
       
       console.log(`Attempt ${attempt} - ClientHighlighter effect running`)
       console.log('Post content available:', !!post)
       console.log('Next.js highlight param:', nextHighlightParam)
       console.log('Manual highlight param:', manualHighlightParam)
+      console.log('Regex highlight param:', regexHighlightParam)
       console.log('Final highlight param:', highlightParam)
-      console.log('Current URL:', window.location.href)
+      console.log('Current URL:', currentUrl)
+      console.log('URL search portion:', urlObj.search)
       
       if (highlightParam) {
         console.log('Raw highlight parameter:', highlightParam)
@@ -170,12 +181,12 @@ export default function ClientHighlighter({ post }: ClientHighlighterProps) {
       }
     }
 
-    // Initial check
-    checkForHighlight()
+    // Initial check with delay to handle Next.js navigation timing
+    setTimeout(() => checkForHighlight(1), 100)
     
     // Also listen for popstate events (back/forward navigation)
     const handlePopState = () => {
-      setTimeout(() => checkForHighlight(), 100)
+      setTimeout(() => checkForHighlight(), 200)
     }
     
     window.addEventListener('popstate', handlePopState)
@@ -183,7 +194,7 @@ export default function ClientHighlighter({ post }: ClientHighlighterProps) {
     return () => {
       window.removeEventListener('popstate', handlePopState)
     }
-  }, [post, highlightTextInContent, searchParams])
+  }, [post, highlightTextInContent, searchParams, pathname])
 
   return null // This component only handles highlighting logic
 }
