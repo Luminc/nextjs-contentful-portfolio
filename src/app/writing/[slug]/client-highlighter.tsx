@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useCallback } from 'react'
+import { useSearchParams } from 'next/navigation'
 
 interface ClientHighlighterProps {
   post: {
@@ -9,6 +10,7 @@ interface ClientHighlighterProps {
 }
 
 export default function ClientHighlighter({ post }: ClientHighlighterProps) {
+  const searchParams = useSearchParams()
   // Native text selection highlighting system
   const highlightTextInContent = useCallback((searchText: string) => {
     if (!window.getSelection) return false
@@ -124,25 +126,52 @@ export default function ClientHighlighter({ post }: ClientHighlighterProps) {
   useEffect(() => {
     if (!post || !post.content) return
 
-    const urlParams = new URLSearchParams(window.location.search)
-    const highlightParam = urlParams.get('highlight')
-    
-    console.log('ClientHighlighter effect running, post:', !!post, 'highlightParam:', highlightParam)
-    
-    if (highlightParam) {
-      console.log('Raw highlight parameter:', highlightParam)
+    const checkForHighlight = (attempt = 1) => {
+      // Try both Next.js searchParams and manual URL parsing
+      const nextHighlightParam = searchParams.get('highlight')
+      const urlParams = new URLSearchParams(window.location.search)
+      const manualHighlightParam = urlParams.get('highlight')
+      const highlightParam = nextHighlightParam || manualHighlightParam
+      
+      console.log(`Attempt ${attempt} - ClientHighlighter effect running`)
+      console.log('Post content available:', !!post)
+      console.log('Next.js highlight param:', nextHighlightParam)
+      console.log('Manual highlight param:', manualHighlightParam)
+      console.log('Final highlight param:', highlightParam)
       console.log('Current URL:', window.location.href)
       
-      // Wait for content to fully render
-      setTimeout(() => {
-        console.log('Starting highlighting process...')
-        const success = highlightTextInContent(highlightParam)
-        console.log('Highlighting result:', success)
-      }, 2000) // Increased timeout
-    } else {
-      console.log('No highlight parameter found')
+      if (highlightParam) {
+        console.log('Raw highlight parameter:', highlightParam)
+        
+        // Wait for content to fully render
+        setTimeout(() => {
+          console.log('Starting highlighting process...')
+          const success = highlightTextInContent(highlightParam)
+          console.log('Highlighting result:', success)
+        }, 1000)
+      } else {
+        console.log('No highlight parameter found')
+        // Retry up to 3 times in case of timing issues
+        if (attempt < 3) {
+          setTimeout(() => checkForHighlight(attempt + 1), 500)
+        }
+      }
     }
-  }, [post, highlightTextInContent])
+
+    // Initial check
+    checkForHighlight()
+    
+    // Also listen for popstate events (back/forward navigation)
+    const handlePopState = () => {
+      setTimeout(() => checkForHighlight(), 100)
+    }
+    
+    window.addEventListener('popstate', handlePopState)
+    
+    return () => {
+      window.removeEventListener('popstate', handlePopState)
+    }
+  }, [post, highlightTextInContent, searchParams])
 
   return null // This component only handles highlighting logic
 }
