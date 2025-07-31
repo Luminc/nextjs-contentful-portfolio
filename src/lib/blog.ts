@@ -33,7 +33,7 @@ export interface BlogPost {
   // Obsidian vault features
   folderPath?: string
   wikilinks?: string[] // Links this post contains
-  backlinks?: string[] // Posts that link to this one
+  backlinks?: BacklinkContext[] // Posts that link to this one with context
   isDarkIntel?: boolean
 }
 
@@ -41,9 +41,12 @@ export interface BlogMatter {
   title?: string
   date?: string
   topics?: string[]
+  tags?: string[] // Support both tags and topics for consistency
   published?: boolean
   excerpt?: string
   author?: string
+  aliases?: string[] // Support Obsidian aliases
+  category?: string // Support categorization
 }
 
 // Directories where blog content is stored
@@ -69,24 +72,234 @@ function extractWikilinks(content: string): string[] {
   return links
 }
 
+// Types for backlink context
+export interface BacklinkContext {
+  slug: string
+  title: string
+  excerpt: string
+  context: string // The paragraph or sentence containing the link
+  folderPath?: string
+  anchorId?: string // For deep linking to specific sections
+  lineNumber?: number // For more precise linking
+  textFragment?: string // For text fragment highlighting (#:~:text=)
+}
+
 /**
- * Build backlink map for all posts
+ * Clean markdown formatting from text
  */
-function buildBacklinkMap(posts: BlogPost[]): Map<string, string[]> {
-  const backlinkMap = new Map<string, string[]>()
+function cleanMarkdownFormatting(text: string): string {
+  return text
+    // Remove wikilinks but keep the display text
+    .replace(/\[\[([^\]]+?)\|([^\]]+?)\]\]/g, '$2') // [[link|display]] -> display
+    .replace(/\[\[([^\]]+?)\]\]/g, '$1') // [[link]] -> link
+    // Remove markdown links
+    .replace(/\[([^\]]+?)\]\([^)]+?\)/g, '$1') // [text](url) -> text
+    // Remove bold/italic
+    .replace(/\*\*([^*]+?)\*\*/g, '$1') // **bold** -> bold
+    .replace(/\*([^*]+?)\*/g, '$1') // *italic* -> italic
+    .replace(/__([^_]+?)__/g, '$1') // __bold__ -> bold
+    .replace(/_([^_]+?)_/g, '$1') // _italic_ -> italic  
+    // Remove inline code
+    .replace(/`([^`]+?)`/g, '$1') // `code` -> code
+    // Remove heading markers
+    .replace(/^#+\s*/gm, '')
+    // Remove list markers
+    .replace(/^[\s]*[-*+]\s+/gm, '')
+    .replace(/^[\s]*\d+\.\s+/gm, '')
+    // Remove blockquote markers
+    .replace(/^>\s*/gm, '')
+    // Clean up whitespace
+    .replace(/\n+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+/**
+ * Generate anchor ID from heading text
+ */
+function generateAnchorId(heading: string): string {
+  return heading
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
+}
+
+/**
+ * Extract rich context around a wikilink for backlink display
+ */
+function extractLinkContext(content: string, linkTitle: string, postTitle: string): {
+  context: string
+  anchorId?: string
+  lineNumber?: number
+  textFragment?: string
+} {
+  const lines = content.split('\n')
+  
+  // Find all possible wikilink patterns
+  const wikilinkPatterns = [
+    new RegExp(`\\[\\[${linkTitle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}[^\\]]*\\]\\]`, 'gi'),
+    new RegExp(`\\[\\[([^\\]]+\\|)?${linkTitle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\]\\]`, 'gi')
+  ]
+  
+  for (let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
+    const line = lines[lineIndex]
+    
+    for (const pattern of wikilinkPatterns) {
+      if (pattern.test(line)) {
+        // Found the link! Now extract meaningful context
+        let context = ''
+        let anchorId: string | undefined
+        
+        // Check if we're in a heading - if so, include it for anchor linking
+        if (line.match(/^#+\s/)) {
+          const headingMatch = line.match(/^#+\s+(.+)$/)
+          if (headingMatch) {
+            anchorId = generateAnchorId(headingMatch[1])
+            context = cleanMarkdownFormatting(line)
+          }
+        } else {
+          // Extract paragraph context with surrounding sentences
+          let contextStart = Math.max(0, lineIndex - 2)
+          let contextEnd = Math.min(lines.length - 1, lineIndex + 2)
+          
+          // Find the paragraph boundaries
+          for (let i = lineIndex; i >= 0; i--) {
+            if (lines[i].trim() === '') {
+              contextStart = i + 1
+              break
+            }
+          }
+          
+          for (let i = lineIndex; i < lines.length; i++) {
+            if (lines[i].trim() === '') {
+              contextEnd = i - 1
+              break
+            }
+          }
+          
+          // Build context from the paragraph
+          const contextLines = lines.slice(contextStart, contextEnd + 1)
+          const rawContext = contextLines.join(' ').trim()
+          
+          // Clean and format the context
+          context = cleanMarkdownFormatting(rawContext)
+          
+          // Truncate if too long, but keep the citation visible
+          if (context.length > 300) {
+            const linkPosition = context.toLowerCase().indexOf(linkTitle.toLowerCase())
+            if (linkPosition !== -1) {
+              // Keep the citation in the middle of the excerpt
+              const beforeLink = Math.max(0, linkPosition - 100)
+              const afterLink = Math.min(context.length, linkPosition + linkTitle.length + 100)
+              const beforeText = context.slice(beforeLink, linkPosition)
+              const afterText = context.slice(linkPosition + linkTitle.length, afterLink)
+              
+              context = (beforeLink > 0 ? '...' : '') + 
+                       beforeText + 
+                       linkTitle + 
+                       afterText + 
+                       (afterLink < context.length ? '...' : '')
+            } else {
+              // Fallback truncation
+              const cutoff = context.lastIndexOf(' ', 300)
+              context = context.slice(0, cutoff > 0 ? cutoff : 300) + '...'
+            }
+          }
+          
+          // Look for nearby heading for anchor
+          for (let i = lineIndex; i >= 0; i--) {
+            const headingMatch = lines[i].match(/^#+\s+(.+)$/)
+            if (headingMatch) {
+              anchorId = generateAnchorId(headingMatch[1])
+              break
+            }
+          }
+        }
+        
+        // Generate text fragment for highlighting - use the actual link title for better matching
+        const textFragment = encodeURIComponent(linkTitle)
+        
+        return {
+          context,
+          anchorId,
+          lineNumber: lineIndex + 1,
+          textFragment
+        }
+      }
+    }
+  }
+  
+  return {
+    context: `Referenced in ${postTitle}`,
+    lineNumber: 1,
+    textFragment: encodeURIComponent(`Referenced in ${postTitle}`)
+  }
+}
+
+/**
+ * Build backlink map with context for all posts
+ */
+function buildBacklinkMap(posts: BlogPost[]): Map<string, BacklinkContext[]> {
+  const backlinkMap = new Map<string, BacklinkContext[]>()
   
   // Initialize map
   posts.forEach(post => {
     backlinkMap.set(post.title, [])
   })
   
-  // Build backlinks
+  // Build backlinks with context
   posts.forEach(post => {
     if (post.wikilinks) {
       post.wikilinks.forEach(linkedTitle => {
         const backlinks = backlinkMap.get(linkedTitle) || []
-        if (!backlinks.includes(post.slug)) {
-          backlinks.push(post.slug)
+        
+        // Check if this post is already in backlinks
+        if (!backlinks.find(bl => bl.slug === post.slug)) {
+          let contextData: {
+            context: string
+            anchorId?: string
+            lineNumber?: number
+            textFragment?: string
+          } = {
+            context: `Referenced in ${post.title}`,
+            anchorId: undefined,
+            lineNumber: 1,
+            textFragment: encodeURIComponent(`Referenced in ${post.title}`)
+          }
+          
+          try {
+            // Read the original markdown file to extract precise context
+            let filePath: string
+            if (post.isDarkIntel && post.folderPath) {
+              // For dark-intel files, use folder path and title to construct path
+              filePath = path.join(DARK_INTELLIGIBILITY_DIRECTORY, post.folderPath, `${post.title}.md`)
+            } else {
+              // For regular blog files
+              filePath = path.join(BLOG_DIRECTORY, `${post.slug}.md`)
+            }
+            
+            if (fs.existsSync(filePath)) {
+              const rawContent = fs.readFileSync(filePath, 'utf-8')
+              const { content } = matter(rawContent)
+              contextData = extractLinkContext(content, linkedTitle, post.title)
+            }
+          } catch (error) {
+            console.warn(`Could not extract context for ${post.title} -> ${linkedTitle}:`, error)
+          }
+          
+          backlinks.push({
+            slug: post.slug,
+            title: post.title,
+            excerpt: post.excerpt || '',
+            context: contextData.context,
+            folderPath: post.folderPath,
+            anchorId: contextData.anchorId,
+            lineNumber: contextData.lineNumber,
+            textFragment: contextData.textFragment
+          })
+          
           backlinkMap.set(linkedTitle, backlinks)
         }
       })
@@ -162,7 +375,7 @@ export async function getAllPosts(): Promise<BlogPost[]> {
     return true
   })
 
-  // Build backlink relationships
+  // Build backlink relationships with context
   const backlinkMap = buildBacklinkMap(validPosts)
   validPosts.forEach(post => {
     post.backlinks = backlinkMap.get(post.title) || []
@@ -229,8 +442,9 @@ async function getPostByFilename(filename: string, baseDir: string, isFromDarkIn
     const wordCount = content.split(/\s+/).length
     const readingTime = Math.ceil(wordCount / 200)
 
-    // Use frontmatter title or derive from filename
-    const title = frontmatter.title || path.basename(filename, '.md').replace(/-/g, ' ')
+    // Use frontmatter title or derive from filename, clean any markdown
+    const rawTitle = frontmatter.title || path.basename(filename, '.md').replace(/-/g, ' ')
+    const title = cleanMarkdownFormatting(rawTitle)
 
     // Use frontmatter date or file modification date
     const date = frontmatter.date || getFileDate(filePath)
@@ -247,7 +461,7 @@ async function getPostByFilename(filename: string, baseDir: string, isFromDarkIn
       date,
       content: processedContent,
       excerpt: frontmatter.excerpt || generateExcerpt(content),
-      topics: frontmatter.topics || (isFromDarkIntel ? ['dark-intelligibility'] : []),
+      topics: frontmatter.topics || frontmatter.tags || (isFromDarkIntel ? ['dark-intelligibility'] : []),
       published: frontmatter.published !== false, // Default to published
       readingTime,
       author: frontmatter.author || 'Jeroen Kortekaas',
@@ -279,6 +493,35 @@ async function findPostSlugByTitle(title: string): Promise<string | null> {
 }
 
 /**
+ * Find dark-intel file path by title (for accurate slug generation)
+ */
+function findDarkIntelFileByTitle(title: string): string | null {
+  if (!fs.existsSync(DARK_INTELLIGIBILITY_DIRECTORY)) {
+    return null
+  }
+  
+  const files = getAllMarkdownFiles(DARK_INTELLIGIBILITY_DIRECTORY)
+  
+  // Try exact match first
+  const exactMatch = files.find(file => {
+    const fileName = path.basename(file, '.md')
+    return fileName.toLowerCase() === title.toLowerCase()
+  })
+  
+  if (exactMatch) {
+    return exactMatch
+  }
+  
+  // Try partial match (title contained in filename)
+  const partialMatch = files.find(file => {
+    const fileName = path.basename(file, '.md').toLowerCase()
+    return fileName.includes(title.toLowerCase()) || title.toLowerCase().includes(fileName)
+  })
+  
+  return partialMatch || null
+}
+
+/**
  * Process markdown content with Obsidian-style features
  */
 async function processMarkdown(content: string, isFromDarkIntel: boolean = false): Promise<string> {
@@ -297,8 +540,17 @@ async function processMarkdown(content: string, isFromDarkIntel: boolean = false
       const [title, displayText] = linkText.split('|').map(s => s.trim())
       const finalDisplayText = displayText || title
       
-      // Generate slug for dark-intel content
-      const linkedSlug = slugify(`dark-intel-${title.toLowerCase().replace(/\s+/g, '-')}`)
+      // Find the actual file path to generate accurate slug
+      const filePath = findDarkIntelFileByTitle(title)
+      let linkedSlug: string
+      
+      if (filePath) {
+        // Generate slug using the actual file path (matches the slug generation in getPostByFilename)
+        linkedSlug = slugify(`dark-intel-${filePath.replace(/\.md$/, '').replace(/\//g, '-')}`)
+      } else {
+        // Fallback to simple slug generation if file not found
+        linkedSlug = slugify(`dark-intel-${title.toLowerCase().replace(/\s+/g, '-')}`)
+      }
       
       // Replace with clickable link
       processedContent = processedContent.replace(
@@ -406,7 +658,7 @@ export async function getPostsByFolder(folderPath: string): Promise<BlogPost[]> 
 /**
  * Get backlinks for a specific post
  */
-export async function getBacklinksForPost(slug: string): Promise<BlogPost[]> {
+export async function getBacklinksForPost(slug: string): Promise<BacklinkContext[]> {
   const allPosts = await getAllPosts()
   const targetPost = allPosts.find(p => p.slug === slug)
   
@@ -414,5 +666,5 @@ export async function getBacklinksForPost(slug: string): Promise<BlogPost[]> {
     return []
   }
   
-  return allPosts.filter(p => targetPost.backlinks?.includes(p.slug))
+  return targetPost.backlinks
 }
