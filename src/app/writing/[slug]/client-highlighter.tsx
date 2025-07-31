@@ -111,14 +111,26 @@ export default function ClientHighlighter({ post }: ClientHighlighterProps) {
       }
     }
     
-    // Try fallback with shorter text
-    if (decodedText.length > 15) {
-      const fallbackSearch = decodedText.substring(0, 15).trim()
-      console.log('Trying fallback search:', fallbackSearch)
-      return highlightTextInContent(fallbackSearch)
+    // Try multiple fallback strategies
+    const fallbackStrategies = [
+      decodedText.substring(0, 20).trim(), // First 20 chars
+      decodedText.substring(0, 15).trim(), // First 15 chars  
+      decodedText.substring(0, 10).trim(), // First 10 chars
+      decodedText.split(' ').slice(0, 3).join(' '), // First 3 words
+      decodedText.split(' ').slice(0, 2).join(' '), // First 2 words
+      decodedText.split(' ')[0] // First word only
+    ]
+    
+    for (const fallback of fallbackStrategies) {
+      if (fallback && fallback.length > 2 && fallback !== decodedText) {
+        console.log('Trying fallback search:', fallback)
+        if (highlightTextInContent(fallback)) {
+          return true
+        }
+      }
     }
     
-    console.log('Text not found:', decodedText)
+    console.log('Text not found after all fallbacks:', decodedText)
     return false
   }, [])
 

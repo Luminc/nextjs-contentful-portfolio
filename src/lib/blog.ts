@@ -232,8 +232,23 @@ function extractLinkContext(content: string, linkTitle: string, postTitle: strin
           }
         }
         
-        // Generate text fragment for highlighting - use a portion of the context for better matching
-        const textFragment = context.substring(0, 50).trim()
+        // Generate text fragment for highlighting - find a unique phrase around the link
+        let textFragment = ''
+        
+        // Try to find a phrase that includes some words before and after the link mention
+        const contextWords = context.split(' ')
+        if (contextWords.length > 5) {
+          // Use a 5-word window around the middle of the context
+          const startIndex = Math.max(0, Math.floor(contextWords.length / 2) - 2)
+          const endIndex = Math.min(contextWords.length, startIndex + 5)
+          textFragment = contextWords.slice(startIndex, endIndex).join(' ')
+        } else if (contextWords.length > 2) {
+          // Use first few words if context is short
+          textFragment = contextWords.slice(0, Math.min(3, contextWords.length)).join(' ')
+        } else {
+          // Fallback to first 30 characters
+          textFragment = context.substring(0, 30).trim()
+        }
         
         return {
           context,
