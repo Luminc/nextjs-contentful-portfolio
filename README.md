@@ -20,9 +20,11 @@ In its finished state, every component on the website will be configurable from 
 1.  **Clone the repository.**
 
     ```shell
-    git clone https://github.com/your-username/your-repo-name.git
-    cd your-repo-name
+    git clone --recurse-submodules https://github.com/luminc/nextjs-contentful-portfolio.git
+    cd nextjs-contentful-portfolio
     ```
+    
+    *Note: The `--recurse-submodules` flag automatically initializes and updates any git submodules (like the blog content).*
 
 2.  **Install dependencies.**
 
@@ -40,10 +42,8 @@ In its finished state, every component on the website will be configurable from 
 
     Your `.env.local` should look like this:
     ```
-    CONTENTFUL_SPACE_ID=...
-    CONTENTFUL_ACCESS_TOKEN=...
-    CONTENTFUL_PREVIEW_ACCESS_TOKEN=...
-    CONTENTFUL_PREVIEW_SECRET=...
+    CONTENTFUL_SPACE_ID=your_space_id_here
+    CONTENTFUL_ACCESS_TOKEN=your_access_token_here
     ```
 
 4.  **Run the development server.**
@@ -56,6 +56,52 @@ In its finished state, every component on the website will be configurable from 
 
     Your site is now running at http://localhost:3000!
 
+## 🛠️ Development
+
+### Available Scripts
+
+- `npm run dev` - Start development server at http://localhost:3000
+- `npm run build` - Build the application for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint to check code quality
+- `npm run type-check` - Run TypeScript type checking
+
+### TypeScript
+
+This project is built with TypeScript and includes:
+- Strict type checking enabled
+- Path aliases configured (`@/*` maps to `./src/*`)
+- Next.js App Router types
+- Contentful type definitions in `src/types/contentful.ts`
+
+## 📝 Blog & Writing Features
+
+This portfolio includes a full-featured blog system:
+
+- **Writing section** at `/writing` with markdown support
+- **Git submodule integration** for content management
+- **Wikilink support** for Obsidian-style cross-references
+- **Automatic backlinks** and topic organization
+- **Folder-based content structure**
+
+See `BLOG_SETUP.md` for detailed blog configuration instructions.
+
+## 📁 Project Structure
+
+```
+src/
+├── app/              # Next.js App Router pages
+│   ├── writing/      # Blog and writing features
+│   ├── projects/     # Portfolio projects
+│   └── api/         # API routes for Contentful
+├── components/       # Reusable React components
+├── content/          # Blog content (git submodules)
+├── hooks/           # Custom React hooks
+├── lib/             # Utilities and API functions
+├── scss/            # Sass stylesheets
+└── types/           # TypeScript type definitions
+```
+
 ## 📚 Learn More
 
 - Next.js Documentation - learn about Next.js features and API.
@@ -66,4 +112,4 @@ In its finished state, every component on the website will be configurable from 
 
 The easiest way to deploy your Next.js app is to use the Vercel Platform from the creators of Next.js.
 
-[!Deploy with Vercel](https://vercel.com/new/clone?repository-url=https://github.com/your-username/your-repo-name)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/luminc/nextjs-contentful-portfolio)
