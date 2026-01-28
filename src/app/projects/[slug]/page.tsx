@@ -1,42 +1,43 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { useParams } from 'next/navigation'
 import Layout from '@/components/layout'
 import ContentfulRichText from '@/components/contentful-rich-text'
 import Video from '@/components/video'
-import { getProject, getProjects } from '@/lib/api'
+import { getProject, getProjects } from '@/lib/contentful'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Container, Row, Col, Carousel } from 'react-bootstrap'
 import { createImageUrl, formatDate } from '@/lib/utils'
-import { ContentfulProject } from '@/types/contentful'
+import { notFound } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
-export default function ProjectPage() {
-  const params = useParams()
-  const [project, setProject] = useState<ContentfulProject | null>(null)
-  const [prev, setPrev] = useState<ContentfulProject | null>(null)
-  const [next, setNext] = useState<ContentfulProject | null>(null)
+function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
+  const [project, setProject] = useState<any>(null)
+  const [allProjects, setAllProjects] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+  const [slug, setSlug] = useState<string | null>(null)
 
   useEffect(() => {
-    const fetchProjectData = async () => {
+    const fetchData = async () => {
       try {
-        const [fetchedProject, allProjects] = await Promise.all([
-          getProject(params.slug as string),
-          getProjects()
+        const resolvedParams = await params
+        setSlug(resolvedParams.slug)
+
+        const [projectRes, allProjectsRes] = await Promise.all([
+          fetch(`/api/contentful/projects/${resolvedParams.slug}`),
+          fetch('/api/contentful/projects'),
         ])
-        
-        if (!fetchedProject) {
-          setLoading(false)
+
+        if (!projectRes.ok) {
+          notFound()
           return
         }
 
-        setProject(fetchedProject)
-        
-        const currentIndex = allProjects.findIndex(p => p.fields.url === params.slug)
-        setPrev(currentIndex > 0 ? allProjects[currentIndex - 1] : null)
-        setNext(currentIndex < allProjects.length - 1 ? allProjects[currentIndex + 1] : null)
+        const projectData = await projectRes.json()
+        const allProjectsData = await allProjectsRes.json()
+
+        setProject(projectData)
+        setAllProjects(allProjectsData)
       } catch (error) {
         console.error('Error fetching project:', error)
       } finally {
@@ -44,18 +45,19 @@ export default function ProjectPage() {
       }
     }
 
-    if (params.slug) {
-      fetchProjectData()
-    }
-  }, [params.slug])
+    fetchData()
+  }, [])
 
-  if (loading) {
-    return <Layout><Container><p>Loading...</p></Container></Layout>
+  if (loading || !project) {
+    return <Layout><div>Loading...</div></Layout>
   }
 
-  if (!project) {
-    return <Layout><Container><p>Project not found</p></Container></Layout>
-  }
+  const currentIndex = allProjects.findIndex((p: any) => p.fields.url === slug)
+  const prev = currentIndex > 0 ? allProjects[currentIndex - 1] : null
+  const next =
+    currentIndex < allProjects.length - 1
+      ? allProjects[currentIndex + 1]
+      : null
 
   const formattedDate = formatDate(project.fields.date)
   const projectYear = new Date(project.fields.date).getFullYear()
@@ -64,26 +66,36 @@ export default function ProjectPage() {
     <Layout className="project-page">
       <Container fluid="xxl">
         <p className="text-center project-subtitle pt-5">{projectYear}</p>
-        <h1 className="text-center display-1 py-2">
-          {project.fields.title}
-        </h1>
+        <h1 className="text-center display-1 py-2">{project.fields.title}</h1>
         <p className="text-center project-subtitle pb-5">
           {project.fields.medium}
         </p>
       </Container>
-      
+
       <Row id="project-content" className="mb-5">
         <Col md className="pb-5 featured-project-image">
           <Image
-            src={createImageUrl(project.fields.featuredImage?.fields?.file?.url || '/placeholder.jpg')}
-            alt={project.fields.featuredImage?.fields?.description || project.fields.title}
-            width={project.fields.featuredImage?.fields?.file?.details?.image?.width || 1200}
-            height={project.fields.featuredImage?.fields?.file?.details?.image?.height || 800}
+            src={createImageUrl(
+              project.fields.featuredImage?.fields?.file?.url ||
+                '/placeholder.jpg'
+            )}
+            alt={
+              project.fields.featuredImage?.fields?.description ||
+              project.fields.title
+            }
+            width={
+              project.fields.featuredImage?.fields?.file?.details?.image
+                ?.width || 1200
+            }
+            height={
+              project.fields.featuredImage?.fields?.file?.details?.image
+                ?.height || 800
+            }
             className="featured-project-image contain"
             style={{
               width: '100%',
               height: 'auto',
-              objectFit: 'contain'
+              objectFit: 'contain',
             }}
           />
         </Col>
@@ -123,7 +135,7 @@ export default function ProjectPage() {
                 style={{ width: '100%', height: 'auto' }}
               />
             )}
-            
+
             {section.sys.contentType?.sys.id === 'documentation' &&
               section.fields.images?.map((image: any) => (
                 <Container fluid="xxl" key={image.sys.id}>
@@ -139,13 +151,16 @@ export default function ProjectPage() {
                   </div>
                 </Container>
               ))}
-              
+
             {section.sys.contentType?.sys.id === 'containerVideo' && (
               <Container fluid="sm" className="my-5">
-                <Video Src={createImageUrl(section.fields.video.fields.file.url)} muted={true} />
+                <Video
+                  Src={createImageUrl(section.fields.video.fields.file.url)}
+                  muted={true}
+                />
               </Container>
             )}
-            
+
             {section.sys.contentType?.sys.id === 'carousel' && (
               <Container fluid="sm">
                 <Carousel
@@ -162,7 +177,7 @@ export default function ProjectPage() {
                         alt={section.fields.title}
                         width={image.fields.file.details.image.width}
                         height={image.fields.file.details.image.height}
-                        loading={index === 0 ? "eager" : "lazy"}
+                        loading={index === 0 ? 'eager' : 'lazy'}
                         style={{ width: '100%', height: 'auto' }}
                       />
                     </Carousel.Item>
@@ -198,7 +213,7 @@ export default function ProjectPage() {
             />
           </div>
         ))}
-        
+
         {/* Navigation */}
         <div className="card-group align-items-end justify-content-between py-5 mt-4">
           {prev ? (
@@ -207,7 +222,10 @@ export default function ProjectPage() {
                 <Link href={`/projects/${prev.fields.url}`}>
                   <Image
                     className="card-img"
-                    src={createImageUrl(prev.fields.featuredImage?.fields?.file?.url || '/placeholder.jpg')}
+                    src={createImageUrl(
+                      prev.fields.featuredImage?.fields?.file?.url ||
+                        '/placeholder.jpg'
+                    )}
                     alt={prev.fields.title}
                     width={600}
                     height={600}
@@ -222,7 +240,9 @@ export default function ProjectPage() {
                 </div>
               </div>
               <div className="d-md-none">
-                <Link href={`/projects/${prev.fields.url}`}>&lt; Previous project</Link>
+                <Link href={`/projects/${prev.fields.url}`}>
+                  &lt; Previous project
+                </Link>
               </div>
             </>
           ) : (
@@ -230,14 +250,17 @@ export default function ProjectPage() {
               <p className="card-title h2 grayed p2">&lt;</p>
             </div>
           )}
-          
+
           {next ? (
             <>
               <div className="card pagination-card d-none d-md-block">
                 <Link href={`/projects/${next.fields.url}`}>
                   <Image
                     className="card-img"
-                    src={createImageUrl(next.fields.featuredImage?.fields?.file?.url || '/placeholder.jpg')}
+                    src={createImageUrl(
+                      next.fields.featuredImage?.fields?.file?.url ||
+                        '/placeholder.jpg'
+                    )}
                     alt={next.fields.title}
                     width={600}
                     height={600}
@@ -247,12 +270,16 @@ export default function ProjectPage() {
                 </Link>
                 <div className="card-body">
                   <Link href={`/projects/${next.fields.url}`}>
-                    <h5 className="card-title text-right">{next.fields.title} &gt;</h5>
+                    <h5 className="card-title text-right">
+                      {next.fields.title} &gt;
+                    </h5>
                   </Link>
                 </div>
               </div>
               <div className="d-md-none">
-                <Link href={`/projects/${next.fields.url}`}>Next project &gt;</Link>
+                <Link href={`/projects/${next.fields.url}`}>
+                  Next project &gt;
+                </Link>
               </div>
             </>
           ) : (
@@ -265,3 +292,5 @@ export default function ProjectPage() {
     </Layout>
   )
 }
+
+export default ProjectPage

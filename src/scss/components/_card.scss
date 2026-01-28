@@ -1,3 +1,5 @@
+@use "../abstracts/variables";
+
 .card {
   border: none;
   background-color: transparent;
@@ -43,7 +45,7 @@
         color: var(--primary-dark) !important;
       }
       .overline + .card-title {
-        color: $color-primary;
+        color: variables.$color-primary;
       }
     }
   }

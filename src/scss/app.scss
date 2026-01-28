@@ -1,22 +1,22 @@
-@import "abstracts/functions";
-@import "abstracts/mixins";
-@import "abstracts/variables";
+@use "abstracts/functions";
+@use "abstracts/mixins";
+@use "abstracts/variables";
 
-@import "base/base";
-@import "base/animation";
-@import "base/typography";
-@import "base/utilities";
-@import "base/focus";
+@use "base/base";
+@use "base/animation";
+@use "base/typography";
+@use "base/utilities";
+@use "base/focus";
 
-@import "layout/header";
-@import "layout/footer";
+@use "layout/header";
+@use "layout/footer";
 
-@import "components/button";
-@import "components/card";
-@import "components/carousel";
-@import "components/emailform";
-@import "components/skeleton";
-@import "components/skip-links";
+@use "components/button";
+@use "components/card";
+@use "components/carousel";
+@use "components/emailform";
+@use "components/skeleton";
+@use "components/skip-links";
 
-@import "pages/project";
-@import "pages/blog";
+@use "pages/project";
+@use "pages/blog";

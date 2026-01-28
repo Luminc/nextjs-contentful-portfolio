@@ -1,3 +1,5 @@
+@use "../abstracts/variables";
+
 // Mobile-first responsive navigation with burger menu
 .nav-header {
   position: relative;
@@ -18,13 +20,13 @@
 // Brand styling
 .brand {
   font-size: calc(1.325rem + 0.9vw);
-  color: $text-primary-dark !important;
+  color: variables.$text-primary-dark !important;
   text-decoration: none !important;
   font-weight: 200;
   z-index: 1001;
   
   &:hover {
-    color: $color-primary !important;
+    color: variables.$color-primary !important;
   }
   
   @media screen and (min-width: 1200px) {
@@ -52,7 +54,7 @@
   .burger-line {
     width: 2rem;
     height: 0.2rem;
-    background: $text-primary-dark;
+    background: variables.$text-primary-dark;
     border-radius: 10px;
     transition: all 0.3s linear;
     position: relative;
@@ -125,7 +127,7 @@
   
   &-text {
     font-size: 2rem;
-    color: $text-primary-dark;
+    color: variables.$text-primary-dark;
     text-decoration: none !important;
     font-weight: 200;
     padding: 1rem 2rem;
@@ -143,8 +145,8 @@
     }
     
     &:hover {
-      color: $color-primary !important;
-      background: rgba($color-primary, 0.1);
+      color: variables.$color-primary !important;
+      background: rgba(variables.$color-primary, 0.1);
       
       @media screen and (min-width: 768px) {
         background: none;
@@ -152,7 +154,7 @@
     }
     
     &:active {
-      color: $color-secondary !important;
+      color: variables.$color-secondary !important;
     }
   }
 }

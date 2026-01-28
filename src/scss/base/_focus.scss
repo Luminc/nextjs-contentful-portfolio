@@ -1,8 +1,11 @@
+@use "../abstracts/variables";
+@use "../abstracts/mixins";
+
 // Focus management and accessibility styles
 
 // Custom focus ring for better accessibility
 @mixin focus-ring {
-  outline: 2px solid $color-secondary;
+  outline: 2px solid variables.$color-secondary;
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -28,7 +31,7 @@ a, button, input, textarea, select {
 // Card focus styles for better navigation
 .card {
   &:focus-within {
-    box-shadow: 0 0 0 2px $color-secondary;
+    box-shadow: 0 0 0 2px variables.$color-secondary;
     border-radius: 4px;
   }
   
@@ -41,7 +44,7 @@ a, button, input, textarea, select {
 .nav-links {
   a:focus-visible {
     @include focus-ring;
-    background: rgba($color-primary, 0.1);
+    background: rgba(variables.$color-primary, 0.1);
   }
 }
 
@@ -49,7 +52,7 @@ a, button, input, textarea, select {
 .btn, .large-button, .shape-pill {
   &:focus-visible {
     @include focus-ring;
-    box-shadow: 0 0 0 2px $color-secondary;
+    box-shadow: 0 0 0 2px variables.$color-secondary;
   }
 }
 
@@ -57,7 +60,7 @@ a, button, input, textarea, select {
 .input {
   &:focus-visible {
     @include focus-ring;
-    border-color: $color-primary;
+    border-color: variables.$color-primary;
   }
 }
 

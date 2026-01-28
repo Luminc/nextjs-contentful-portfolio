@@ -1,3 +1,5 @@
+@use "../abstracts/variables";
+
 .text-column-2 {
   column-count: 2;
 }
@@ -21,7 +23,7 @@ p {
       text-decoration: underline;
 
       &:hover {
-        color: $color-secondary;
+        color: variables.$color-secondary;
       }
     }
   }
@@ -39,14 +41,14 @@ h2, h3, h4, h5, h6 {
 
 a {
   text-decoration: none;
-  color: $text-primary-dark;
+  color: variables.$text-primary-dark;
 
   &:hover {
-    color: $color-primary;
+    color: variables.$color-primary;
   }
 
   &:active {
-    color: $color-secondary;
+    color: variables.$color-secondary;
   }
 
   .overline {

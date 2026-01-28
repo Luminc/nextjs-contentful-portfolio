@@ -28,7 +28,9 @@ const nextConfig = {
   },
   // Compiler optimizations
   compiler: {
-    styledComponents: true, // Enable styled-components compilation
+  },
+  devIndicators: {
+    allowedDevOrigins: ["http://192.168.178.94"],
   },
 }
 

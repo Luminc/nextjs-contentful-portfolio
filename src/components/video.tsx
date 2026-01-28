@@ -1,6 +1,6 @@
 'use client'
 
-import styled from 'styled-components'
+import styles from './video.module.scss'
 
 interface VideoProps {
   Src: string
@@ -9,26 +9,9 @@ interface VideoProps {
   [key: string]: any
 }
 
-const VideoBg = styled.video<{
-  src: string
-  title?: string
-  autoPlay: boolean
-  loop: boolean
-  playsInline: boolean
-  controls: boolean
-  muted?: boolean
-  className: string
-}>`
-  width: 100%;
-  height: 100%;
-  -o-object-fit: cover;
-  object-fit: cover;
-  z-index: 1;
-`
-
 const Video: React.FC<VideoProps> = ({ Src, Title, muted, ...props }) => (
   <div className="video">
-    <VideoBg
+    <video
       src={Src}
       title={Title}
       autoPlay
@@ -36,7 +19,7 @@ const Video: React.FC<VideoProps> = ({ Src, Title, muted, ...props }) => (
       playsInline
       controls
       muted={muted}
-      className="video-internal"
+      className={styles.videoBg}
       {...props}
     />
   </div>

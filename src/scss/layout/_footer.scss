@@ -1,13 +1,16 @@
+@use "../abstracts/variables";
+@use "../abstracts/mixins";
+
 .nav-bottom {
   font-family: Arial, Helvetica, sans-serif;
-  color: $primary-light;
+  color: variables.$primary-light;
   font-size: 1.25rem;
   font-weight: 300;
 }
 
 .copyright {
   font-family: Roboto, Helvetica, sans-serif;
-  color: $primary-light;
+  color: variables.$primary-light;
   font-weight: 300;
 }
 
@@ -32,7 +35,7 @@ footer {
 }
 
 .footer-links {
-  @include reset-list;
+  @include mixins.reset-list;
   padding-top: 2rem;
   padding-bottom: 0.8rem;
   &-brand {
@@ -42,11 +45,11 @@ footer {
 }
 
 .contact-links {
-  @include reset-list;
+  @include mixins.reset-list;
   padding-bottom: 1.2rem;
 }
 
 .social-links {
-  @include reset-list;
+  @include mixins.reset-list;
   padding-bottom: 1.2rem;
 }

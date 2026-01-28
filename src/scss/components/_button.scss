@@ -1,3 +1,5 @@
+@use "../abstracts/variables";
+
 button {
   padding: 0.5em 0.835em;
   border-width: 1px;
@@ -9,22 +11,22 @@ button {
   &.large-button {
     font-size: 16px;
     &:hover {
-      background-color: $color-primary;
+      background-color: variables.$color-primary;
       border-color: rgba(0, 0, 0, 0);
     }
     &:active {
-      background-color: $color-secondary;
+      background-color: variables.$color-secondary;
     }
   }
   &.hot {
-    background-color: $color-primary;
+    background-color: variables.$color-primary;
     border-color: rgba(0, 0, 0, 0);
     &:hover {
       background-color: transparent;
-      border-color: $text-primary-dark;
+      border-color: variables.$text-primary-dark;
     }
     &:active {
-      color: $color-secondary;
+      color: variables.$color-secondary;
     }
   }
 }

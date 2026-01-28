@@ -1,6 +1,8 @@
+@use "../abstracts/variables";
+
 .carousel-caption {
   position: relative;
-  color: $text-primary-dark;
+  color: variables.$text-primary-dark;
   text-align: right;
   padding-top: 1.5rem;
   padding-right: 1.5rem;
