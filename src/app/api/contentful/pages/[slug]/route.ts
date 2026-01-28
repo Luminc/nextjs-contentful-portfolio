@@ -6,11 +6,12 @@ const client = createClient({
   accessToken: process.env.CONTENTFUL_ACCESS_TOKEN!,
 })
 
-export async function GET(request: Request, { params }: { params: { slug: string } }) {
+export async function GET(request: Request, { params }: { params: Promise<{ slug: string }> }) {
   try {
+    const { slug } = await params
     const entries = await client.getEntries({
       content_type: 'about',
-      'fields.slug': params.slug,
+      'fields.slug': slug,
       limit: 1,
     })
     
