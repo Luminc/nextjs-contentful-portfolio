@@ -40,7 +40,7 @@ export const RecentProjects = () => {
   if (loading) {
     return (
       <Container>
-        <h1 className="display-2 py-5">Recent Projects</h1>
+        <h1 className="display-2 py-5">Projects</h1>
         <ProjectsGridSkeleton />
       </Container>
     )
@@ -51,7 +51,7 @@ export const RecentProjects = () => {
       {/* Installation Projects Section */}
       {installations.length > 0 && (
         <div className="container-wide">
-          <h1 className="display-2 py-5">Recent Installations</h1>
+          <h1 className="display-2 py-5">Projects</h1>
           <div className="card-columns-3">
             {installations.map(project => (
               <ProjectCard key={project.sys.id} project={project} />
@@ -62,7 +62,7 @@ export const RecentProjects = () => {
               className="shape-pill large-button"
               onClick={() => router.push('/projects?filter=Installation')}
             >
-              View All Installations
+              See all
             </button>
           </div>
         </div>
@@ -71,7 +71,7 @@ export const RecentProjects = () => {
       {/* Writing Projects Section */}
       {writings.length > 0 && (
         <div className="container-wide">
-          <h1 className="display-2 py-5 mt-5">Recent Writing</h1>
+          <h1 className="display-2 py-5 mt-5">Writing</h1>
           <div className="card-columns-3">
             {writings.map(project => (
               <ProjectCard key={project.sys.id} project={project} />
@@ -82,7 +82,7 @@ export const RecentProjects = () => {
               className="shape-pill large-button"
               onClick={() => router.push('/projects?filter=Writing')}
             >
-              View All Writing
+              See all
             </button>
           </div>
         </div>

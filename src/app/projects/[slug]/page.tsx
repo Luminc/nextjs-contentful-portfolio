@@ -62,7 +62,7 @@ export default function ProjectPage() {
 
   return (
     <Layout className="project-page">
-      <Container fluid="xxl" className="pt-3">
+      <div className="container-wide pt-3">
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb">
             <li className="breadcrumb-item"><Link href="/">Home</Link></li>
@@ -70,7 +70,7 @@ export default function ProjectPage() {
             <li className="breadcrumb-item active" aria-current="page">{project.fields.title}</li>
           </ol>
         </nav>
-      </Container>
+      </div>
       <Container fluid="xxl">
         <p className="text-center project-subtitle pt-2">{projectYear}</p>
         <h1 className="text-center display-1 py-2">
@@ -80,43 +80,45 @@ export default function ProjectPage() {
           {project.fields.medium}
         </p>
       </Container>
-      
-      <Row id="project-content" className="mb-5">
-        <Col md className="pb-5 featured-project-image">
-          <Image
-            src={createImageUrl(project.fields.featuredImage?.fields?.file?.url || '/placeholder.jpg')}
-            alt={project.fields.featuredImage?.fields?.description || project.fields.title}
-            width={project.fields.featuredImage?.fields?.file?.details?.image?.width || 1200}
-            height={project.fields.featuredImage?.fields?.file?.details?.image?.height || 800}
-            className="featured-project-image contain"
-            style={{
-              width: '100%',
-              height: 'auto',
-              objectFit: 'contain'
-            }}
-          />
-        </Col>
 
-        {project.fields.content && (
-          <Col>
-            <Container>
-              <ContentfulRichText richText={project.fields.content} />
-              {project.fields.materials && (
-                <div>
-                  <p className="leading-loose caption caption-title">
-                    Materials:
-                  </p>
-                  <p className="leading-loose caption">
-                    {project.fields.materials}
-                  </p>
-                </div>
-              )}
-              <p className="leading-loose caption caption-title">Date:</p>
-              <p className="leading-loose caption">{formattedDate}</p>
-            </Container>
+      <div className="container-wide">
+        <Row id="project-content" className="mb-5">
+          <Col md className="pb-5 featured-project-image">
+            <Image
+              src={createImageUrl(project.fields.featuredImage?.fields?.file?.url || '/placeholder.jpg')}
+              alt={project.fields.featuredImage?.fields?.description || project.fields.title}
+              width={project.fields.featuredImage?.fields?.file?.details?.image?.width || 1200}
+              height={project.fields.featuredImage?.fields?.file?.details?.image?.height || 800}
+              className="featured-project-image contain"
+              style={{
+                width: '100%',
+                height: 'auto',
+                objectFit: 'contain'
+              }}
+            />
           </Col>
-        )}
-      </Row>
+
+          {project.fields.content && (
+            <Col>
+              <Container>
+                <ContentfulRichText richText={project.fields.content} />
+                {project.fields.materials && (
+                  <div>
+                    <p className="leading-loose caption caption-title">
+                      Materials:
+                    </p>
+                    <p className="leading-loose caption">
+                      {project.fields.materials}
+                    </p>
+                  </div>
+                )}
+                <p className="leading-loose caption caption-title">Date:</p>
+                <p className="leading-loose caption">{formattedDate}</p>
+              </Container>
+            </Col>
+          )}
+        </Row>
+      </div>
 
       {/* Sections */}
       {project.fields.sections?.map((section: any) =>

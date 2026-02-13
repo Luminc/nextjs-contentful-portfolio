@@ -46,26 +46,27 @@ function ProjectsContent() {
 
   return (
     <div className="container-wide">
-      {/* Mobile: Tabs */}
-      <div className="project-tabs d-md-none mb-4">
-        <div className="d-flex justify-content-center gap-3">
-          <button
-            className={`shape-pill ${activeTab === 'Installation' ? 'active' : ''}`}
+      {/* Mobile: Heading toggles */}
+      <div className="d-md-none mb-4">
+        <div className="d-flex justify-content-center gap-4 mb-4">
+          <h1
+            className={`display-1 mb-0 ${activeTab === 'Installation' ? '' : 'text-muted'}`}
             onClick={() => setActiveTab('Installation')}
+            style={{ cursor: 'pointer' }}
           >
-            Installations ({installations.length})
-          </button>
-          <button
-            className={`shape-pill ${activeTab === 'Writing' ? 'active' : ''}`}
+            Projects
+          </h1>
+          <h1 className='display-1'>/</h1>
+          <h1
+            className={`display-1 mb-0 ${activeTab === 'Writing' ? '' : 'text-muted'}`}
             onClick={() => setActiveTab('Writing')}
+            style={{ cursor: 'pointer' }}
           >
-            Writing ({writings.length})
-          </button>
+            Writing
+          </h1>
         </div>
-      </div>
 
-      {/* Mobile: Show active tab content */}
-      <div className="d-md-none">
+        {/* Mobile: Show active tab content */}
         {activeTab === 'Installation' && (
           <div className="card-columns-2">
             {installations.map(project => (
@@ -82,19 +83,20 @@ function ProjectsContent() {
         )}
       </div>
 
-      {/* Desktop: Side by side columns */}
-      <div className="d-none d-md-grid project-columns">
-        <div className="project-column">
-          <h2 className="h3 mb-4">Installations</h2>
+      {/* Desktop: Vertical sections */}
+      <div className="d-none d-md-block">
+        <div className="mb-5">
+          <h1 className="display-1 mt-4 py-5">Projects</h1>
           <div className="card-columns-2">
             {installations.map(project => (
               <ProjectCard key={project.sys.id} project={project} />
             ))}
           </div>
         </div>
-        <div className="project-column">
-          <h2 className="h3 mb-4">Writing</h2>
-          <div className="card-columns-1">
+
+        <div className="mb-5">
+          <h1 className="display-1 mt-4 py-5">Writing</h1>
+          <div className="card-columns-2">
             {writings.map(project => (
               <ProjectCard key={project.sys.id} project={project} />
             ))}
@@ -107,7 +109,7 @@ function ProjectsContent() {
 
 export default function ProjectsPage() {
   return (
-    <Layout pageTitle="Projects">
+    <Layout>
       <Suspense fallback={<ProjectsGridSkeleton />}>
         <ProjectsContent />
       </Suspense>
