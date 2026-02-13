@@ -13,6 +13,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
       content_type: 'project',
       'fields.url': slug,
       limit: 1,
+      include: 3, // Fetch nested sections (sectionImageWide, etc.)
     })
     
     if (entries.items.length === 0) {

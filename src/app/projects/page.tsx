@@ -56,7 +56,7 @@ function ProjectsContent() {
           >
             Projects
           </h1>
-          <h1 className='display-1'>/</h1>
+          <h1 className='display-1 mb-0 py-5'>/</h1>
           <h1
             className={`display-1 mb-0 py-5 ${activeTab === 'Writing' ? '' : 'text-muted'}`}
             onClick={() => setActiveTab('Writing')}

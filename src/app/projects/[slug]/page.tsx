@@ -124,7 +124,7 @@ export default function ProjectPage() {
       {project.fields.sections?.map((section: any) =>
         section.sys?.id ? (
           <section key={section.sys.id}>
-            {section.sys.contentType?.sys.id === 'sectionImageWide' && (
+            {section.sys.contentType?.sys.id === 'imageWide' && (
               <Image
                 src={createImageUrl(section.fields.image.fields.file.url)}
                 alt={section.fields.alt || section.fields.title}
