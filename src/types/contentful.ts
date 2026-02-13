@@ -65,6 +65,8 @@ export interface ContentfulProjectFields {
   materials?: string
   date: string
   year: string
+  type: 'Installation' | 'Writing'
+  featured?: boolean
   content?: ContentfulRichText
   documentation?: ContentfulAsset[]
   url: string

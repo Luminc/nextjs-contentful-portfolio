@@ -39,6 +39,14 @@ div.video {
   max-width: 900px;
 }
 
+/* Wide container matching carousel width */
+.container-wide {
+  width: 97vw;
+  max-width: 1500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .pagination-card {
   max-width: 300px;
 }
