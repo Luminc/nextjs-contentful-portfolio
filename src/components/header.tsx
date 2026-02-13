@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { siteMetadata } from '@/lib/site-metadata'
 import { usePages } from '@/hooks/usePages'
 import dynamic from 'next/dynamic'
@@ -13,6 +14,7 @@ const TorusLogo = dynamic(
 )
 
 export const Header = () => {
+  const pathname = usePathname()
   const { data: pages, error } = usePages()
   const [isLogoHovered, setIsLogoHovered] = useState(false)
   const [isLogoPressed, setIsLogoPressed] = useState(false)
@@ -30,8 +32,14 @@ export const Header = () => {
 
   // Apply random spin on click
   const handleLogoClick = (e: React.MouseEvent) => {
-    e.preventDefault()
+    // Only prevent navigation if we're already on the home page
+    const isOnHomePage = pathname === '/'
 
+    if (isOnHomePage) {
+      e.preventDefault()
+    }
+
+    // Always apply spin (fun on home, brief visual feedback before navigation on other pages)
     // Generate random velocities
     let velX = (Math.random() - 0.5) * 40
     let velY = (Math.random() - 0.5) * 40
@@ -56,7 +64,7 @@ export const Header = () => {
   return (
     <nav
       id="navigation"
-      className="justify-content-between align-items-end nav-links py-2 px-4"
+      className="justify-content-between align-items-center nav-links py-2 px-4"
       role="navigation"
       aria-label="Main navigation"
     >
