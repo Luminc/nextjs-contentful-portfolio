@@ -20,6 +20,8 @@
     "@contentful/rich-text-react-renderer": "^15.12.1",
     "@contentful/rich-text-types": "^15.12.1",
     "@fontsource/commissioner": "^4.5.8",
+    "@react-three/drei": "^9.114.3",
+    "@react-three/fiber": "^8.17.10",
     "@sindresorhus/slugify": "^2.2.1",
     "bootstrap": "^5.2.1",
     "contentful": "^10.3.6",
@@ -28,7 +30,8 @@
     "react-bootstrap": "^2.5.0",
     "react-dom": "^18.1.0",
     "sass": "^1.55.0",
-    "styled-components": "^5.3.5"
+    "styled-components": "^5.3.5",
+    "three": "^0.169.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

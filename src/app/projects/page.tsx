@@ -50,7 +50,7 @@ function ProjectsContent() {
       <div className="d-md-none mb-4">
         <div className="d-flex justify-content-center gap-4 mb-4">
           <h1
-            className={`display-1 mb-0 ${activeTab === 'Installation' ? '' : 'text-muted'}`}
+            className={`display-1 mb-0 py-5 ${activeTab === 'Installation' ? '' : 'text-muted'}`}
             onClick={() => setActiveTab('Installation')}
             style={{ cursor: 'pointer' }}
           >
@@ -58,7 +58,7 @@ function ProjectsContent() {
           </h1>
           <h1 className='display-1'>/</h1>
           <h1
-            className={`display-1 mb-0 ${activeTab === 'Writing' ? '' : 'text-muted'}`}
+            className={`display-1 mb-0 py-5 ${activeTab === 'Writing' ? '' : 'text-muted'}`}
             onClick={() => setActiveTab('Writing')}
             style={{ cursor: 'pointer' }}
           >

@@ -62,15 +62,6 @@ export default function ProjectPage() {
 
   return (
     <Layout className="project-page">
-      <div className="container-wide pt-3">
-        <nav aria-label="breadcrumb">
-          <ol className="breadcrumb">
-            <li className="breadcrumb-item"><Link href="/">Home</Link></li>
-            <li className="breadcrumb-item"><Link href="/projects">Projects</Link></li>
-            <li className="breadcrumb-item active" aria-current="page">{project.fields.title}</li>
-          </ol>
-        </nav>
-      </div>
       <Container fluid="xxl">
         <p className="text-center project-subtitle pt-2">{projectYear}</p>
         <h1 className="text-center display-1 py-2">
@@ -101,6 +92,15 @@ export default function ProjectPage() {
           {project.fields.content && (
             <Col>
               <Container>
+               <div className="pt-3">
+        <nav aria-label="breadcrumb">
+          <ol className="breadcrumb">
+            <li className="breadcrumb-item"><Link href="/">Home</Link></li>
+            <li className="breadcrumb-item"><Link href="/projects">Projects</Link></li>
+            <li className="breadcrumb-item active" aria-current="page">{project.fields.title}</li>
+          </ol>
+        </nav>
+      </div>
                 <ContentfulRichText richText={project.fields.content} />
                 {project.fields.materials && (
                   <div>
