@@ -19,9 +19,18 @@ export const Header = () => {
   const [isLogoHovered, setIsLogoHovered] = useState(false)
   const [isLogoPressed, setIsLogoPressed] = useState(false)
   const [spinVelocity, setSpinVelocity] = useState({ x: 0, y: 0 })
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   // Gracefully handle errors - show navigation without dynamic pages
   const safePages = pages || []
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen)
+  }
+
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false)
+  }
 
   // Determine logo color: red when pressed, yellow when hovered, gray default
   const getLogoColor = () => {
@@ -64,14 +73,15 @@ export const Header = () => {
   return (
     <nav
       id="navigation"
-      className="justify-content-between align-items-center nav-links py-2 px-4"
+      className="justify-content-between align-items-center py-2 px-4"
+      style={{ display: 'flex', position: 'relative', zIndex: 1000 }}
       role="navigation"
       aria-label="Main navigation"
     >
       <Link
         href="/"
         className="brand"
-        style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}
+        style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', zIndex: 1001 }}
         onMouseEnter={() => setIsLogoHovered(true)}
         onMouseLeave={() => {
           setIsLogoHovered(false)
@@ -79,7 +89,10 @@ export const Header = () => {
         }}
         onMouseDown={() => setIsLogoPressed(true)}
         onMouseUp={() => setIsLogoPressed(false)}
-        onClick={handleLogoClick}
+        onClick={(e) => {
+          handleLogoClick(e)
+          closeMobileMenu()
+        }}
       >
         <div style={{ width: '90px', height: '90px', flexShrink: 0 }}>
           <TorusLogo
@@ -90,20 +103,39 @@ export const Header = () => {
         </div>
         <span>{siteMetadata.title}</span>
       </Link>
-      <div className="nav-links">
+
+      {/* Burger button for mobile */}
+      <button
+        className={`burger-menu ${mobileMenuOpen ? 'open' : ''}`}
+        onClick={toggleMobileMenu}
+        aria-label="Toggle navigation menu"
+        aria-expanded={mobileMenuOpen}
+      >
+        <span className="burger-line"></span>
+        <span className="burger-line"></span>
+        <span className="burger-line"></span>
+      </button>
+
+      {/* Navigation links */}
+      <div className={`nav-links ${mobileMenuOpen ? 'mobile-open' : ''}`}>
         <div className="nav-links-item">
-          <Link href="/projects" className="nav-links-text">
+          <Link href="/projects" className="nav-links-text" onClick={closeMobileMenu}>
             Projects
           </Link>
         </div>
         {safePages.map(page => (
           <div key={page.fields.slug} className="nav-links-item">
-            <Link href={`/${page.fields.slug}`} className="nav-links-text">
+            <Link href={`/${page.fields.slug}`} className="nav-links-text" onClick={closeMobileMenu}>
               {page.fields.title}
             </Link>
           </div>
         ))}
       </div>
+
+      {/* Mobile overlay */}
+      {mobileMenuOpen && (
+        <div className="mobile-overlay" onClick={closeMobileMenu}></div>
+      )}
     </nav>
   )
 }
