@@ -35,6 +35,7 @@ const CarouselLanding: React.FC<CarouselLandingProps> = ({ heroImages }) => {
               width={image.fields.image?.fields?.file?.details?.image?.width || 1200}
               height={image.fields.image?.fields?.file?.details?.image?.height || 800}
               priority
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1500px"
               style={{
                 width: '100%',
                 height: 'auto',

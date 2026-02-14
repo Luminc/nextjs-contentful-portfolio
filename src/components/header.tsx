@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { siteMetadata } from '@/lib/site-metadata'
@@ -18,6 +18,25 @@ export const Header = () => {
   const [isLogoPressed, setIsLogoPressed] = useState(false)
   const [spinVelocity, setSpinVelocity] = useState({ x: 0, y: 0 })
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  const [shouldLoad3D, setShouldLoad3D] = useState(false) // When to start mounting 3D
+  const [is3DReady, setIs3DReady] = useState(false) // When 3D is substantially visible (faded in)
+
+  // Delay loading the 3D logo to prioritize LCP and TBT
+  useEffect(() => {
+    // 1. Wait for main thread to settle
+    const loadTimer = setTimeout(() => {
+      setShouldLoad3D(true)
+
+      // 2. Give Three.js a moment to initialize before fading in
+      // This prevents a "pop" of un-rendered canvas
+      setTimeout(() => {
+        setIs3DReady(true)
+      }, 100)
+    }, 2500)
+
+    return () => clearTimeout(loadTimer)
+  }, [])
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen)
@@ -89,12 +108,44 @@ export const Header = () => {
           closeMobileMenu()
         }}
       >
-        <div style={{ width: '90px', height: '90px', flexShrink: 0 }}>
-          <TorusLogo
-            color={getLogoColor()}
-            spinVelocity={spinVelocity}
-            onSpinVelocityChange={setSpinVelocity}
-          />
+        <div style={{ width: '90px', height: '90px', flexShrink: 0, position: 'relative' }}>
+          {/* 1. Static Placeholder - Fades out when 3D is ready */}
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              opacity: is3DReady ? 0 : 1,
+              transition: 'opacity 1.0s ease-in-out',
+              pointerEvents: is3DReady ? 'none' : 'auto'
+            }}
+          >
+            <img
+              src="/placeholder-torus-45.svg"
+              alt="Logo"
+              style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+            />
+          </div>
+
+          {/* 2. 3D Component - Mounts late, then fades in */}
+          {shouldLoad3D && (
+            <div
+              style={{
+                width: '100%',
+                height: '100%',
+                opacity: is3DReady ? 1 : 0,
+                transition: 'opacity 1.0s ease-in-out'
+              }}
+            >
+              <TorusLogo
+                color={getLogoColor()}
+                spinVelocity={spinVelocity}
+                onSpinVelocityChange={setSpinVelocity}
+              />
+            </div>
+          )}
         </div>
         <span>{siteMetadata.title}</span>
       </Link>
