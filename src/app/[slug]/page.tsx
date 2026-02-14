@@ -1,54 +1,95 @@
-'use client'
+/**
+ * DYNAMIC PAGE - SERVER COMPONENT
+ *
+ * Server-rendered dynamic pages (About, etc.) with full SEO support.
+ * This page generates static pages at build time and revalidates hourly.
+ *
+ * Features:
+ * - Static Site Generation (SSG) via generateStaticParams
+ * - Dynamic metadata for SEO
+ * - Server-side data fetching
+ * - Incremental Static Regeneration (ISR)
+ */
 
-import { useState, useEffect } from 'react'
-import { useParams, notFound } from 'next/navigation'
+import { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 import Layout from '@/components/layout'
 import ContentfulRichText from '@/components/contentful-rich-text'
-import { getPage } from '@/lib/api'
-import { Container, Row, Col } from 'react-bootstrap'
+import { getPage, getPages } from '@/lib/contentful'
+// React Bootstrap components replaced with plain HTML for Server Component compatibility
 import Image from 'next/image'
 import { createImageUrl } from '@/lib/utils'
-import { PageSkeleton } from '@/components/skeleton'
-import { ContentfulPage } from '@/types/contentful'
 import HeroFlight from '@/components/hero-flight'
+import { siteMetadata } from '@/lib/site-metadata'
 
-export default function DynamicPage() {
-  const params = useParams()
-  const [page, setPage] = useState<ContentfulPage | null>(null)
-  const [loading, setLoading] = useState(true)
+// Revalidate every hour (ISR)
+export const revalidate = 3600
 
-  useEffect(() => {
-    const fetchPage = async () => {
-      try {
-        const fetchedPage = await getPage(params.slug as string)
-        if (!fetchedPage) {
-          notFound()
-        }
-        setPage(fetchedPage)
-      } catch (error) {
-        console.error('Error fetching page:', error)
-        notFound()
-      } finally {
-        setLoading(false)
-      }
+/**
+ * GENERATE STATIC PARAMS
+ * Pre-renders all pages at build time
+ */
+export async function generateStaticParams() {
+  const pages = await getPages()
+  return pages.map((page) => ({
+    slug: page.fields.slug,
+  }))
+}
+
+/**
+ * GENERATE METADATA
+ * Dynamic metadata for SEO and social sharing
+ */
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string }
+}): Promise<Metadata> {
+  const page = await getPage(params.slug)
+
+  if (!page) {
+    return {
+      title: 'Page Not Found',
     }
-
-    if (params.slug) {
-      fetchPage()
-    }
-  }, [params.slug])
-
-  if (loading) {
-    return (
-      <Layout>
-        <PageSkeleton />
-      </Layout>
-    )
   }
+
+  const imageUrl = page.fields.image?.fields?.file?.url
+    ? createImageUrl(page.fields.image.fields.file.url)
+    : undefined
+
+  return {
+    title: `${page.fields.title} | ${siteMetadata.title}`,
+    description: siteMetadata.description,
+    openGraph: {
+      title: page.fields.title,
+      description: siteMetadata.description,
+      type: 'website',
+      ...(imageUrl && {
+        images: [
+          {
+            url: imageUrl,
+            width: page.fields.image?.fields?.file?.details?.image?.width,
+            height: page.fields.image?.fields?.file?.details?.image?.height,
+            alt: page.fields.image?.fields?.description || page.fields.title,
+          },
+        ],
+      }),
+    },
+  }
+}
+
+/**
+ * DYNAMIC PAGE COMPONENT
+ */
+export default async function DynamicPage({
+  params,
+}: {
+  params: { slug: string }
+}) {
+  const page = await getPage(params.slug)
 
   if (!page) {
     notFound()
-    return null
   }
 
   const isAboutPage = params.slug === 'about'
@@ -58,8 +99,8 @@ export default function DynamicPage() {
     return (
       <Layout pageTitle={page.fields.title}>
         <div className="container-wide">
-          <Row className="mb-5">
-            <Col md className="pb-5">
+          <div className="row mb-5">
+            <div className="col-md pb-5">
               <HeroFlight className="d-inline-block" minHeight="auto">
                 <div style={{ padding: '7rem' }}>
                   <Image
@@ -71,21 +112,22 @@ export default function DynamicPage() {
                       width: '100%',
                       height: 'auto',
                       objectFit: 'contain',
-                      display: 'block'
+                      display: 'block',
                     }}
+                    priority
                   />
                 </div>
               </HeroFlight>
-            </Col>
+            </div>
 
             {page.fields.richDescription && (
-              <Col>
-                <Container>
+              <div className="col">
+                <div className="container">
                   <ContentfulRichText richText={page.fields.richDescription} />
-                </Container>
-              </Col>
+                </div>
+              </div>
             )}
-          </Row>
+          </div>
         </div>
       </Layout>
     )
@@ -95,9 +137,9 @@ export default function DynamicPage() {
   return (
     <Layout pageTitle={page.fields.title}>
       <div className="container-wide">
-        <Row className="mb-5">
+        <div className="row mb-5">
           {page.fields.image && (
-            <Col md className="pb-5">
+            <div className="col-md pb-5">
               <Image
                 src={createImageUrl(page.fields.image.fields.file.url)}
                 alt={page.fields.image.fields.description || page.fields.title}
@@ -106,20 +148,21 @@ export default function DynamicPage() {
                 style={{
                   width: '100%',
                   height: 'auto',
-                  objectFit: 'contain'
+                  objectFit: 'contain',
                 }}
+                priority
               />
-            </Col>
+            </div>
           )}
 
           {page.fields.richDescription && (
-            <Col>
-              <Container>
+            <div className="col">
+              <div className="container">
                 <ContentfulRichText richText={page.fields.richDescription} />
-              </Container>
-            </Col>
+              </div>
+            </div>
           )}
-        </Row>
+        </div>
       </div>
     </Layout>
   )

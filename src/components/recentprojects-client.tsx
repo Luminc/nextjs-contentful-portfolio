@@ -1,50 +1,24 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Container } from 'react-bootstrap'
-import { getProjects } from '@/lib/contentful'
 import { ContentfulProject } from '@/types/contentful'
-import { ProjectsGridSkeleton } from './skeleton'
 import { ProjectCard } from './project-card'
 
-export const RecentProjects = () => {
-  const [installations, setInstallations] = useState<ContentfulProject[]>([])
-  const [writings, setWritings] = useState<ContentfulProject[]>([])
-  const [loading, setLoading] = useState(true)
+interface RecentProjectsClientProps {
+  projects: ContentfulProject[]
+}
+
+export const RecentProjectsClient: React.FC<RecentProjectsClientProps> = ({ projects }) => {
   const router = useRouter()
 
-  useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        setLoading(true)
-        const allProjects = await getProjects()
+  // Separate projects by type
+  const installationProjects = projects.filter(p => p.fields.type === 'Installation')
+  const writingProjects = projects.filter(p => p.fields.type === 'Writing')
 
-        // Separate projects by type
-        const installationProjects = allProjects.filter(p => p.fields.type === 'Installation')
-        const writingProjects = allProjects.filter(p => p.fields.type === 'Writing')
-
-        // Get first 3 of each type
-        setInstallations(installationProjects.slice(0, 3))
-        setWritings(writingProjects.slice(0, 3))
-      } catch (error) {
-        console.error('Error fetching projects:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchProjects()
-  }, [])
-
-  if (loading) {
-    return (
-      <Container>
-        <h1 className="display-2 py-5">Projects</h1>
-        <ProjectsGridSkeleton />
-      </Container>
-    )
-  }
+  // Get first 3 of each type
+  const installations = installationProjects.slice(0, 3)
+  const writings = writingProjects.slice(0, 3)
 
   return (
     <>
@@ -90,3 +64,5 @@ export const RecentProjects = () => {
     </>
   )
 }
+
+export default RecentProjectsClient

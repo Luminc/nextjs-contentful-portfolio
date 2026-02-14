@@ -4,7 +4,6 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { siteMetadata } from '@/lib/site-metadata'
-import { usePages } from '@/hooks/usePages'
 import dynamic from 'next/dynamic'
 
 // Dynamically import TorusLogo to avoid SSR issues with Three.js
@@ -15,14 +14,10 @@ const TorusLogo = dynamic(
 
 export const Header = () => {
   const pathname = usePathname()
-  const { data: pages, error } = usePages()
   const [isLogoHovered, setIsLogoHovered] = useState(false)
   const [isLogoPressed, setIsLogoPressed] = useState(false)
   const [spinVelocity, setSpinVelocity] = useState({ x: 0, y: 0 })
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-
-  // Gracefully handle errors - show navigation without dynamic pages
-  const safePages = pages || []
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen)
@@ -123,13 +118,11 @@ export const Header = () => {
             Projects
           </Link>
         </div>
-        {safePages.map(page => (
-          <div key={page.fields.slug} className="nav-links-item">
-            <Link href={`/${page.fields.slug}`} className="nav-links-text" onClick={closeMobileMenu}>
-              {page.fields.title}
-            </Link>
-          </div>
-        ))}
+        <div className="nav-links-item">
+          <Link href="/about" className="nav-links-text" onClick={closeMobileMenu}>
+            About
+          </Link>
+        </div>
       </div>
 
       {/* Mobile overlay */}

@@ -3,18 +3,12 @@
 import Link from 'next/link'
 import { Container, Row, Col } from 'react-bootstrap'
 import { siteMetadata } from '@/lib/site-metadata'
-import { usePages } from '@/hooks/usePages'
 
 interface FooterProps {
   className?: string
 }
 
 export const Footer: React.FC<FooterProps> = ({ className }) => {
-  const { data: pages, error } = usePages()
-  
-  // Gracefully handle errors - show footer without dynamic pages
-  const safePages = pages || []
-
   return (
     <footer 
       id="footer" 
@@ -30,11 +24,9 @@ export const Footer: React.FC<FooterProps> = ({ className }) => {
           <li className="footer-links-item">
             <Link href="/projects">Projects</Link>
           </li>
-          {safePages.map(page => (
-            <li className="footer-links-item" key={page.fields.slug}>
-              <Link href={`/${page.fields.slug}`}>{page.fields.title}</Link>
-            </li>
-          ))}
+          <li className="footer-links-item">
+            <Link href="/about">About</Link>
+          </li>
         </ul>
         <ul className="contact-links">
           <li className="contact-links-item">
@@ -99,14 +91,10 @@ export const Footer: React.FC<FooterProps> = ({ className }) => {
                   <div className="d-inline">
                     <Link href="/projects">PROJECTS</Link>
                   </div>
-                  {safePages.map(page => (
-                    <div key={page.fields.slug} className="d-inline">
-                      {" | "}
-                      <Link href={`/${page.fields.slug}`}>
-                        {page.fields.title.toUpperCase()}
-                      </Link>
-                    </div>
-                  ))}
+                  <div className="d-inline">
+                    {" | "}
+                    <Link href="/about">ABOUT</Link>
+                  </div>
                 </div>
               </div>
             </div>

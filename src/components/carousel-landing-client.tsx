@@ -1,31 +1,18 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import { Carousel } from 'react-bootstrap'
 import Image from 'next/image'
 import Link from 'next/link'
-import { getHeroImages } from '@/lib/contentful'
 import { createImageUrl } from '@/lib/utils'
 import { CarouselSkeleton } from './skeleton'
 import { ContentfulHeroImage } from '@/types/contentful'
 
-const CarouselLanding = () => {
-  const [heroImages, setHeroImages] = useState<ContentfulHeroImage[]>([])
+interface CarouselLandingProps {
+  heroImages: ContentfulHeroImage[]
+}
 
-  useEffect(() => {
-    const fetchHeroImages = async () => {
-      try {
-        const images = await getHeroImages()
-        setHeroImages(images)
-      } catch (error) {
-        console.error('Error fetching hero images:', error)
-      }
-    }
-
-    fetchHeroImages()
-  }, [])
-
-  if (heroImages.length === 0) {
+const CarouselLanding: React.FC<CarouselLandingProps> = ({ heroImages }) => {
+  if (!heroImages || heroImages.length === 0) {
     return <CarouselSkeleton />
   }
 

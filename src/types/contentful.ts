@@ -62,7 +62,8 @@ export interface ContentfulRichText {
 export interface ContentfulProjectFields {
   title: string
   medium: string
-  materials?: string
+  materials?: string // Legacy field - kept for backward compatibility
+  metadataSections?: ContentfulMetadataSection[] // New flexible metadata sections
   date: string
   year: string
   type: 'Installation' | 'Writing'
@@ -137,6 +138,22 @@ export interface ContentfulSection {
   }
   sys: ContentfulSys
   fields: ContentfulSectionFields
+}
+
+// Metadata section fields (for flexible project metadata)
+export interface ContentfulMetadataSectionFields {
+  title: string
+  content: ContentfulRichText
+  displayStyle?: 'caption' | 'paragraph' | 'list'
+}
+
+export interface ContentfulMetadataSection {
+  metadata?: {
+    tags: any[]
+    concepts: any[]
+  }
+  sys: ContentfulSys
+  fields: ContentfulMetadataSectionFields
 }
 
 // Carousel fields
