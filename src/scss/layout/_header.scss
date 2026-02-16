@@ -8,9 +8,10 @@
 // Brand styling
 .brand {
   font-size: 1.65rem; // 26.4px
-  font-weight: 300;
+  font-weight: 200;
   color: $text-primary-dark !important;
   text-decoration: none !important;
+  border-bottom: none !important;
 
   @media screen and (min-width: 1200px) {
     font-size: 2.2rem;
@@ -25,7 +26,7 @@
   }
 
   span {
-    font-weight: 300;
+    font-weight: 200;
   }
 }
 
@@ -137,18 +138,22 @@
   }
 
   &-text {
-    // Mobile: display-1 size
-    font-size: calc(1.375rem + 1.5vw);
-    color: $text-primary-dark;
-    text-decoration: none;
+    // Mobile: bold and large
+    font-weight: 200 !important;
     padding: 1rem 2rem;
     display: block;
     transition: color 0.2s ease;
+    border-bottom: 2px solid transparent;
+
+    &:hover {
+      border-bottom-color: $color-primary;
+    }
 
     // Desktop: original size
     @media screen and (min-width: 768px) {
       font-size: calc(1.125rem + 0.9vw);
       padding: 0;
+      border-bottom: none;
     }
 
     @media screen and (min-width: 1200px) {
@@ -189,6 +194,7 @@
     opacity: 0;
     transform: translateY(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

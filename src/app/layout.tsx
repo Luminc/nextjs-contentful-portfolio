@@ -1,10 +1,14 @@
 import type { Metadata } from 'next'
+import { Commissioner } from 'next/font/google'
 import { siteMetadata } from '@/lib/site-metadata'
-import '@fontsource/commissioner'
-import '@fontsource/commissioner/200.css'
-import '@fontsource/commissioner/300.css'
-import 'bootstrap/dist/css/bootstrap.min.css'
 import '../scss/app.scss'
+
+const commissioner = Commissioner({
+  subsets: ['latin'],
+  weight: ['200', '300', '400'],
+  variable: '--font-commissioner',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: {
@@ -42,7 +46,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className={commissioner.variable}>{children}</body>
     </html>
   )
 }

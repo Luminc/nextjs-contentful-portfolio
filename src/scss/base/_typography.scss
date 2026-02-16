@@ -16,6 +16,7 @@ p {
 
   &.leading-loose {
     padding-left: 10px;
+
     a {
       color: rgb(0, 0, 1);
       text-decoration: underline;
@@ -32,7 +33,11 @@ h1 {
   padding: 0 !important;
 }
 
-h2, h3, h4, h5, h6 {
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: 200 !important;
   padding: 0 !important;
 }

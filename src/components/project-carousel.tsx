@@ -48,6 +48,7 @@ const ProjectCarousel: React.FC<ProjectCarouselProps> = ({
             width={image.fields.file.details.image?.width || 1200}
             height={image.fields.file.details.image?.height || 800}
             loading={index === 0 ? 'eager' : 'lazy'}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 1000px"
             style={{ width: '100%', height: 'auto' }}
           />
         </Carousel.Item>

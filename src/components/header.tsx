@@ -95,7 +95,7 @@ export const Header = () => {
       <Link
         href="/"
         className="brand"
-        style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', zIndex: 1001 }}
+        style={{ display: 'flex', alignItems: 'center', gap: '0', zIndex: 1001 }}
         onMouseEnter={() => setIsLogoHovered(true)}
         onMouseLeave={() => {
           setIsLogoHovered(false)
@@ -147,7 +147,7 @@ export const Header = () => {
             </div>
           )}
         </div>
-        <span>{siteMetadata.title}</span>
+        <span style={{ color: getLogoColor(), transition: 'color 0.2s ease' }}>{siteMetadata.title}</span>
       </Link>
 
       {/* Burger button for mobile */}
@@ -165,12 +165,12 @@ export const Header = () => {
       {/* Navigation links */}
       <div className={`nav-links ${mobileMenuOpen ? 'mobile-open' : ''}`}>
         <div className="nav-links-item">
-          <Link href="/projects" className="nav-links-text" onClick={closeMobileMenu}>
+          <Link href="/projects" className="nav-links-text display-1" onClick={closeMobileMenu}>
             Projects
           </Link>
         </div>
         <div className="nav-links-item">
-          <Link href="/about" className="nav-links-text" onClick={closeMobileMenu}>
+          <Link href="/about" className="nav-links-text display-1" onClick={closeMobileMenu}>
             About
           </Link>
         </div>

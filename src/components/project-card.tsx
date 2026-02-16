@@ -26,6 +26,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
               alt={project.fields.title}
               width={1000}
               height={1200}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               style={{
                 width: '100%',
                 height: 'auto',
@@ -42,6 +43,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
             alt={project.fields.title}
             width={1000}
             height={600}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             style={{
               width: '100%',
               height: 'auto',
