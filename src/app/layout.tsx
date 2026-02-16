@@ -1,6 +1,10 @@
 import type { Metadata } from 'next'
 import { Commissioner } from 'next/font/google'
 import { siteMetadata } from '@/lib/site-metadata'
+import { Header } from '@/components/header'
+import { Footer } from '@/components/footer'
+import SkipLinks from '@/components/skip-links'
+import { ErrorBoundary } from '@/components/error-boundary'
 import '../scss/app.scss'
 
 const commissioner = Commissioner({
@@ -46,7 +50,20 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={commissioner.variable}>{children}</body>
+      <body className={commissioner.variable}>
+        <SkipLinks />
+        <div className="flex-wrapper">
+          <ErrorBoundary>
+            <Header />
+          </ErrorBoundary>
+          <main id="main-content" role="main">
+            {children}
+          </main>
+          <ErrorBoundary>
+            <Footer className="mt-auto" />
+          </ErrorBoundary>
+        </div>
+      </body>
     </html>
   )
 }

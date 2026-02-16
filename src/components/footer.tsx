@@ -10,8 +10,8 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ className }) => {
   return (
-    <footer 
-      id="footer" 
+    <footer
+      id="footer"
       className={className}
       role="contentinfo"
       aria-label="Site footer"
@@ -65,9 +65,9 @@ export const Footer: React.FC<FooterProps> = ({ className }) => {
           &copy; {new Date().getFullYear()} {siteMetadata.author}
         </div>
       </Container>
-      <Container fluid className="d-none d-md-block">
+      <Container className="d-none d-md-block">
         <Row className="flex-column flex-md-row my-5">
-          <Col className="text-center my-5">
+          <Col className="text-start my-5">
             <a href={siteMetadata.siteUrl} target="_top" className="h2">
               {siteMetadata.author}
             </a>
@@ -77,7 +77,7 @@ export const Footer: React.FC<FooterProps> = ({ className }) => {
               {siteMetadata.email}
             </a>
           </Col>
-          <Col className="text-center my-5">
+          <Col className="text-end my-5">
             <a href={siteMetadata.instagram} target="_top" className="py-2 h2">
               Instagram
             </a>
@@ -85,19 +85,6 @@ export const Footer: React.FC<FooterProps> = ({ className }) => {
         </Row>
         <Row>
           <Col className="text-center">
-            <div className="mb-1">
-              <div className="nav-bottom">
-                <div className="py-4">
-                  <div className="d-inline">
-                    <Link href="/projects">PROJECTS</Link>
-                  </div>
-                  <div className="d-inline">
-                    {" | "}
-                    <Link href="/about">ABOUT</Link>
-                  </div>
-                </div>
-              </div>
-            </div>
             <div className="copyright pb-3">
               &copy; {new Date().getFullYear()} {siteMetadata.author}
             </div>

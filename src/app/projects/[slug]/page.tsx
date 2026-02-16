@@ -289,70 +289,103 @@ export default async function ProjectPage({
           ))}
 
           {/* Navigation */}
-          <div className="card-group align-items-end justify-content-between py-5 mt-4">
-            {prev ? (
-              <>
-                <div className="card pagination-card d-none d-md-block">
-                  <Link href={`/projects/${prev.fields.url}`}>
-                    <Image
-                      className="card-img"
-                      src={createImageUrl(
-                        prev.fields.featuredImage?.fields?.file?.url || '/placeholder.jpg'
-                      )}
-                      alt={prev.fields.title}
-                      width={600}
-                      height={600}
-                      loading="lazy"
-                      style={{ objectFit: 'contain' }}
-                    />
-                  </Link>
-                  <div className="card-body">
-                    <Link href={`/projects/${prev.fields.url}`}>
-                      <h5 className="card-title">&lt; {prev.fields.title}</h5>
+          {/* Navigation */}
+          {/* Navigation */}
+          {/* Navigation */}
+          <div className="project-navigation py-5 mt-5">
+            <div className="row gx-5 align-items-center justify-content-between">
+              {/* Previous Project */}
+              <div className="col-6 text-start mb-4 mb-md-0">
+                {prev ? (
+                  <>
+                    {/* Desktop: Flex Layout */}
+                    <Link
+                      href={`/projects/${prev.fields.url}`}
+                      className="d-none d-md-flex text-decoration-none project-nav-link align-items-center"
+                    >
+                      <div style={{ width: '180px', flexShrink: 0 }}>
+                        <Image
+                          src={createImageUrl(
+                            prev.fields.featuredImage?.fields?.file?.url || '/placeholder.jpg'
+                          )}
+                          alt={prev.fields.title}
+                          width={400}
+                          height={300}
+                          loading="lazy"
+                          className="shadow-sm"
+                          style={{ objectFit: 'cover', width: '100%', height: 'auto', borderRadius: '2px' }}
+                        />
+                      </div>
+                      <div className="ps-4">
+                        <span className="d-block text-uppercase small mb-1" style={{ letterSpacing: '2px', fontSize: '0.7rem' }}>Previous</span>
+                        <h4 className="card-title mb-0 fw-light" style={{ fontSize: '1.4rem' }}>{prev.fields.title}</h4>
+                      </div>
                     </Link>
-                  </div>
-                </div>
-                <div className="d-md-none">
-                  <Link href={`/projects/${prev.fields.url}`}>&lt; Previous project</Link>
-                </div>
-              </>
-            ) : (
-              <div>
-                <p className="card-title h2 grayed p2">&lt;</p>
-              </div>
-            )}
 
-            {next ? (
-              <>
-                <div className="card pagination-card d-none d-md-block">
-                  <Link href={`/projects/${next.fields.url}`}>
-                    <Image
-                      className="card-img"
-                      src={createImageUrl(
-                        next.fields.featuredImage?.fields?.file?.url || '/placeholder.jpg'
-                      )}
-                      alt={next.fields.title}
-                      width={600}
-                      height={600}
-                      loading="lazy"
-                      style={{ objectFit: 'contain' }}
-                    />
-                  </Link>
-                  <div className="card-body">
-                    <Link href={`/projects/${next.fields.url}`}>
-                      <h5 className="card-title text-right">{next.fields.title} &gt;</h5>
-                    </Link>
+                    {/* Mobile: Simple Link */}
+                    <div className="d-md-none">
+                      <Link
+                        href={`/projects/${prev.fields.url}`}
+                        className="d-block project-nav-link"
+                        style={{ fontSize: '1rem', fontWeight: 200 }}
+                      >
+                        &larr; {prev.fields.title}
+                      </Link>
+                    </div>
+                  </>
+                ) : (
+                  <div className="d-none d-md-block opacity-25">
+                    <span className="display-4 text-muted">&larr;</span>
                   </div>
-                </div>
-                <div className="d-md-none">
-                  <Link href={`/projects/${next.fields.url}`}>Next project &gt;</Link>
-                </div>
-              </>
-            ) : (
-              <div>
-                <p className="card-title h2 grayed p-3">&gt;</p>
+                )}
               </div>
-            )}
+
+              {/* Next Project */}
+              <div className="col-6 text-end">
+                {next ? (
+                  <>
+                    {/* Desktop: Flex Layout */}
+                    <Link
+                      href={`/projects/${next.fields.url}`}
+                      className="d-none d-md-flex text-decoration-none project-nav-link align-items-center justify-content-end text-end"
+                    >
+                      <div className="pe-4">
+                        <span className="d-block text-uppercase small mb-1" style={{ letterSpacing: '2px', fontSize: '0.7rem' }}>Next</span>
+                        <h4 className="card-title mb-0 fw-light" style={{ fontSize: '1.4rem' }}>{next.fields.title}</h4>
+                      </div>
+                      <div style={{ width: '180px', flexShrink: 0 }}>
+                        <Image
+                          src={createImageUrl(
+                            next.fields.featuredImage?.fields?.file?.url || '/placeholder.jpg'
+                          )}
+                          alt={next.fields.title}
+                          width={400}
+                          height={300}
+                          loading="lazy"
+                          className="shadow-sm"
+                          style={{ objectFit: 'cover', width: '100%', height: 'auto', borderRadius: '2px' }}
+                        />
+                      </div>
+                    </Link>
+
+                    {/* Mobile: Simple Link */}
+                    <div className="d-md-none text-end">
+                      <Link
+                        href={`/projects/${next.fields.url}`}
+                        className="d-block project-nav-link"
+                        style={{ fontSize: '1rem', fontWeight: 200 }}
+                      >
+                        {next.fields.title} &rarr;
+                      </Link>
+                    </div>
+                  </>
+                ) : (
+                  <div className="d-none d-md-block opacity-25">
+                    <span className="display-4 text-muted">&rarr;</span>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </Layout>
