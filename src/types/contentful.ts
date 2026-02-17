@@ -104,12 +104,28 @@ export interface ContentfulPage {
   fields: ContentfulPageFields
 }
 
+// Image with focal point
+export interface ContentfulImageWithFocalPoint {
+  sys: ContentfulSys
+  fields: {
+    title: string
+    image: ContentfulAsset
+    focalPoint: {
+      focalPoint: {
+        x: number
+        y: number
+      }
+    }
+  }
+}
+
 // Hero image fields
 export interface ContentfulHeroImageFields {
   title: string
   description?: string
   slug: string
   image?: ContentfulAsset
+  imageFp?: ContentfulImageWithFocalPoint
 }
 
 // Hero image
