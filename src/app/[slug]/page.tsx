@@ -57,12 +57,14 @@ export async function generateMetadata({
     ? createImageUrl(page.fields.image.fields.file.url)
     : undefined
 
+  const pageDescription = page.fields.description || siteMetadata.description
+
   return {
     title: `${page.fields.title} | ${siteMetadata.title}`,
-    description: siteMetadata.description,
+    description: pageDescription,
     openGraph: {
       title: page.fields.title,
-      description: siteMetadata.description,
+      description: pageDescription,
       type: 'website',
       ...(imageUrl && {
         images: [

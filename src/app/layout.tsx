@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Commissioner } from 'next/font/google'
 import { siteMetadata } from '@/lib/site-metadata'
+import { generatePersonStructuredData, generateWebsiteStructuredData } from '@/lib/structured-data'
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 import SkipLinks from '@/components/skip-links'
@@ -51,6 +52,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={commissioner.variable}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(generatePersonStructuredData()) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(generateWebsiteStructuredData()) }}
+        />
         <SkipLinks />
         <div className="flex-wrapper">
           <ErrorBoundary>

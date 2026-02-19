@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__contentful__search_entries",
+      "mcp__contentful__list_content_types",
+      "mcp__contentful__get_entry"
+    ]
+  }
+}

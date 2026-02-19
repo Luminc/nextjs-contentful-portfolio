@@ -90,6 +90,7 @@ export interface ContentfulProject {
 export interface ContentfulPageFields {
   title: string
   slug: string
+  description?: string
   image?: ContentfulAsset
   richDescription?: ContentfulRichText
 }

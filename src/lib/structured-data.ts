@@ -66,7 +66,12 @@ export function generateWebsiteStructuredData() {
     author: {
       '@type': 'Person',
       name: siteMetadata.author,
-      email: siteMetadata.email,
+      url: siteMetadata.siteUrl,
+    },
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: `${siteMetadata.siteUrl}/projects`,
+      'query-input': 'required name=search_term_string',
     },
   }
 }
@@ -85,6 +90,19 @@ export function generatePersonStructuredData() {
     description: siteMetadata.description,
     url: siteMetadata.siteUrl,
     email: siteMetadata.email,
+    birthDate: '1991',
+    nationality: {
+      '@type': 'Country',
+      name: 'Netherlands',
+    },
+    jobTitle: 'Visual Artist',
+    knowsAbout: [
+      'Sculpture',
+      'Philosophy',
+      'Contemplative Inquiry',
+      'Installation Art',
+      'Machinic Animism',
+    ],
     sameAs: [
       siteMetadata.instagram,
       siteMetadata.github,

@@ -1,8 +1,8 @@
 export const siteMetadata = {
   title: 'Jeroen Kortekaas',
   author: 'Jeroen Kortekaas',
-  keywords: 'Art, Sculpture, Network, Animism, Agency, Entheogens, Craft',
-  description: 'Jeroen Kortekaas, (1991, NL) is an interdisciplinary artist working with a practice that shifts between psychogeography, research, drawing, sculpture, and assemblage.',
+  keywords: 'Sculpture, Philosophy, Contemplative Art, Machinic Animism, Installation, Visual Art, Netherlands',
+  description: 'Jeroen Kortekaas (1991, NL) is an artist working at the intersection of sculpture, philosophy, and contemplative inquiry. His practice explores the between where self and world, nature and technology, autonomy and heteronomy meet.',
   siteUrl: 'https://www.jeroenkortekaas.com',
   email: 'studio@jeroenkortekaas.com',
   instagram: 'https://www.instagram.com/bluecarabiner',
