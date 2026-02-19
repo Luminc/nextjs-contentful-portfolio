@@ -3,6 +3,7 @@
 import { Carousel } from 'react-bootstrap'
 import Image from 'next/image'
 import { SanityImage } from '@/types/sanity'
+import { getSanityImageStyle } from '@/lib/sanity'
 
 interface ProjectCarouselProps {
   images: SanityImage[]
@@ -38,7 +39,12 @@ const ProjectCarousel: React.FC<ProjectCarouselProps> = ({
             height={image.asset.metadata?.dimensions?.height || 800}
             loading={index === 0 ? 'eager' : 'lazy'}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 1000px"
-            style={{ width: '100%', height: 'auto' }}
+            style={{
+              width: '100%',
+              height: 'auto',
+              minHeight: '30vh',
+              ...getSanityImageStyle(image)
+            }}
           />
         </Carousel.Item>
       ))}

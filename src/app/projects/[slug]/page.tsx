@@ -4,7 +4,7 @@ import ContentfulRichText from '@/components/contentful-rich-text'
 import Video from '@/components/video'
 import MetadataSection from '@/components/metadata-section'
 import ProjectCarousel from '@/components/project-carousel'
-import { getProject, getProjects } from '@/lib/sanity'
+import { getProject, getProjects, getSanityImageStyle } from '@/lib/sanity'
 import { generateProjectStructuredData } from '@/lib/structured-data'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -96,7 +96,12 @@ export default async function ProjectPage({
                   width={project.featuredImage.asset.metadata?.dimensions?.width || 1200}
                   height={project.featuredImage.asset.metadata?.dimensions?.height || 800}
                   className="featured-project-image contain"
-                  style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
+                  style={{
+                    width: '100%',
+                    height: 'auto',
+                    objectFit: 'contain',
+                    ...getSanityImageStyle(project.featuredImage)
+                  }}
                   priority
                 />
               )}
@@ -146,7 +151,12 @@ export default async function ProjectPage({
                 width={section.image.asset.metadata?.dimensions?.width || 1920}
                 height={section.image.asset.metadata?.dimensions?.height || 1080}
                 loading="lazy"
-                style={{ width: '100%', height: 'auto' }}
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  minHeight: '40vh',
+                  ...getSanityImageStyle(section.image)
+                }}
               />
             )}
 
@@ -159,7 +169,11 @@ export default async function ProjectPage({
                     width={image.asset.metadata?.dimensions?.width || 1200}
                     height={image.asset.metadata?.dimensions?.height || 800}
                     loading="lazy"
-                    style={{ width: '100%', height: 'auto' }}
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      ...getSanityImageStyle(image)
+                    }}
                   />
                 </div>
               </div>

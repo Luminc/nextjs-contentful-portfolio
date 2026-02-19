@@ -3,7 +3,17 @@
     "allow": [
       "mcp__contentful__search_entries",
       "mcp__contentful__list_content_types",
-      "mcp__contentful__get_entry"
+      "mcp__contentful__get_entry",
+      "mcp__Sanity__list_sanity_rules",
+      "mcp__Sanity__get_sanity_rules",
+      "Bash(git checkout:*)",
+      "WebFetch(domain:www.npmjs.com)",
+      "WebFetch(domain:github.com)",
+      "mcp__Sanity__list_projects",
+      "mcp__Sanity__list_organizations",
+      "mcp__Sanity__query_documents",
+      "Bash(npx next dev)",
+      "Bash(curl:*)"
     ]
   }
 }

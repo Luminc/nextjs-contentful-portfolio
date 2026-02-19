@@ -33,6 +33,16 @@ export const sanityClient = createClient({
   token: process.env.SANITY_API_READ_TOKEN, // needed to read draft documents later
 })
 
+// Separate client that bypasses the CDN — used for data that includes
+// hotspot/crop fields which the CDN may serve stale after Studio edits.
+const sanityClientNoCdn = createClient({
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
+  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET!,
+  apiVersion: '2024-01-01',
+  useCdn: false,
+  token: process.env.SANITY_API_READ_TOKEN,
+})
+
 // ---------------------------------------------------------------------------
 // Reusable GROQ fragments
 // ---------------------------------------------------------------------------
@@ -132,9 +142,10 @@ export const getPage = async (slug: string): Promise<SanityPage | null> => {
   )
 }
 
-// Hero images for homepage carousel
+// Hero images for homepage carousel — uses no-CDN client to ensure
+// hotspot/crop data is always fresh after Studio edits.
 export const getHeroImages = async (): Promise<SanityHeroImage[]> => {
-  return sanityClient.fetch(
+  return sanityClientNoCdn.fetch(
     `*[_type == "heroImages" && defined(slug) && !(_id in path("drafts.**"))] {
       _id,
       title,
@@ -143,6 +154,38 @@ export const getHeroImages = async (): Promise<SanityHeroImage[]> => {
       image ${IMAGE_FIELDS}
     }`
   )
+}
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+/**
+ * Converts Sanity hotspot data into a CSS object-position string.
+ */
+export const getSanityImageStyle = (image: any): React.CSSProperties => {
+  if (!image?.hotspot) {
+    return {
+      objectFit: 'cover',
+      objectPosition: 'center center',
+    }
+  }
+
+  const { x, y } = image.hotspot
+  const crop = image.crop ?? { top: 0, bottom: 0, left: 0, right: 0 }
+
+  // Width and height of the visible (cropped) region, as fractions of 1
+  const cropW = 1 - crop.left - crop.right
+  const cropH = 1 - crop.top - crop.bottom
+
+  // Re-map hotspot coords into the cropped space
+  const relX = (x - crop.left) / cropW
+  const relY = (y - crop.top) / cropH
+
+  return {
+    objectFit: 'cover',
+    objectPosition: `${(relX * 100).toFixed(2)}% ${(relY * 100).toFixed(2)}%`,
+  }
 }
 
 export default sanityClient

@@ -4,6 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { SanityProject } from '@/types/sanity'
 import { getProjectYear } from '@/lib/utils'
+import { getSanityImageStyle } from '@/lib/sanity'
 
 interface ProjectCardProps {
   project: SanityProject
@@ -13,8 +14,22 @@ export function ProjectCard({ project }: ProjectCardProps) {
   const isWriting = project.type === 'Writing'
   const cardClass = `card project-card ${isWriting ? 'project-writing' : 'project-installation'}`
   const imageUrl = project.featuredImage?.asset?.url || '/placeholder.jpg'
-  const width = project.featuredImage?.asset?.metadata?.dimensions?.width || 1000
-  const height = project.featuredImage?.asset?.metadata?.dimensions?.height || (isWriting ? 1200 : 600)
+
+  // Writing cards use real dimensions for correct aspect ratio.
+  // Installation cards use a fixed landscape ratio (matching the pre-migration
+  // Contentful layout) so portrait images don't stretch the grid on mobile.
+  const width = isWriting
+    ? (project.featuredImage?.asset?.metadata?.dimensions?.width || 1000)
+    : 1000
+  const height = isWriting
+    ? (project.featuredImage?.asset?.metadata?.dimensions?.height || 1200)
+    : 600
+
+  const imageStyle: React.CSSProperties = {
+    width: '100%',
+    height: 'auto',
+    ...getSanityImageStyle(project.featuredImage)
+  }
 
   return (
     <div className={cardClass}>
@@ -28,7 +43,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
               width={width}
               height={height}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
+              style={{ ...imageStyle, objectFit: 'contain' }}
             />
           </div>
         ) : (
@@ -39,7 +54,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
             width={width}
             height={height}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            style={{ width: '100%', height: 'auto', objectFit: 'cover' }}
+            style={imageStyle}
           />
         )}
       </Link>
