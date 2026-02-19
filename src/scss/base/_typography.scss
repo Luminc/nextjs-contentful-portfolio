@@ -28,6 +28,18 @@ p {
   }
 }
 
+// Colophon/metadata sections render rich text inside a .caption div.
+// The inner <p> tags from PortableText don't carry .caption/.leading-loose
+// themselves, so we apply styles via descendant selectors.
+.caption p {
+  font-size: 1rem;
+  margin-bottom: 0.6rem;
+}
+
+.leading-loose p {
+  padding-left: 10px;
+}
+
 h1 {
   font-weight: 200 !important;
   padding: 0 !important;

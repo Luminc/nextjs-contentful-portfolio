@@ -63,6 +63,8 @@ export const Footer: React.FC<FooterProps> = ({ className }) => {
         </ul>
         <div className="copyright pb-3">
           &copy; {new Date().getFullYear()} {siteMetadata.author}
+          {' · '}
+          <Link href="/privacy">Privacy</Link>
         </div>
       </Container>
       <Container className="d-none d-md-block">
@@ -87,6 +89,8 @@ export const Footer: React.FC<FooterProps> = ({ className }) => {
           <Col className="text-center">
             <div className="copyright pb-3">
               &copy; {new Date().getFullYear()} {siteMetadata.author}
+              {' · '}
+              <Link href="/privacy">Privacy</Link>
             </div>
           </Col>
         </Row>

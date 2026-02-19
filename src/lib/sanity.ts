@@ -29,12 +29,12 @@ export const sanityClient = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET!,
   apiVersion: '2024-01-01',
-  useCdn: true,           // edge-cached reads for published content
+  useCdn: process.env.NODE_ENV === 'production', // no CDN in dev for instant Studio updates
   token: process.env.SANITY_API_READ_TOKEN, // needed to read draft documents later
 })
 
-// Separate client that bypasses the CDN — used for data that includes
-// hotspot/crop fields which the CDN may serve stale after Studio edits.
+// Separate client that always bypasses the CDN — used for hero images because
+// hotspot/crop data can be stale on the CDN in production after Studio edits.
 const sanityClientNoCdn = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET!,

@@ -147,7 +147,6 @@ export const Header = () => {
             </div>
           )}
         </div>
-        <span style={{ color: getLogoColor(), transition: 'color 0.2s ease' }}>{siteMetadata.title}</span>
       </Link>
 
       {/* Burger button for mobile */}

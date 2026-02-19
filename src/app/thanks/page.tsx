@@ -9,7 +9,7 @@ export default function ThanksPage() {
     <Layout pageTitle="Thank You">
       <Container>
             <p className="lead">
-              Thank you for subscribing! You will receive updates about new projects and exhibitions.
+              Thank you — one more step. Please check your inbox and confirm your email address to complete your subscription.
             </p>
       </Container>
       <HeroFlight minHeight="70vh"/>
