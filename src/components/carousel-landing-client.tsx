@@ -3,12 +3,11 @@
 import { Carousel } from 'react-bootstrap'
 import Image from 'next/image'
 import Link from 'next/link'
-import { createImageUrl } from '@/lib/utils'
 import { CarouselSkeleton } from './skeleton'
-import { ContentfulHeroImage } from '@/types/contentful'
+import { SanityHeroImage } from '@/types/sanity'
 
 interface CarouselLandingProps {
-  heroImages: ContentfulHeroImage[]
+  heroImages: SanityHeroImage[]
 }
 
 const CarouselLanding: React.FC<CarouselLandingProps> = ({ heroImages }) => {
@@ -26,64 +25,42 @@ const CarouselLanding: React.FC<CarouselLandingProps> = ({ heroImages }) => {
       style={{ width: "97vw", maxWidth: "1500px" }}
     >
       {heroImages.map(image => {
-        const targetImage = image.fields.imageFp?.fields.image || image.fields.image
-        const focalPoint = image.fields.imageFp?.fields.focalPoint
+        const imageUrl = image.image?.asset?.url || '/placeholder.jpg'
+        const width = image.image?.asset?.metadata?.dimensions?.width || 1200
+        const height = image.image?.asset?.metadata?.dimensions?.height || 800
 
-        // Calculate object position - defaulting to center if no focal point
-        // If focalPoint coordinates are pixels (> 1 and not already percentages), 
-        // we convert them to % by dividing by image dimensions.
-        let objectPosition = 'center center'
-        if (focalPoint) {
-          const imgWidth = targetImage?.fields?.file?.details?.image?.width || 1200
-          const imgHeight = targetImage?.fields?.file?.details?.image?.height || 800
-
-          let x = focalPoint.focalPoint.x
-          let y = focalPoint.focalPoint.y
-
-          // If coordinates are clearly pixels (greater than a reasonable percentage or if they look like absolute values)
-          // We convert them to percentages. If they are already 0-1, we treat them as normalized.
-          if (x > 1.1 || y > 1.1) {
-            // Check if they are already percentages (0-100) or pixels
-            // Usually if x > 100 or y > 100, they are almost certainly pixels.
-            // If they are between 1 and 100, they could be either, but let's assume pixels if they scale with image size.
-            // A safer bet: if they are significantly larger than 100, or if we just divide anyway.
-            x = (x / imgWidth) * 100
-            y = (y / imgHeight) * 100
-          } else {
-            // Normalized 0-1
-            x = x * 100
-            y = y * 100
-          }
-
-          objectPosition = `${x}% ${y}%`
-        }
+        // Native Sanity hotspot → CSS object-position (set per-image in Sanity Studio)
+        const hotspot = image.image?.hotspot
+        const objectPosition = hotspot
+          ? `${Math.round(hotspot.x * 100)}% ${Math.round(hotspot.y * 100)}%`
+          : 'center center'
 
         const positionStyles: React.CSSProperties = {
           width: '100%',
           height: '100%',
           objectFit: 'cover',
           objectPosition,
-          minHeight: '50vh', // Ensure it matches SCSS and has a baseline height for cropping
+          minHeight: '50vh',
         }
 
         return (
-          <Carousel.Item key={image.sys.id}>
-            <Link href={`/projects/${image.fields.slug}`}>
+          <Carousel.Item key={image._id}>
+            <Link href={`/projects/${image.slug}`}>
               <Image
                 className="carousel-cover"
-                src={createImageUrl(targetImage?.fields?.file?.url || '/placeholder.jpg')}
-                alt={image.fields.description || image.fields.title || ""}
-                width={targetImage?.fields?.file?.details?.image?.width || 1200}
-                height={targetImage?.fields?.file?.details?.image?.height || 800}
+                src={imageUrl}
+                alt={image.description || image.title || ''}
+                width={width}
+                height={height}
                 priority
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1400px"
                 style={positionStyles}
               />
             </Link>
-            <Link href={`/projects/${image.fields.slug}`}>
+            <Link href={`/projects/${image.slug}`}>
               <Carousel.Caption style={{ paddingTop: "20px", paddingRight: "0" }}>
-                <h5>{image.fields.title || "Placeholder"}</h5>
-                <p className="leading-loose caption">{image.fields.description}</p>
+                <h5>{image.title || 'Placeholder'}</h5>
+                <p className="leading-loose caption">{image.description}</p>
               </Carousel.Caption>
             </Link>
           </Carousel.Item>

@@ -6,7 +6,7 @@
 
 import { Suspense } from 'react'
 import Layout from '@/components/layout'
-import { getProjects } from '@/lib/contentful'
+import { getProjects } from '@/lib/sanity'
 import ProjectsContent from './projects-content-client'
 import { ProjectsGridSkeleton } from '@/components/skeleton'
 

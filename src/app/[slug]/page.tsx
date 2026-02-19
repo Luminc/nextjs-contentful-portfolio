@@ -15,10 +15,9 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Layout from '@/components/layout'
 import ContentfulRichText from '@/components/contentful-rich-text'
-import { getPage, getPages } from '@/lib/contentful'
+import { getPage, getPages } from '@/lib/sanity'
 // React Bootstrap components replaced with plain HTML for Server Component compatibility
 import Image from 'next/image'
-import { createImageUrl } from '@/lib/utils'
 import HeroFlight from '@/components/hero-flight'
 import { siteMetadata } from '@/lib/site-metadata'
 
@@ -32,7 +31,7 @@ export const revalidate = 3600
 export async function generateStaticParams() {
   const pages = await getPages()
   return pages.map((page) => ({
-    slug: page.fields.slug,
+    slug: page.slug,
   }))
 }
 
@@ -53,26 +52,23 @@ export async function generateMetadata({
     }
   }
 
-  const imageUrl = page.fields.image?.fields?.file?.url
-    ? createImageUrl(page.fields.image.fields.file.url)
-    : undefined
-
-  const pageDescription = page.fields.description || siteMetadata.description
+  const imageUrl = page.image?.asset?.url
+  const pageDescription = siteMetadata.description
 
   return {
-    title: `${page.fields.title} | ${siteMetadata.title}`,
+    title: `${page.title} | ${siteMetadata.title}`,
     description: pageDescription,
     openGraph: {
-      title: page.fields.title,
+      title: page.title,
       description: pageDescription,
       type: 'website',
       ...(imageUrl && {
         images: [
           {
             url: imageUrl,
-            width: page.fields.image?.fields?.file?.details?.image?.width,
-            height: page.fields.image?.fields?.file?.details?.image?.height,
-            alt: page.fields.image?.fields?.description || page.fields.title,
+            width: page.image?.asset?.metadata?.dimensions?.width,
+            height: page.image?.asset?.metadata?.dimensions?.height,
+            alt: page.title,
           },
         ],
       }),
@@ -97,19 +93,19 @@ export default async function DynamicPage({
   const isAboutPage = params.slug === 'about'
 
   // About page with scrolling background as passepartout frame around photo
-  if (isAboutPage && page.fields.image) {
+  if (isAboutPage && page.image?.asset?.url) {
     return (
-      <Layout pageTitle={page.fields.title}>
+      <Layout pageTitle={page.title}>
         <div className="container-wide">
           <div className="row mb-5">
             <div className="col-md pb-5">
               <HeroFlight className="d-inline-block" minHeight="auto">
                 <div style={{ padding: '7rem' }}>
                   <Image
-                    src={createImageUrl(page.fields.image.fields.file.url)}
-                    alt={page.fields.image.fields.description || page.fields.title}
-                    width={page.fields.image.fields.file.details?.image?.width || 800}
-                    height={page.fields.image.fields.file.details?.image?.height || 600}
+                    src={page.image.asset.url}
+                    alt={page.title}
+                    width={page.image.asset.metadata?.dimensions?.width || 800}
+                    height={page.image.asset.metadata?.dimensions?.height || 600}
                     style={{
                       width: '100%',
                       height: 'auto',
@@ -122,10 +118,10 @@ export default async function DynamicPage({
               </HeroFlight>
             </div>
 
-            {page.fields.richDescription && (
+            {page.richDescription && (
               <div className="col">
                 <div className="container">
-                  <ContentfulRichText richText={page.fields.richDescription} />
+                  <ContentfulRichText richText={page.richDescription} />
                 </div>
               </div>
             )}
@@ -137,16 +133,16 @@ export default async function DynamicPage({
 
   // Standard page layout for other pages
   return (
-    <Layout pageTitle={page.fields.title}>
+    <Layout pageTitle={page.title}>
       <div className="container-wide">
         <div className="row mb-5">
-          {page.fields.image && (
+          {page.image?.asset?.url && (
             <div className="col-md pb-5">
               <Image
-                src={createImageUrl(page.fields.image.fields.file.url)}
-                alt={page.fields.image.fields.description || page.fields.title}
-                width={page.fields.image.fields.file.details?.image?.width || 800}
-                height={page.fields.image.fields.file.details?.image?.height || 600}
+                src={page.image.asset.url}
+                alt={page.title}
+                width={page.image.asset.metadata?.dimensions?.width || 800}
+                height={page.image.asset.metadata?.dimensions?.height || 600}
                 style={{
                   width: '100%',
                   height: 'auto',
@@ -157,10 +153,10 @@ export default async function DynamicPage({
             </div>
           )}
 
-          {page.fields.richDescription && (
+          {page.richDescription && (
             <div className="col">
               <div className="container">
-                <ContentfulRichText richText={page.fields.richDescription} />
+                <ContentfulRichText richText={page.richDescription} />
               </div>
             </div>
           )}

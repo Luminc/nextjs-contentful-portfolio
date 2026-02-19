@@ -24,6 +24,12 @@ const nextConfig = {
         port: '',
         pathname: '/**', // Allow all paths
       },
+      {
+        protocol: 'https',
+        hostname: 'cdn.sanity.io', // Sanity image & file CDN
+        port: '',
+        pathname: '/**',
+      },
     ],
     // Enable image optimization with caching
     minimumCacheTTL: 60 * 60 * 24 * 7, // Cache images for 7 days

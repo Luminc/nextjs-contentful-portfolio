@@ -8,7 +8,7 @@ import Layout from '@/components/layout'
 import CarouselLanding from '@/components/carousel-landing-client'
 import RecentProjectsClient from '@/components/recentprojects-client'
 import { EmailForm } from '@/components/emailform'
-import { getHeroImages, getProjects } from '@/lib/contentful'
+import { getHeroImages, getProjects } from '@/lib/sanity'
 
 export default async function HomePage() {
   // Fetch data server-side
