@@ -103,14 +103,14 @@ const PROJECT_FIELDS = `{
 // the one stub document the migration created)
 export const getProjects = async (): Promise<SanityProject[]> => {
   return sanityClient.fetch(
-    `*[_type == "project" && defined(title) && defined(url)] | order(date desc) ${PROJECT_FIELDS}`
+    `*[_type == "project" && defined(title) && defined(url) && !(_id in path("drafts.**"))] | order(date desc) ${PROJECT_FIELDS}`
   )
 }
 
 // Single project by URL slug
 export const getProject = async (url: string): Promise<SanityProject | null> => {
   return sanityClient.fetch(
-    `*[_type == "project" && url == $url][0] ${PROJECT_FIELDS}`,
+    `*[_type == "project" && url == $url && !(_id in path("drafts.**"))][0] ${PROJECT_FIELDS}`,
     { url }
   )
 }
@@ -118,7 +118,7 @@ export const getProject = async (url: string): Promise<SanityProject | null> => 
 // All pages (about, etc.)
 export const getPages = async (): Promise<SanityPage[]> => {
   return sanityClient.fetch(
-    `*[_type == "about" && defined(slug)] {
+    `*[_type == "about" && defined(slug) && !(_id in path("drafts.**"))] {
       _id,
       title,
       slug,
@@ -131,7 +131,7 @@ export const getPages = async (): Promise<SanityPage[]> => {
 // Single page by slug
 export const getPage = async (slug: string): Promise<SanityPage | null> => {
   return sanityClient.fetch(
-    `*[_type == "about" && slug == $slug][0] {
+    `*[_type == "about" && slug == $slug && !(_id in path("drafts.**"))][0] {
       _id,
       title,
       slug,

@@ -1,69 +1,100 @@
-<p align="center">
-  <a href="https://nextjs.org">
-    <img alt="Next.js" src="https://assets.vercel.com/image/upload/v1607554385/repositories/next-js/next-logo.png" width="60" />
-  </a>
-</p>
-<h1 align="center">
-  Next.js Contentful Portfolio
-</h1>
+# Jeroen Kortekaas — Portfolio
 
-## About
+Artist portfolio website for [jeroenkortekaas.com](https://www.jeroenkortekaas.com), built with **Next.js 14** and **Sanity** (migrated from Contentful). Deployed on Vercel.
 
-This is an artist portfolio website built with **Next.js** and **Contentful**. It leverages the power of the Next.js App Router and Contentful's flexible content modeling to create a dynamic and highly customizable experience.
+## Architecture
 
-The core feature is its use of conditional rendering for project pages. Components can be added, removed, and reordered directly from the Contentful CMS. This gives the site owner granular control over page layouts, allowing for more creative freedom without needing to touch the code. This is achieved by using Contentful's reference fields to create composable content models. The front-end inspects the incoming content types and renders the appropriate React components.
+```
+/                       → Next.js 14 app (App Router) — deployed to Vercel
+sanity-studio/          → Standalone Sanity Studio — run locally or deploy via sanity deploy
+```
 
-In its finished state, every component on the website will be configurable from the CMS, and new pages can be added seamlessly without any front-end code changes.
+The Next.js app fetches content from Sanity at build/request time via GROQ queries. The studio is a separate project with its own `node_modules` and is excluded from the root `tsconfig.json`.
 
-## 🚀 Getting Started
+## Pages & Routes
 
-1.  **Clone the repository.**
+| Route | Description |
+|---|---|
+| `/` | Homepage — hero image carousel + recent projects + contact form |
+| `/projects` | All projects grid with client-side type filtering |
+| `/projects/[slug]` | Individual project page with composable sections |
+| `/[slug]` | Generic pages (e.g. About) |
 
-    ```shell
-    git clone https://github.com/your-username/your-repo-name.git
-    cd your-repo-name
-    ```
+## Sanity Content Model
 
-2.  **Install dependencies.**
+| Type | Purpose |
+|---|---|
+| `project` | Art project with featured image, sections, metadata |
+| `heroImages` | Carousel images for the homepage |
+| `about` | Generic pages (About etc.) |
+| `imageWide` | Full-width image section |
+| `documentation` | Multi-image collection section |
+| `containerVideo` | Contained video block section |
+| `carousel` | Image carousel section with configurable options |
+| `metadataSection` | Flexible key/value metadata for project pages |
+| `assets` | Site-wide assets (logos, favicons) |
 
-    ```shell
-    npm install
-    ```
+Project pages are composable: `sections[]` references any section type and the frontend renders the appropriate component per `_type`.
 
-3.  **Set up environment variables.**
+## Getting Started
 
-    Create a `.env.local` file in the root of your project and add your Contentful credentials. You can copy the example file:
+### Next.js App
 
-    ```shell
-    cp .env.example .env.local
-    ```
+1. **Clone and install**
+   ```bash
+   git clone git@github.com:Luminc/nextjs-contentful-portfolio.git
+   cd nextjs-contentful-portfolio
+   npm install
+   ```
 
-    Your `.env.local` should look like this:
-    ```
-    CONTENTFUL_SPACE_ID=...
-    CONTENTFUL_ACCESS_TOKEN=...
-    CONTENTFUL_PREVIEW_ACCESS_TOKEN=...
-    CONTENTFUL_PREVIEW_SECRET=...
-    ```
+2. **Environment variables** — create `.env.local`:
+   ```
+   NEXT_PUBLIC_SANITY_PROJECT_ID=d2u6yqsx
+   NEXT_PUBLIC_SANITY_DATASET=production
+   SANITY_API_READ_TOKEN=your_sanity_read_token
+   ```
+   The read token can be generated at [sanity.io/manage](https://sanity.io/manage) → project → API → Tokens → add Viewer token.
 
-4.  **Run the development server.**
+3. **Run dev server**
+   ```bash
+   npm run dev
+   # http://localhost:3000
+   ```
 
-    ```shell
-    npm run dev
-    ```
+### Sanity Studio
 
-5.  **Open your browser.**
+```bash
+cd sanity-studio
+npm install
+npm run dev
+# http://localhost:3333
+```
 
-    Your site is now running at http://localhost:3000!
+To deploy the studio to Sanity's hosting:
+```bash
+cd sanity-studio
+npm run deploy
+# https://jeroen-kortekaas-portfolio.sanity.studio (or similar)
+```
 
-## 📚 Learn More
+## Deployment
 
-- Next.js Documentation - learn about Next.js features and API.
-- Learn Next.js - an interactive Next.js tutorial.
-- Contentful Documentation - learn about Contentful.
+The Next.js app is deployed to **Vercel**. Required environment variables in Vercel project settings:
 
-## ▲ Deploy on Vercel
+| Variable | Description |
+|---|---|
+| `NEXT_PUBLIC_SANITY_PROJECT_ID` | `d2u6yqsx` |
+| `NEXT_PUBLIC_SANITY_DATASET` | `production` |
+| `SANITY_API_READ_TOKEN` | Sanity Viewer token (server-side only) |
 
-The easiest way to deploy your Next.js app is to use the Vercel Platform from the creators of Next.js.
+The Sanity Studio is deployed separately via `sanity deploy` from inside `sanity-studio/`.
 
-[!Deploy with Vercel](https://vercel.com/new/clone?repository-url=https://github.com/your-username/your-repo-name)
+## Tech Stack
+
+- **Next.js 14** — App Router, server components, static + dynamic rendering
+- **Sanity** — headless CMS, content fetched via `@sanity/client` and GROQ
+- **React Bootstrap** — UI components and grid
+- **Sass** — custom styling
+- **Styled Components** — component-level CSS-in-JS
+- **Three.js / React Three Fiber** — 3D elements
+- **Vercel** — hosting and CI/CD
