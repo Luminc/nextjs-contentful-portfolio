@@ -7,4 +7,9 @@
 
 .container-email-form {
   min-height: 300px;
+
+  h2 {
+    @include fluid-type(20px, 26px);
+    font-weight: 200 !important;
+  }
 }

@@ -4,7 +4,7 @@ import { Carousel } from 'react-bootstrap'
 import Image from 'next/image'
 import Link from 'next/link'
 import { CarouselSkeleton } from './skeleton'
-import { getSanityImageStyle } from '@/lib/sanity'
+import { buildImageUrl, getSanityImageStyle } from '@/lib/sanity'
 import type { SanityHeroImage } from '@/types/sanity'
 
 interface CarouselLandingProps {
@@ -26,7 +26,8 @@ const CarouselLanding: React.FC<CarouselLandingProps> = ({ heroImages }) => {
       style={{ width: "97vw", maxWidth: "1500px" }}
     >
       {heroImages.map((image, index) => {
-        const imageUrl = image.image?.asset?.url || '/placeholder.jpg'
+        // Cap at 1500px wide (matches the carousel maxWidth) — saves bandwidth on large originals.
+        const imageUrl = buildImageUrl(image.image, 1500)
 
         return (
           <Carousel.Item key={image._id}>

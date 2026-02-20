@@ -13,9 +13,9 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ pageTitle, children, className }) => {
   return (
     <div className={className}>
-      <Container>
+      <div className="container-wide">
         {pageTitle && <h1 className="display-1 py-5">{pageTitle}</h1>}
-      </Container>
+      </div>
       <ErrorBoundary>
         {children}
       </ErrorBoundary>

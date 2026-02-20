@@ -3,7 +3,7 @@
 import { Carousel } from 'react-bootstrap'
 import Image from 'next/image'
 import { SanityImage } from '@/types/sanity'
-import { getSanityImageStyle } from '@/lib/sanity'
+import { buildImageUrl, getSanityImageStyle } from '@/lib/sanity'
 
 interface ProjectCarouselProps {
   images: SanityImage[]
@@ -31,14 +31,15 @@ const ProjectCarousel: React.FC<ProjectCarouselProps> = ({
       indicators={indicators}
     >
       {images?.map((image, index) => (
-        <Carousel.Item key={image.asset.url}>
+        <Carousel.Item key={image.asset._id ?? image.asset.url}>
           <Image
-            src={image.asset.url}
+            // 1400px — wide enough for portrait originals (~1300w) at retina in container-sm
+            src={buildImageUrl(image, 1400)}
             alt={title}
             width={image.asset.metadata?.dimensions?.width || 1200}
-            height={image.asset.metadata?.dimensions?.height || 800}
+            height={image.asset.metadata?.dimensions?.height || 1300}
             loading={index === 0 ? 'eager' : 'lazy'}
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 1000px"
+            sizes="(max-width: 576px) 100vw, 540px"
             style={{
               width: '100%',
               height: 'auto',

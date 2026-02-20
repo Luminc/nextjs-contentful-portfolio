@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { SanityProject } from '@/types/sanity'
 import { getProjectYear } from '@/lib/utils'
-import { getSanityImageStyle } from '@/lib/sanity'
+import { buildImageUrl } from '@/lib/sanity'
 
 interface ProjectCardProps {
   project: SanityProject
@@ -13,22 +13,28 @@ interface ProjectCardProps {
 export function ProjectCard({ project }: ProjectCardProps) {
   const isWriting = project.type === 'Writing'
   const cardClass = `card project-card ${isWriting ? 'project-writing' : 'project-installation'}`
-  const imageUrl = project.featuredImage?.asset?.url || '/placeholder.jpg'
 
-  // Writing cards use real dimensions for correct aspect ratio.
-  // Installation cards use a fixed landscape ratio (matching the pre-migration
-  // Contentful layout) so portrait images don't stretch the grid on mobile.
-  const width = isWriting
-    ? (project.featuredImage?.asset?.metadata?.dimensions?.width || 1000)
-    : 1000
-  const height = isWriting
-    ? (project.featuredImage?.asset?.metadata?.dimensions?.height || 1200)
-    : 600
+  // Cap CDN download at 800px — wide enough for the 2-col project index at 2× retina
+  // (~730px × 2 = 1460px, but next/image handles srcset so 800 is a safe ceiling).
+  // The 3-col landing cards are ~480px so this is generous there too.
+  const cdnWidth = 800
+
+  // Intrinsic dimensions for next/image aspect-ratio reservation.
+  // Writing cards use real dims; installation cards use a fixed landscape ratio.
+  const intrinsicWidth = isWriting
+    ? (project.featuredImage?.asset?.metadata?.dimensions?.width || 800)
+    : 800
+  const intrinsicHeight = isWriting
+    ? (project.featuredImage?.asset?.metadata?.dimensions?.height || 1100)
+    : 530
+
+  // buildImageUrl bakes hotspot/crop into fp-x/fp-y — no CSS object-position needed.
+  const imageUrl = buildImageUrl(project.featuredImage, cdnWidth)
 
   const imageStyle: React.CSSProperties = {
     width: '100%',
     height: 'auto',
-    ...getSanityImageStyle(project.featuredImage)
+    objectFit: isWriting ? 'contain' : 'cover',
   }
 
   return (
@@ -40,10 +46,10 @@ export function ProjectCard({ project }: ProjectCardProps) {
               className="card-img"
               src={imageUrl}
               alt={project.title}
-              width={width}
-              height={height}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              style={{ ...imageStyle, objectFit: 'contain' }}
+              width={intrinsicWidth}
+              height={intrinsicHeight}
+              sizes="(max-width: 576px) 100vw, (max-width: 992px) 50vw, 33vw"
+              style={imageStyle}
             />
           </div>
         ) : (
@@ -51,9 +57,9 @@ export function ProjectCard({ project }: ProjectCardProps) {
             className="card-img"
             src={imageUrl}
             alt={project.title}
-            width={width}
-            height={height}
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            width={intrinsicWidth}
+            height={intrinsicHeight}
+            sizes="(max-width: 576px) 100vw, (max-width: 992px) 50vw, 33vw"
             style={imageStyle}
           />
         )}

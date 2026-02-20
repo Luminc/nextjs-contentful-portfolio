@@ -8,7 +8,8 @@
 
 // Resolved image asset (after asset-> dereference in GROQ)
 export interface SanityImageAsset {
-  url: string
+  _id: string    // used by @sanity/image-url builder
+  url: string    // direct CDN URL (fallback / non-transformed)
   metadata: {
     dimensions: {
       width: number

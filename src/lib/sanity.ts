@@ -15,10 +15,13 @@
  */
 
 import { createClient } from '@sanity/client'
+import imageUrlBuilder from '@sanity/image-url'
+import type { SanityImageSource } from '@sanity/image-url'
 import type {
   SanityProject,
   SanityPage,
   SanityHeroImage,
+  SanityImage,
 } from '@/types/sanity'
 
 // ---------------------------------------------------------------------------
@@ -47,8 +50,10 @@ const sanityClientNoCdn = createClient({
 // Reusable GROQ fragments
 // ---------------------------------------------------------------------------
 
-// Resolves a Sanity image field to { asset: { url, metadata: { dimensions } } }
-const IMAGE_FIELDS = `{ asset->{ url, metadata { dimensions } }, hotspot, crop }`
+// Resolves a Sanity image field.
+// _ref is the raw asset reference ID used by @sanity/image-url to build CDN URLs.
+// url and metadata.dimensions are kept for fallback src and aspect-ratio calculations.
+const IMAGE_FIELDS = `{ asset->{ _id, _ref, url, metadata { dimensions } }, hotspot, crop }`
 
 // Resolves a file field to { asset: { url } }
 const FILE_FIELDS = `{ asset->{ url } }`
@@ -157,11 +162,56 @@ export const getHeroImages = async (): Promise<SanityHeroImage[]> => {
 }
 
 // ---------------------------------------------------------------------------
+// Image URL builder
+// ---------------------------------------------------------------------------
+
+const builder = imageUrlBuilder(sanityClient)
+
+/**
+ * Returns a Sanity image-url builder instance for the given image source.
+ * Chain Sanity CDN transform methods before calling .url():
+ *
+ *   urlFor(image).width(800).auto('format').url()
+ *   urlFor(image).width(1200).height(800).fit('crop').auto('format').url()
+ *
+ * Hotspot and crop data are applied automatically when the image object
+ * contains those fields (the builder reads them directly from the source).
+ */
+export const urlFor = (source: SanityImageSource) => builder.image(source)
+
+// ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
 
 /**
- * Converts Sanity hotspot data into a CSS object-position string.
+ * Converts a SanityImage into a pre-sized CDN URL with hotspot/crop baked in.
+ * Use this as the `src` for next/image (pass `unoptimized` to skip double-processing,
+ * or omit it to let Next.js also run its optimisation pipeline on the result).
+ *
+ * @param image  - The SanityImage object (must include asset._ref or asset._id)
+ * @param width  - Target display width in px (used to cap download size)
+ * @param quality - JPEG/WebP quality 1–100 (default 85)
+ */
+export const buildImageUrl = (
+  image: SanityImage | null | undefined,
+  width: number,
+  quality = 85,
+): string => {
+  if (!image?.asset) return '/placeholder.jpg'
+  return urlFor(image)
+    .width(width)
+    .quality(quality)
+    .auto('format')
+    .url()
+}
+
+/**
+ * Legacy helper — kept for backward compatibility.
+ * New code should use buildImageUrl() instead, which passes hotspot/crop
+ * to the CDN via fp-x/fp-y rather than as CSS object-position.
+ *
+ * Still useful when you need fill-mode images with CSS positioning
+ * (e.g. next/image fill) and want to control focal point via CSS.
  */
 export const getSanityImageStyle = (image: any): React.CSSProperties => {
   if (!image?.hotspot) {
@@ -174,11 +224,9 @@ export const getSanityImageStyle = (image: any): React.CSSProperties => {
   const { x, y } = image.hotspot
   const crop = image.crop ?? { top: 0, bottom: 0, left: 0, right: 0 }
 
-  // Width and height of the visible (cropped) region, as fractions of 1
   const cropW = 1 - crop.left - crop.right
   const cropH = 1 - crop.top - crop.bottom
 
-  // Re-map hotspot coords into the cropped space
   const relX = (x - crop.left) / cropW
   const relY = (y - crop.top) / cropH
 

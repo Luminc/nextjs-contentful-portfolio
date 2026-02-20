@@ -1,6 +1,26 @@
+@mixin fluid-type($min-font-size, $max-font-size) {
+  $min-rem: calc(($min-font-size / 12px) * 1rem);
+  $max-rem: calc(($max-font-size / 12px) * 1rem);
+
+  // Strip units for calculations
+  $u1: $min-vw / ($min-vw * 0 + 1);
+  $u2: $max-vw / ($max-vw * 0 + 1);
+  $u3: $min-font-size / ($min-font-size * 0 + 1);
+  $u4: $max-font-size / ($max-font-size * 0 + 1);
+
+  // Calculate the slope and intersection
+  $slope: (
+    $u4 - $u3) / ($u2 - $u1
+  );
+$y-axis-intersection: -$u1 * $slope + $u3;
+
+font-size: clamp(#{$min-rem},
+  calc(#{$y-axis-intersection}px + #{$slope * 100}vw),
+  #{$max-rem});
+}
+
 @mixin reset-list {
   margin: 0;
   padding: 0;
   list-style: none;
-  font-size: 1.8rem;
 }

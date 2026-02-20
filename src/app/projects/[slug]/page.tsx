@@ -4,7 +4,7 @@ import ContentfulRichText from '@/components/contentful-rich-text'
 import Video from '@/components/video'
 import MetadataSection from '@/components/metadata-section'
 import ProjectCarousel from '@/components/project-carousel'
-import { getProject, getProjects, getSanityImageStyle } from '@/lib/sanity'
+import { getProject, getProjects, getSanityImageStyle, buildImageUrl } from '@/lib/sanity'
 import { generateProjectStructuredData } from '@/lib/structured-data'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -89,9 +89,9 @@ export default async function ProjectPage({
         <div className="container-wide">
           <div className="row mb-5" id="project-content">
             <div className="col-md pb-5 featured-project-image">
-              {project.featuredImage?.asset?.url && (
+              {project.featuredImage?.asset && (
                 <Image
-                  src={project.featuredImage.asset.url}
+                  src={buildImageUrl(project.featuredImage, 1600)}
                   alt={project.title}
                   width={project.featuredImage.asset.metadata?.dimensions?.width || 1200}
                   height={project.featuredImage.asset.metadata?.dimensions?.height || 800}
@@ -100,7 +100,6 @@ export default async function ProjectPage({
                     width: '100%',
                     height: 'auto',
                     objectFit: 'contain',
-                    ...getSanityImageStyle(project.featuredImage)
                   }}
                   priority
                 />
@@ -144,13 +143,15 @@ export default async function ProjectPage({
         {/* Sections */}
         {project.sections?.map((section) => (
           <section key={section._id}>
-            {section._type === 'imageWide' && section.image?.asset?.url && (
+            {section._type === 'imageWide' && section.image?.asset && (
               <Image
-                src={section.image.asset.url}
+                // Full-bleed landscape — 2400px covers retina wide viewports
+                src={buildImageUrl(section.image, 2400)}
                 alt={section.alt || section.title || ''}
                 width={section.image.asset.metadata?.dimensions?.width || 1920}
                 height={section.image.asset.metadata?.dimensions?.height || 1080}
                 loading="lazy"
+                sizes="100vw"
                 style={{
                   width: '100%',
                   height: 'auto',
@@ -161,14 +162,16 @@ export default async function ProjectPage({
             )}
 
             {section._type === 'documentation' && section.images?.map((image, i) => (
-              <div className="container-xxl" key={image.asset.url + i}>
+              <div className="container-xxl" key={image.asset._id ?? image.asset.url + i}>
                 <div className="image-wrapper">
                   <Image
-                    src={image.asset.url}
+                    // Portrait docs ~1300w in container-xxl; 1400 covers 2× retina
+                    src={buildImageUrl(image, 1400)}
                     alt={section.title || ''}
-                    width={image.asset.metadata?.dimensions?.width || 1200}
-                    height={image.asset.metadata?.dimensions?.height || 800}
+                    width={image.asset.metadata?.dimensions?.width || 1300}
+                    height={image.asset.metadata?.dimensions?.height || 1900}
                     loading="lazy"
+                    sizes="(max-width: 576px) 100vw, (max-width: 1400px) 90vw, 1320px"
                     style={{
                       width: '100%',
                       height: 'auto',
@@ -210,13 +213,14 @@ export default async function ProjectPage({
         {/* Documentation images */}
         <div className="container">
           {project.documentation?.map((image, i) => (
-            <div className="image-wrapper" key={image.asset.url + i}>
+            <div className="image-wrapper" key={image.asset._id ?? image.asset.url + i}>
               <Image
                 alt={project.title}
-                src={image.asset.url}
-                width={image.asset.metadata?.dimensions?.width || 1200}
-                height={image.asset.metadata?.dimensions?.height || 800}
+                src={buildImageUrl(image, 1400)}
+                width={image.asset.metadata?.dimensions?.width || 1300}
+                height={image.asset.metadata?.dimensions?.height || 1900}
                 loading="lazy"
+                sizes="(max-width: 576px) 100vw, (max-width: 992px) 90vw, 800px"
                 style={{ width: '100%', height: 'auto' }}
               />
             </div>
@@ -230,8 +234,8 @@ export default async function ProjectPage({
                   <>
                     <Link href={`/projects/${prev.url}`} className="d-none d-md-flex text-decoration-none project-nav-link align-items-center">
                       <div style={{ width: '180px', flexShrink: 0 }}>
-                        {prev.featuredImage?.asset?.url && (
-                          <Image src={prev.featuredImage.asset.url} alt={prev.title} width={400} height={300} loading="lazy" className="shadow-sm" style={{ objectFit: 'cover', width: '100%', height: 'auto', borderRadius: '2px' }} />
+                        {prev.featuredImage?.asset && (
+                          <Image src={buildImageUrl(prev.featuredImage, 400)} alt={prev.title} width={400} height={300} loading="lazy" className="shadow-sm" style={{ objectFit: 'cover', width: '100%', height: 'auto', borderRadius: '2px' }} />
                         )}
                       </div>
                       <div className="ps-4">
@@ -259,8 +263,8 @@ export default async function ProjectPage({
                         <h4 className="card-title mb-0 fw-light" style={{ fontSize: '1.4rem' }}>{next.title}</h4>
                       </div>
                       <div style={{ width: '180px', flexShrink: 0 }}>
-                        {next.featuredImage?.asset?.url && (
-                          <Image src={next.featuredImage.asset.url} alt={next.title} width={400} height={300} loading="lazy" className="shadow-sm" style={{ objectFit: 'cover', width: '100%', height: 'auto', borderRadius: '2px' }} />
+                        {next.featuredImage?.asset && (
+                          <Image src={buildImageUrl(next.featuredImage, 400)} alt={next.title} width={400} height={300} loading="lazy" className="shadow-sm" style={{ objectFit: 'cover', width: '100%', height: 'auto', borderRadius: '2px' }} />
                         )}
                       </div>
                     </Link>

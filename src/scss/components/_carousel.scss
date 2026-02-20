@@ -17,6 +17,17 @@
   opacity: 1;
 }
 
+.carousel-caption-static {
+  h5 {
+    @include fluid-type(20px, 28px);
+    margin-bottom: 0.5rem;
+  }
+
+  p.caption {
+    @include fluid-type(14px, 16px);
+  }
+}
+
 .carousel-cover {
   width: 100% !important;
   height: 100% !important;
