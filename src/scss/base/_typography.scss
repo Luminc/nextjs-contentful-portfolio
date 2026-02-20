@@ -3,7 +3,7 @@
 }
 
 p {
-  @include fluid-type(18px, 22px);
+  @include fluid-type(18px, 20px);
 
   &.caption {
     @include fluid-type(14px, 16px);

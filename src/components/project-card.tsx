@@ -14,10 +14,11 @@ export function ProjectCard({ project }: ProjectCardProps) {
   const isWriting = project.type === 'Writing'
   const cardClass = `card project-card ${isWriting ? 'project-writing' : 'project-installation'}`
 
-  // Cap CDN download at 800px — wide enough for the 2-col project index at 2× retina
-  // (~730px × 2 = 1460px, but next/image handles srcset so 800 is a safe ceiling).
-  // The 3-col landing cards are ~480px so this is generous there too.
-  const cdnWidth = 800
+  // 1500px — covers single-column mobile at 2× retina (~750px × 2) and
+  // 2-col project index at 2× retina (~730px × 2 = 1460px).
+  // Next.js picks the right srcset entry from deviceSizes; this is the ceiling
+  // of what Sanity CDN will serve so double-processing stays within one quality step.
+  const cdnWidth = 1500
 
   // Intrinsic dimensions for next/image aspect-ratio reservation.
   // Writing cards use real dims; installation cards use a fixed landscape ratio.
@@ -48,7 +49,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
               alt={project.title}
               width={intrinsicWidth}
               height={intrinsicHeight}
-              sizes="(max-width: 576px) 100vw, (max-width: 992px) 50vw, 33vw"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               style={imageStyle}
             />
           </div>

@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { Container, Row, Col } from 'react-bootstrap'
+import { Row, Col } from 'react-bootstrap'
 import { siteMetadata } from '@/lib/site-metadata'
 
 interface FooterProps {
@@ -36,11 +36,6 @@ export const Footer: React.FC<FooterProps> = ({ className }) => {
               className="external"
             >
               {siteMetadata.email}
-            </a>
-          </li>
-          <li className="contact-links-item">
-            <a href={`tel:${siteMetadata.phone}`} target="_top">
-              {siteMetadata.phone}
             </a>
           </li>
         </ul>

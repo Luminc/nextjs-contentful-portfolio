@@ -237,7 +237,13 @@ export const projectType = defineType({
       readOnly: true,
     }),
   ],
-  preview: { select: { title: "title" } },
+  preview: {
+    select: {
+      title: "title",
+      subtitle: "medium",
+      media: "featuredImage",
+    },
+  },
   readOnly: ({ document }) =>
     (document == null ? void 0 : document.contentfulArchived) === !0,
 });
@@ -284,7 +290,13 @@ export const heroImagesType = defineType({
       readOnly: true,
     }),
   ],
-  preview: { select: { title: "description" } },
+  preview: {
+    select: {
+      title: "title",
+      subtitle: "description",
+      media: "image",
+    },
+  },
   readOnly: ({ document }) =>
     (document == null ? void 0 : document.contentfulArchived) === !0,
 });
@@ -442,7 +454,13 @@ export const aboutType = defineType({
       readOnly: true,
     }),
   ],
-  preview: { select: { title: "title" } },
+  preview: {
+    select: {
+      title: "title",
+      subtitle: "slug",
+      media: "image",
+    },
+  },
   readOnly: ({ document }) =>
     (document == null ? void 0 : document.contentfulArchived) === !0,
 });
@@ -500,7 +518,13 @@ export const documentationType = defineType({
       readOnly: true,
     }),
   ],
-  preview: { select: { title: "title" } },
+  preview: {
+    select: {
+      title: "title",
+      subtitle: "description",
+      media: "images.0",
+    },
+  },
   readOnly: ({ document }) =>
     (document == null ? void 0 : document.contentfulArchived) === !0,
 });
@@ -528,7 +552,13 @@ export const imageWideType = defineType({
       readOnly: true,
     }),
   ],
-  preview: { select: { title: "title" } },
+  preview: {
+    select: {
+      title: "title",
+      subtitle: "alt",
+      media: "image",
+    },
+  },
   readOnly: ({ document }) =>
     (document == null ? void 0 : document.contentfulArchived) === !0,
 });
@@ -555,7 +585,12 @@ export const containerVideoType = defineType({
       readOnly: true,
     }),
   ],
-  preview: { select: { title: "title" } },
+  preview: {
+    select: {
+      title: "title",
+      media: "image",
+    },
+  },
   readOnly: ({ document }) =>
     (document == null ? void 0 : document.contentfulArchived) === !0,
 });
@@ -618,7 +653,13 @@ export const carouselType = defineType({
       readOnly: true,
     }),
   ],
-  preview: { select: { title: "title" } },
+  preview: {
+    select: {
+      title: "title",
+      subtitle: "interval",
+      media: "images.0",
+    },
+  },
   readOnly: ({ document }) =>
     (document == null ? void 0 : document.contentfulArchived) === !0,
 });
@@ -1199,7 +1240,12 @@ export const metadataSectionType = defineType({
       readOnly: true,
     }),
   ],
-  preview: { select: { title: "title" } },
+  preview: {
+    select: {
+      title: "title",
+      subtitle: "displayStyle",
+    },
+  },
   readOnly: ({ document }) =>
     (document == null ? void 0 : document.contentfulArchived) === !0,
 });

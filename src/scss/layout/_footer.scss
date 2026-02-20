@@ -9,7 +9,9 @@
   font-family: Roboto, Helvetica, sans-serif;
   color: $primary-light;
   font-weight: 300;
-  @include fluid-type(14px, 16px);
+  // Fixed small size — no scaling needed, keep unobtrusive
+  font-size: 13px;
+  padding-bottom: 0; // footer padding-bottom handles spacing
 
   a {
     color: inherit;
@@ -45,10 +47,17 @@ footer {
 .contact-links,
 .social-links {
   font-weight: 200;
-  @include fluid-type(16px, 20px);
+  // Min 18px — comfortable tap target on mobile
+  @include fluid-type(18px, 20px);
 
   a {
     font-weight: 200;
+  }
+
+  li {
+    // Generous tap area without affecting visual spacing too much
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
   }
 }
 
