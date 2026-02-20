@@ -6,3 +6,12 @@ $color-secondary: rgb(255, 0, 0);
 $font: var(--font-commissioner), "Commissioner", sans-serif !important;
 $line-height: 1.5;
 $font-size: 12px;
+
+// Viewport bounds for fluid typography
+$min-vw: 375px;
+$max-vw: 1600px;
+
+// Typographic Scale (Perfect Fourth - 1.333)
+$type-scale: 1.333;
+
+$base-font-size: 16px;

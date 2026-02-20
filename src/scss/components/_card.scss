@@ -6,6 +6,8 @@
   break-inside: avoid;
 
   .card-body {
+    padding-top: 0.75rem;
+
     .overline {
       font-family: $font;
       font-weight: 300;
@@ -21,7 +23,7 @@
     }
 
     .card-title {
-      font-size: 2rem;
+      @include fluid-type(22px, 24px);
       font-weight: 200;
     }
   }
@@ -154,8 +156,8 @@
 
   .card-body {
     .card-title {
+      @include fluid-type(22px, 24px);
       font-weight: 300;
-      font-size: 1.8rem;
     }
   }
 }

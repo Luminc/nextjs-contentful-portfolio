@@ -3,15 +3,6 @@
  */
 
 /**
- * Creates a proper image URL from Contentful image URLs
- * @param url - The image URL from Contentful (may start with //)
- * @returns Full HTTPS URL
- */
-export const createImageUrl = (url: string): string => {
-  return url.startsWith('//') ? `https:${url}` : url
-}
-
-/**
  * Extracts the year from a date string
  * @param dateString - Date string in any valid format
  * @returns Year as number

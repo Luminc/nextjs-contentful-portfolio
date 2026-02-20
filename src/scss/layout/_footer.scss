@@ -1,29 +1,41 @@
 .nav-bottom {
   font-family: Arial, Helvetica, sans-serif;
   color: $primary-light;
-  font-size: 1.25rem;
   font-weight: 300;
+  @include fluid-type(16px, 20px);
 }
 
 .copyright {
   font-family: Roboto, Helvetica, sans-serif;
   color: $primary-light;
   font-weight: 300;
+  // Fixed small size — no scaling needed, keep unobtrusive
+  font-size: 13px;
+  padding-bottom: 0; // footer padding-bottom handles spacing
+
+  a {
+    color: inherit;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: none;
+      color: inherit;
+    }
+  }
 }
 
 footer {
-  padding-left: 1.5rem;
   padding-bottom: 2rem;
   font-weight: 300;
-  
+
   a {
     font-weight: 300;
   }
-  
+
   .h2 {
     font-weight: 300;
   }
-  
+
   // Keep brand lighter for hierarchy
   .footer-links-brand a,
   .text-center .h2:first-child {
@@ -31,12 +43,38 @@ footer {
   }
 }
 
+.footer-links,
+.contact-links,
+.social-links {
+  font-weight: 200;
+  // Min 18px — comfortable tap target on mobile
+  @include fluid-type(18px, 20px);
+
+  a {
+    font-weight: 200;
+  }
+
+  li {
+    // Generous tap area without affecting visual spacing too much
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+  }
+}
+
+// Specific scaling for desktop footer links to match 26px preference
+.footer-desktop-link {
+  @include fluid-type(20px, 26px);
+  font-weight: 200 !important;
+  text-decoration: none;
+}
+
 .footer-links {
   @include reset-list;
   padding-top: 2rem;
   padding-bottom: 0.8rem;
+
   &-brand {
-    font-size: calc(1.9rem + 0.9vw);
+    @include fluid-type(24px, 32px);
     padding-bottom: 1.5rem;
   }
 }

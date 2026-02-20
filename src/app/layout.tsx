@@ -42,6 +42,11 @@ export const metadata: Metadata = {
     description: siteMetadata.description,
     creator: `@${siteMetadata.twitterUsername}`,
   },
+  icons: {
+    icon: '/ico.svg',
+    shortcut: '/ico.svg',
+    apple: '/ico.svg',
+  },
 }
 
 export default function RootLayout({

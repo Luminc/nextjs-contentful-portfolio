@@ -3,10 +3,10 @@
 }
 
 p {
-  font-size: 1.5rem;
+  @include fluid-type(18px, 20px);
 
   &.caption {
-    font-size: 1rem;
+    @include fluid-type(14px, 16px);
     margin-bottom: 0.6rem;
   }
 
@@ -28,7 +28,20 @@ p {
   }
 }
 
+// Colophon/metadata sections render rich text inside a .caption div.
+// The inner <p> tags from PortableText don't carry .caption/.leading-loose
+// themselves, so we apply styles via descendant selectors.
+.caption p {
+  @include fluid-type(14px, 16px);
+  margin-bottom: 0.6rem;
+}
+
+.leading-loose p {
+  padding-left: 10px;
+}
+
 h1 {
+  @include fluid-type(40px, 80px);
   font-weight: 200 !important;
   padding: 0 !important;
 }
@@ -38,6 +51,7 @@ h3,
 h4,
 h5,
 h6 {
+  @include fluid-type(32px, 56px);
   font-weight: 200 !important;
   padding: 0 !important;
 }
@@ -61,28 +75,4 @@ a {
 
 .grayed {
   color: rgba(0, 0, 0, 0.4);
-}
-
-/* SM */
-@media screen and (max-width: 576px) {
-  h1 {
-    font-size: 2.5rem;
-  }
-
-  p {
-    font-size: 1.25rem;
-
-    &.caption {
-      font-size: 1rem;
-      margin-bottom: 0.6rem;
-    }
-
-    &.caption-title {
-      margin-bottom: 0.1rem;
-    }
-
-    &.leading-loose {
-      padding-left: 10px;
-    }
-  }
 }

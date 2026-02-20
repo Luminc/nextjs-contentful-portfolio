@@ -1,22 +1,12 @@
 'use client'
 
-/**
- * PROJECT CAROUSEL CLIENT COMPONENT
- *
- * Client component wrapper for Bootstrap Carousel.
- * Extracted to enable Server Component architecture for project pages.
- *
- * This component handles the interactive carousel functionality
- * while allowing the parent page to be a Server Component.
- */
-
 import { Carousel } from 'react-bootstrap'
 import Image from 'next/image'
-import { createImageUrl } from '@/lib/utils'
-import { ContentfulAsset } from '@/types/contentful'
+import { SanityImage } from '@/types/sanity'
+import { buildImageUrl, getSanityImageStyle } from '@/lib/sanity'
 
 interface ProjectCarouselProps {
-  images: ContentfulAsset[]
+  images: SanityImage[]
   title: string
   interval?: number
   pause?: false | 'hover'
@@ -41,15 +31,21 @@ const ProjectCarousel: React.FC<ProjectCarouselProps> = ({
       indicators={indicators}
     >
       {images?.map((image, index) => (
-        <Carousel.Item key={image.sys.id}>
+        <Carousel.Item key={image.asset._id ?? image.asset.url}>
           <Image
-            src={createImageUrl(image.fields.file.url)}
+            // 1400px — wide enough for portrait originals (~1300w) at retina in container-sm
+            src={buildImageUrl(image, 1400)}
             alt={title}
-            width={image.fields.file.details.image?.width || 1200}
-            height={image.fields.file.details.image?.height || 800}
+            width={image.asset.metadata?.dimensions?.width || 1200}
+            height={image.asset.metadata?.dimensions?.height || 1300}
             loading={index === 0 ? 'eager' : 'lazy'}
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 1000px"
-            style={{ width: '100%', height: 'auto' }}
+            sizes="(max-width: 576px) 100vw, 540px"
+            style={{
+              width: '100%',
+              height: 'auto',
+              minHeight: '30vh',
+              ...getSanityImageStyle(image)
+            }}
           />
         </Carousel.Item>
       ))}

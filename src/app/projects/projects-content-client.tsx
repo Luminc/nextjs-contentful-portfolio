@@ -2,23 +2,21 @@
 
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { ContentfulProject } from '@/types/contentful'
+import { SanityProject } from '@/types/sanity'
 import { ProjectCard } from '@/components/project-card'
 
 interface ProjectsContentProps {
-  projects: ContentfulProject[]
+  projects: SanityProject[]
 }
 
 export default function ProjectsContent({ projects }: ProjectsContentProps) {
   const [activeTab, setActiveTab] = useState<'Installation' | 'Writing'>('Installation')
   const searchParams = useSearchParams()
 
-  // Separate by type
-  const installations = projects.filter(p => p.fields.type === 'Installation')
-  const writings = projects.filter(p => p.fields.type === 'Writing')
+  const installations = projects.filter(p => p.type === 'Installation')
+  const writings = projects.filter(p => p.type === 'Writing')
 
   useEffect(() => {
-    // Set active tab from URL param if present
     const filterParam = searchParams.get('filter')
     if (filterParam === 'Writing' || filterParam === 'Installation') {
       setActiveTab(filterParam)
@@ -47,18 +45,17 @@ export default function ProjectsContent({ projects }: ProjectsContentProps) {
           </h1>
         </div>
 
-        {/* Mobile: Show active tab content */}
         {activeTab === 'Installation' && (
           <div className="card-columns-2">
             {installations.map(project => (
-              <ProjectCard key={project.sys.id} project={project} />
+              <ProjectCard key={project._id} project={project} />
             ))}
           </div>
         )}
         {activeTab === 'Writing' && (
           <div className="card-columns-2">
             {writings.map(project => (
-              <ProjectCard key={project.sys.id} project={project} />
+              <ProjectCard key={project._id} project={project} />
             ))}
           </div>
         )}
@@ -70,7 +67,7 @@ export default function ProjectsContent({ projects }: ProjectsContentProps) {
           <h1 className="display-1 mt-4 py-5">Projects</h1>
           <div className="card-columns-2">
             {installations.map(project => (
-              <ProjectCard key={project.sys.id} project={project} />
+              <ProjectCard key={project._id} project={project} />
             ))}
           </div>
         </div>
@@ -79,7 +76,7 @@ export default function ProjectsContent({ projects }: ProjectsContentProps) {
           <h1 className="display-1 mt-4 py-5">Writing</h1>
           <div className="card-columns-2">
             {writings.map(project => (
-              <ProjectCard key={project.sys.id} project={project} />
+              <ProjectCard key={project._id} project={project} />
             ))}
           </div>
         </div>

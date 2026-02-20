@@ -1,30 +1,13 @@
-/**
- * DYNAMIC SITEMAP GENERATION
- *
- * Generates sitemap.xml automatically from Contentful content.
- * This helps search engines discover and index all pages on the site.
- *
- * The sitemap includes:
- * - Homepage
- * - Projects listing page
- * - Individual project pages (dynamic from Contentful)
- * - Dynamic pages (about, etc. from Contentful)
- *
- * Automatically updated when content changes in Contentful.
- */
-
 import { MetadataRoute } from 'next'
-import { getProjects, getPages } from '@/lib/contentful'
+import { getProjects, getPages } from '@/lib/sanity'
 import { siteMetadata } from '@/lib/site-metadata'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  // Fetch all projects and pages from Contentful
   const [projects, pages] = await Promise.all([
     getProjects(),
     getPages(),
   ])
 
-  // Static routes
   const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: siteMetadata.siteUrl,
@@ -40,18 +23,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ]
 
-  // Dynamic project routes
   const projectRoutes: MetadataRoute.Sitemap = projects.map((project) => ({
-    url: `${siteMetadata.siteUrl}/projects/${project.fields.url}`,
-    lastModified: new Date(project.sys.updatedAt),
+    url: `${siteMetadata.siteUrl}/projects/${project.url}`,
+    lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.8,
   }))
 
-  // Dynamic page routes (about, etc.)
   const pageRoutes: MetadataRoute.Sitemap = pages.map((page) => ({
-    url: `${siteMetadata.siteUrl}/${page.fields.slug}`,
-    lastModified: new Date(page.sys.updatedAt),
+    url: `${siteMetadata.siteUrl}/${page.slug}`,
+    lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.7,
   }))

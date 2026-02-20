@@ -3,38 +3,37 @@
 import { useState } from 'react'
 import { Container } from 'react-bootstrap'
 import { useRouter } from 'next/navigation'
-
-function encode(data: Record<string, string>) {
-  return Object.keys(data)
-    .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
-    .join("&")
-}
+import Link from 'next/link'
 
 export const EmailForm = () => {
-  const [state, setState] = useState<Record<string, string>>({})
+  const [email, setEmail] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const router = useRouter()
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setState({ ...state, [e.target.name]: e.target.value })
-  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const form = e.target as HTMLFormElement
-    
+    setLoading(true)
+    setError(null)
+
     try {
-      await fetch("/", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: encode({
-          "form-name": form.getAttribute("name") || "",
-          ...state,
-        }),
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
       })
-      router.push(form.getAttribute("action") || "/thanks")
-    } catch (error) {
-      alert("There was an error submitting the form. Please try again.")
-      console.error(error)
+
+      const data = await res.json()
+
+      if (data.success) {
+        router.push('/thanks')
+      } else {
+        setError(data.error || 'Something went wrong. Please try again.')
+      }
+    } catch {
+      setError('Something went wrong. Please try again.')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -44,37 +43,34 @@ export const EmailForm = () => {
         <h2 className="h2 pb-3">Subscribe below to receive updates</h2>
         <form
           name="contact"
-          method="post"
-          action="/thanks/"
-          data-netlify="true"
-          data-netlify-honeypot="bot-field"
           className="my-auto py-5"
           onSubmit={handleSubmit}
         >
-          <input type="hidden" name="form-name" value="contact" />
-          <p hidden>
-            <label>
-              Don&apos;t fill this out:{" "}
-              <input name="bot-field" onChange={handleChange} />
-            </label>
-          </p>
           <p className="pb-3">
             <input
               type="email"
               name="email"
+              value={email}
               placeholder="your@email.com"
               className="input"
-              onChange={handleChange}
+              onChange={(e) => setEmail(e.target.value)}
               required
+              disabled={loading}
             />
           </p>
+
+          {error && (
+            <p className="caption" style={{ color: 'red' }}>{error}</p>
+          )}
+
           <p>
             <button
               type="submit"
               className="shape-pill large-button hot"
               aria-label="Click here to subscribe!"
+              disabled={loading}
             >
-              Send
+              {loading ? 'Sending…' : 'Send'}
             </button>
           </p>
         </form>
