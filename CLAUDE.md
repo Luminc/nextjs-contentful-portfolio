@@ -48,7 +48,11 @@ SANITY_API_READ_TOKEN=<viewer token from sanity.io/manage>
 
 ### Image Handling
 - All images served from `cdn.sanity.io` — configured in `next.config.js` remotePatterns.
-- Images use hotspot/crop data. Use `getSanityImageStyle()` from `src/lib/sanity.ts` to convert hotspot to CSS `object-position`.
+- Use `buildImageUrl(image, width)` from `src/lib/sanity.ts` for all `<Image src={...}>` usage. This bakes hotspot/crop into `fp-x`/`fp-y` CDN params — no CSS `object-position` needed.
+- `@sanity/image-url` uses the named export `createImageUrlBuilder` (v2 API). The builder instance (`builder`) wraps `sanityClient`.
+- `getSanityImageStyle()` is kept as a legacy helper for fill-mode images (e.g. hero carousel with `next/image fill`) where CSS `object-position` is still needed.
+- Width caps by context: landing cards 1500px, project-index cards 1500px, documentation 1400px, hero carousel 1500px, imageWide sections 2400px, nav thumbnails 400px.
+- `next.config.js` `deviceSizes` includes 1500 to avoid double-reprocessing at the common card ceiling.
 - The SVG warning on build is a known cosmetic issue (icon SVGs in public/) — ignore it.
 
 ### Content Model — Key Types

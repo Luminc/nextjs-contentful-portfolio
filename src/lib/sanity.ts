@@ -15,7 +15,7 @@
  */
 
 import { createClient } from '@sanity/client'
-import imageUrlBuilder from '@sanity/image-url'
+import { createImageUrlBuilder } from '@sanity/image-url'
 import type { SanityImageSource } from '@sanity/image-url'
 import type {
   SanityProject,
@@ -165,7 +165,7 @@ export const getHeroImages = async (): Promise<SanityHeroImage[]> => {
 // Image URL builder
 // ---------------------------------------------------------------------------
 
-const builder = imageUrlBuilder(sanityClient)
+const builder = createImageUrlBuilder(sanityClient)
 
 /**
  * Returns a Sanity image-url builder instance for the given image source.
