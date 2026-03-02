@@ -29,12 +29,11 @@ const components: PortableTextComponents = {
     ),
   },
   block: {
-    normal: ({ children }) => {
-      // Render empty paragraphs as line breaks
-      const text = Array.isArray(children)
-        ? children.map(c => (typeof c === 'string' ? c : '')).join('')
-        : String(children ?? '')
-      return text.trim() === '' ? <br /> : <p className="lh-lg">{children}</p>
+    normal: ({ children, value }) => {
+      // Use raw span text to detect empty paragraphs — rendered children may be
+      // React elements (not strings) when marks are applied, giving a false empty.
+      const isEmpty = !value?.children?.some((span: { text?: string }) => span.text?.trim())
+      return isEmpty ? <br /> : <p className="lh-lg">{children}</p>
     },
     h1: ({ children }) => (
       <h2 className="display-4 text-start fw-bold text-dark lh-sm mb-2">{children}</h2>
