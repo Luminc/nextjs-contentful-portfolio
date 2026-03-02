@@ -73,9 +73,9 @@ const components: PortableTextComponents = {
         {createJumpLink(children)}
       </h6>
     ),
-    blockquote: ({ children, value }) => (
+    blockquote: ({ children }) => (
       <blockquote className="border-start border-primary border-4 bg-light p-3 rounded fw-bold my-4">
-        &ldquo;{value?.children?.[0]?.text}&rdquo;
+        &ldquo;{children}&rdquo;
       </blockquote>
     ),
   },
