@@ -14,7 +14,7 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Layout from '@/components/layout'
-import ContentfulRichText from '@/components/contentful-rich-text'
+import PortableTextRenderer from '@/components/portable-text'
 import { getPage, getPages } from '@/lib/sanity'
 // React Bootstrap components replaced with plain HTML for Server Component compatibility
 import Image from 'next/image'
@@ -121,7 +121,7 @@ export default async function DynamicPage({
             {page.richDescription && (
               <div className="col">
                 <div className="container">
-                  <ContentfulRichText richText={page.richDescription} />
+                  <PortableTextRenderer value={page.richDescription} />
                 </div>
               </div>
             )}
@@ -156,7 +156,7 @@ export default async function DynamicPage({
           {page.richDescription && (
             <div className="col">
               <div className="container">
-                <ContentfulRichText richText={page.richDescription} />
+                <PortableTextRenderer value={page.richDescription} />
               </div>
             </div>
           )}

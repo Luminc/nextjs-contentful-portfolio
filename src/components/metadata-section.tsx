@@ -1,7 +1,7 @@
 'use client'
 
 import { SanityMetadataSection } from '@/types/sanity'
-import ContentfulRichText from './contentful-rich-text'
+import PortableTextRenderer from './portable-text'
 
 interface MetadataSectionProps {
   section: SanityMetadataSection
@@ -23,7 +23,7 @@ const MetadataSection: React.FC<MetadataSectionProps> = ({ section }) => {
     <div className="metadata-section mb-3">
       <p className="leading-loose caption caption-title mb-1">{title}:</p>
       <div className={getDisplayClasses()}>
-        <ContentfulRichText richText={content} />
+        <PortableTextRenderer value={content} />
       </div>
     </div>
   )

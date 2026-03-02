@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import Layout from '@/components/layout'
-import ContentfulRichText from '@/components/contentful-rich-text'
+import PortableTextRenderer from '@/components/portable-text'
 import Video from '@/components/video'
 import MetadataSection from '@/components/metadata-section'
 import ProjectCarousel from '@/components/project-carousel'
@@ -119,7 +119,7 @@ export default async function ProjectPage({
                     </nav>
                   </div>
 
-                  <ContentfulRichText richText={project.content} />
+                  <PortableTextRenderer value={project.content} />
 
                   {project.metadataSections?.map((section) => (
                     <MetadataSection key={section._id} section={section} />

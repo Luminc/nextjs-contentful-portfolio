@@ -1,18 +1,9 @@
-'use client'
-
 import { PortableText, PortableTextComponents } from '@portabletext/react'
+import type { PortableTextBlock } from '@portabletext/types'
 import Image from 'next/image'
 import slugify from '@sindresorhus/slugify'
 
-/**
- * RICH TEXT RENDERER — Portable Text (Sanity)
- *
- * Drop-in replacement for the previous Contentful rich text renderer.
- * Accepts Sanity Portable Text blocks and renders them with the same
- * Bootstrap styling as before.
- */
-
-const createJumpLink = (children: any) => (
+const createJumpLink = (children: React.ReactNode) => (
   <a href={`#${slugify(String(children))}`} className="position-relative">
     {children}
   </a>
@@ -107,17 +98,11 @@ const components: PortableTextComponents = {
   },
 }
 
-interface ContentfulRichTextProps {
-  richText: any
-}
-
-const ContentfulRichText: React.FC<ContentfulRichTextProps> = ({ richText }) => {
-  if (!richText) return null
+export default function PortableTextRenderer({ value }: { value: PortableTextBlock[] }) {
+  if (!value) return null
   return (
     <div>
-      <PortableText value={richText} components={components} />
+      <PortableText value={value} components={components} />
     </div>
   )
 }
-
-export default ContentfulRichText
