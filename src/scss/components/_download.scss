@@ -1,0 +1,66 @@
+// Download section — a link with a file icon (see components/download-link.tsx)
+// Text size matches the caption/metadata text it sits under (fluid 14px–16px).
+.download-link {
+  --download-icon-size: 32px;
+  margin: 2.5rem 0 0.6rem;
+  padding-left: 10px; // aligns with .leading-loose caption text
+
+  &__anchor {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: inherit;
+    text-decoration: none;
+
+    &:hover,
+    &:focus-visible {
+      color: $color-primary;
+    }
+
+    &:active {
+      color: $color-secondary;
+    }
+  }
+
+  &__icon {
+    flex-shrink: 0;
+    width: var(--download-icon-size);
+    height: var(--download-icon-size);
+  }
+
+  &__text {
+    @include fluid-type(14px, 16px);
+    display: flex;
+    flex-direction: column;
+    line-height: 1.3;
+  }
+
+  &__title {
+    font-weight: 300;
+  }
+
+  &__meta {
+    font-size: 0.8em;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+
+  &__note {
+    @include fluid-type(14px, 16px);
+    margin: 0.35rem 0 0 calc(var(--download-icon-size) + 0.75rem);
+    opacity: 0.7;
+  }
+}
+
+// Project pages force `text-decoration: underline !important` on every link
+// (pages/_project.scss). The download link is a button-like element, so it opts out.
+.project-page .download-link__anchor {
+  &,
+  &:hover,
+  &:focus-visible,
+  &:active,
+  &:visited {
+    text-decoration: none !important;
+  }
+}

@@ -41,6 +41,7 @@ export const structure: StructureResolver = (S) =>
               S.documentTypeListItem('documentation').title('Documentation'),
               S.documentTypeListItem('carousel').title('Carousel'),
               S.documentTypeListItem('containerVideo').title('Video'),
+              S.documentTypeListItem('download').title('Download'),
               S.documentTypeListItem('metadataSection').title('Metadata Section'),
             ]),
         ),

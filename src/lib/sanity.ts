@@ -66,15 +66,18 @@ const METADATA_SECTION_FIELDS = `{
   displayStyle
 }`
 
-// Resolves a section reference (imageWide | documentation | containerVideo | carousel)
+// Resolves a section reference (imageWide | documentation | containerVideo | carousel | download)
 const SECTION_FIELDS = `{
   _id,
   _type,
   title,
   alt,
   image ${IMAGE_FIELDS},
-  images[] ${IMAGE_FIELDS},
+  images[defined(asset->url)] ${IMAGE_FIELDS},
   video ${FILE_FIELDS},
+  file { asset->{ url, size, extension, originalFilename } },
+  description,
+  contained,
   interval,
   pause,
   controls,
@@ -95,7 +98,7 @@ const PROJECT_FIELDS = `{
   featuredImage ${IMAGE_FIELDS},
   video ${FILE_FIELDS},
   content,
-  documentation[] ${IMAGE_FIELDS},
+  documentation[defined(asset->url)] ${IMAGE_FIELDS},
   sections[]-> ${SECTION_FIELDS},
   metadataSections[]-> ${METADATA_SECTION_FIELDS}
 }`

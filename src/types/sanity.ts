@@ -33,6 +33,16 @@ export interface SanityFile {
   }
 }
 
+// File with the extra metadata needed to label a download link
+export interface SanityDownloadFile {
+  asset: {
+    url: string
+    size?: number
+    extension?: string
+    originalFilename?: string
+  }
+}
+
 // Portable Text block (minimal — full type comes from @portabletext/types if needed)
 export type SanityPortableTextBlock = {
   _key: string
@@ -53,12 +63,17 @@ export interface SanityMetadataSection {
 // Section types (resolved references from project.sections[]->)
 export interface SanitySection {
   _id: string
-  _type: 'imageWide' | 'documentation' | 'containerVideo' | 'carousel'
+  _type: 'imageWide' | 'documentation' | 'containerVideo' | 'carousel' | 'download'
   title?: string
   alt?: string
   image?: SanityImage
   images?: SanityImage[]
   video?: SanityFile
+  // imageWide: keep within the wide container (max 1500px) with spacing, instead of full-bleed
+  contained?: boolean
+  // download
+  file?: SanityDownloadFile
+  description?: string
   interval?: number
   pause?: boolean
   controls?: boolean

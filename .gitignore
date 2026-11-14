@@ -31,3 +31,6 @@ Thumbs.db
 # Vercel
 .vercel
 .env*.local
+
+# Local content staging (source files, backups, upload prep) - never committed
+content-staging/

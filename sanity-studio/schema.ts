@@ -215,6 +215,7 @@ export const projectType = defineType({
             { type: "textSection" },
             { type: "contentSecion" },
             { type: "metadataSection" },
+            { type: "download" },
           ],
         },
       ],
@@ -545,6 +546,14 @@ export const imageWideType = defineType({
     defineField({ name: "alt", type: "string", title: "Alt", hidden: false }),
     defineField({ name: "image", type: "image", title: "Image", hidden: false, options: { hotspot: true } }),
     defineField({
+      name: "contained",
+      type: "boolean",
+      title: "Contain width",
+      description:
+        "Off (default): the image runs the full width of the screen. On: the image stays within the page's wide content width (max 1500px), centred, with spacing above and below. Use for images that should not grow huge on big screens, e.g. page spreads.",
+      initialValue: false,
+    }),
+    defineField({
       type: "boolean",
       description:
         "If this document was archived on Contentful at the time of export, the document will be in a read-only state.",
@@ -593,6 +602,37 @@ export const containerVideoType = defineType({
   },
   readOnly: ({ document }) =>
     (document == null ? void 0 : document.contentfulArchived) === !0,
+});
+
+export const downloadType = defineType({
+  type: "document",
+  name: "download",
+  title: "Section - Download",
+  description: "A link to a downloadable file (PDF etc.), shown with a small file icon",
+  fields: [
+    defineField({
+      name: "title",
+      type: "string",
+      title: "Link title",
+      description: "The text of the link, e.g. \"Read the thesis (PDF)\"",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "file",
+      type: "file",
+      title: "File",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "description",
+      type: "string",
+      title: "Note (optional)",
+      description: "Small line under the link, e.g. \"Scan of the printed book, 46 pages\". File type and size are added automatically.",
+    }),
+  ],
+  preview: {
+    select: { title: "title", subtitle: "description" },
+  },
 });
 
 export const carouselType = defineType({
@@ -1275,6 +1315,7 @@ export const types = [
   assetsType,
   documentationType,
   imageWideType,
+  downloadType,
   containerVideoType,
   carouselType,
   blogPostType,

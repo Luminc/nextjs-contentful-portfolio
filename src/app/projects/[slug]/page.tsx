@@ -3,6 +3,7 @@ import Layout from '@/components/layout'
 import PortableTextRenderer from '@/components/portable-text'
 import Video from '@/components/video'
 import MetadataSection from '@/components/metadata-section'
+import DownloadLink from '@/components/download-link'
 import ProjectCarousel from '@/components/project-carousel'
 import { getProject, getProjects, getSanityImageStyle, buildImageUrl } from '@/lib/sanity'
 import { generateProjectStructuredData } from '@/lib/structured-data'
@@ -70,6 +71,12 @@ export default async function ProjectPage({
   const next = currentIndex < allProjects.length - 1 ? allProjects[currentIndex + 1] : null
 
   const formattedDate = formatDate(project.date || '')
+
+  // Download sections render inside the text/metadata block (after the colophon),
+  // not in the sections list further down the page.
+  const downloads = (project.sections ?? []).filter(
+    (s) => s._type === 'download' && s.file?.asset?.url
+  )
   const structuredData = generateProjectStructuredData(project)
 
   return (
@@ -88,7 +95,7 @@ export default async function ProjectPage({
 
         <div className="container-wide">
           <div className="row mb-5" id="project-content">
-            <div className="col-md pb-5 featured-project-image">
+            <div className="col-lg pb-5 featured-project-image">
               {project.featuredImage?.asset && (
                 <Image
                   src={buildImageUrl(project.featuredImage, 1600)}
@@ -134,6 +141,21 @@ export default async function ProjectPage({
 
                   <p className="leading-loose caption caption-title">Date:</p>
                   <p className="leading-loose caption">{formattedDate}</p>
+
+                  {downloads.map((section) => (
+                    <DownloadLink key={section._id} section={section} />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* No text block to hold them: still show downloads */}
+            {!project.content && downloads.length > 0 && (
+              <div className="col">
+                <div className="container">
+                  {downloads.map((section) => (
+                    <DownloadLink key={section._id} section={section} />
+                  ))}
                 </div>
               </div>
             )}
@@ -144,21 +166,36 @@ export default async function ProjectPage({
         {project.sections?.map((section) => (
           <section key={section._id}>
             {section._type === 'imageWide' && section.image?.asset && (
-              <Image
-                // Full-bleed landscape — 2400px covers retina wide viewports
-                src={buildImageUrl(section.image, 2400)}
-                alt={section.alt || section.title || ''}
-                width={section.image.asset.metadata?.dimensions?.width || 1920}
-                height={section.image.asset.metadata?.dimensions?.height || 1080}
-                loading="lazy"
-                sizes="100vw"
-                style={{
-                  width: '100%',
-                  height: 'auto',
-                  minHeight: '40vh',
-                  ...getSanityImageStyle(section.image)
-                }}
-              />
+              section.contained ? (
+                // Contained: wide-content width (max 1500px), centred, with spacing
+                <div className="container-wide image-wrapper pb-4">
+                  <Image
+                    src={buildImageUrl(section.image, 2400)}
+                    alt={section.alt || section.title || ''}
+                    width={section.image.asset.metadata?.dimensions?.width || 1920}
+                    height={section.image.asset.metadata?.dimensions?.height || 1080}
+                    loading="lazy"
+                    sizes="(max-width: 1500px) 97vw, 1500px"
+                    style={{ width: '100%', height: 'auto' }}
+                  />
+                </div>
+              ) : (
+                <Image
+                  // Full-bleed landscape — 2400px covers retina wide viewports
+                  src={buildImageUrl(section.image, 2400)}
+                  alt={section.alt || section.title || ''}
+                  width={section.image.asset.metadata?.dimensions?.width || 1920}
+                  height={section.image.asset.metadata?.dimensions?.height || 1080}
+                  loading="lazy"
+                  sizes="100vw"
+                  style={{
+                    width: '100%',
+                    height: 'auto',
+                    minHeight: '40vh',
+                    ...getSanityImageStyle(section.image)
+                  }}
+                />
+              )
             )}
 
             {section._type === 'documentation' && section.images?.map((image, i) => (
