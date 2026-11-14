@@ -204,7 +204,7 @@ export default async function ProjectPage({
                   <Image
                     // Portrait docs ~1300w in container-xxl; 1400 covers 2× retina
                     src={buildImageUrl(image, 1400)}
-                    alt={section.title || ''}
+                    alt={image.alt || section.title || ''}
                     width={image.asset.metadata?.dimensions?.width || 1300}
                     height={image.asset.metadata?.dimensions?.height || 1900}
                     loading="lazy"
@@ -252,7 +252,7 @@ export default async function ProjectPage({
           {project.documentation?.map((image, i) => (
             <div className="image-wrapper" key={image.asset._id ?? image.asset.url + i}>
               <Image
-                alt={project.title}
+                alt={image.alt || project.title}
                 src={buildImageUrl(image, 1400)}
                 width={image.asset.metadata?.dimensions?.width || 1300}
                 height={image.asset.metadata?.dimensions?.height || 1900}

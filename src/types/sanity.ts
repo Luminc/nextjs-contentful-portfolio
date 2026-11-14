@@ -24,6 +24,7 @@ export interface SanityImage {
   asset: SanityImageAsset
   hotspot?: { x: number; y: number; height: number; width: number }
   crop?: { top: number; bottom: number; left: number; right: number }
+  alt?: string // optional, set on documentation images
 }
 
 // File field (type: "file" — used for videos)

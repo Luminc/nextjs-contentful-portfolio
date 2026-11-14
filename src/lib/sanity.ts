@@ -53,7 +53,7 @@ const sanityClientNoCdn = createClient({
 // Resolves a Sanity image field.
 // _ref is the raw asset reference ID used by @sanity/image-url to build CDN URLs.
 // url and metadata.dimensions are kept for fallback src and aspect-ratio calculations.
-const IMAGE_FIELDS = `{ asset->{ _id, _ref, url, metadata { dimensions } }, hotspot, crop }`
+const IMAGE_FIELDS = `{ asset->{ _id, _ref, url, metadata { dimensions } }, hotspot, crop, alt }`
 
 // Resolves a file field to { asset: { url } }
 const FILE_FIELDS = `{ asset->{ url } }`

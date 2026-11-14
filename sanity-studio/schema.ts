@@ -4,6 +4,16 @@ import { defineField, defineType, type SchemaTypeDefinition } from "sanity";
 const validateIn = (values: (string | number)[], value: any) =>
   values.includes(value) ? true : `Value must be one of ${values.join(", ")}`;
 
+// Optional alt text on images inside image arrays (documentation, etc.).
+// Empty = the page falls back to the project / section title.
+const imageAltField = defineField({
+  name: "alt",
+  type: "string",
+  title: "Alt text",
+  description:
+    "Describe what the image shows, for screen readers and search. Leave empty to fall back to the title.",
+});
+
 export const projectType = defineType({
   type: "document",
   name: "project",
@@ -175,7 +185,7 @@ export const projectType = defineType({
     defineField({
       name: "documentation",
       type: "array",
-      of: [{ type: "image", options: { hotspot: true } }],
+      of: [{ type: "image", options: { hotspot: true }, fields: [imageAltField] }],
       title: "Documentation",
       hidden: false,
     }),
@@ -501,7 +511,7 @@ export const documentationType = defineType({
     defineField({
       name: "images",
       type: "array",
-      of: [{ type: "image", options: { hotspot: true } }],
+      of: [{ type: "image", options: { hotspot: true }, fields: [imageAltField] }],
       title: "images",
       hidden: false,
     }),
