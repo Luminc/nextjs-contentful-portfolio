@@ -77,6 +77,7 @@ const SECTION_FIELDS = `{
   video ${FILE_FIELDS},
   file { asset->{ url, size, extension, originalFilename } },
   description,
+  placement,
   contained,
   interval,
   pause,

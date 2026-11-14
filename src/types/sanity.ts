@@ -75,6 +75,7 @@ export interface SanitySection {
   // download
   file?: SanityDownloadFile
   description?: string
+  placement?: 'text' | 'documentation' // default 'text'
   interval?: number
   pause?: boolean
   controls?: boolean

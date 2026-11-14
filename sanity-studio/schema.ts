@@ -639,6 +639,21 @@ export const downloadType = defineType({
       title: "Note (optional)",
       description: "Small line under the link, e.g. \"Scan of the printed book, 46 pages\". File type and size are added automatically.",
     }),
+    defineField({
+      name: "placement",
+      type: "string",
+      title: "Placement",
+      description:
+        "Where the link appears on the page. A document used on several pages shares one placement: create a second Download (same file) if it needs a different one.",
+      initialValue: "text",
+      options: {
+        list: [
+          { value: "text", title: "With the text (below the metadata)" },
+          { value: "documentation", title: "Below the documentation images" },
+        ],
+        layout: "radio",
+      },
+    }),
   ],
   preview: {
     select: { title: "title", subtitle: "description" },

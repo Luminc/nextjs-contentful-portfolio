@@ -72,11 +72,14 @@ export default async function ProjectPage({
 
   const formattedDate = formatDate(project.date || '')
 
-  // Download sections render inside the text/metadata block (after the colophon),
-  // not in the sections list further down the page.
-  const downloads = (project.sections ?? []).filter(
+  // Download sections render outside the sections list. By default (placement
+  // "text") they sit in the text/metadata block after the colophon; placement
+  // "documentation" puts them below the documentation images.
+  const allDownloads = (project.sections ?? []).filter(
     (s) => s._type === 'download' && s.file?.asset?.url
   )
+  const downloads = allDownloads.filter((s) => s.placement !== 'documentation')
+  const docDownloads = allDownloads.filter((s) => s.placement === 'documentation')
   const structuredData = generateProjectStructuredData(project)
 
   return (
@@ -261,6 +264,11 @@ export default async function ProjectPage({
                 style={{ width: '100%', height: 'auto' }}
               />
             </div>
+          ))}
+
+          {/* Downloads placed under the documentation */}
+          {docDownloads.map((section) => (
+            <DownloadLink key={section._id} section={section} />
           ))}
 
           {/* Prev / Next navigation */}
